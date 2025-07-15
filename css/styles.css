@@ -171,3 +171,29 @@ body {
     font-size: 1.2rem;
   }
 }
+
+/* Bacteria Mask (cursor radial reveal) */
+
+.bacteria-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Let mouse pass through */
+  mask-image: radial-gradient(circle 80px at var(--x, 50%) var(--y, 50%), black 100%, transparent 100%);
+  -webkit-mask-image: radial-gradient(circle 80px at var(--x, 50%) var(--y, 50%), black 100%, transparent 100%);
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+  transition: mask-image 0.2s, -webkit-mask-image 0.2s;
+  z-index: 2;
+}
+
+.bacteria-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+}
