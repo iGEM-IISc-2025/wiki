@@ -104,7 +104,6 @@ body {
     opacity: 1;
 }
 
-/* Hero Section (Image of soil) */
 body {
   margin: 0;
   font-family: sans-serif;
@@ -120,8 +119,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 0; /* Remove if navbar has margin */
+  margin-top: 0;
   z-index: 1;
+  overflow: hidden;
 }
 
 .hero-overlay {
@@ -130,25 +130,44 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* darkens the image slightly */
+  background: rgba(0, 0, 0, 0.4); /* Optional dark overlay */
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;   /* Align text to the left */
+  padding: 0 60px;
 }
 
 .hero-text {
   color: #fff;
-  text-align: center;
+  text-align: left;
+  max-width: 600px;
   padding: 20px;
-  max-width: 800px;
 }
 
 .hero-text h1 {
   font-size: 3rem;
-  margin-bottom: 0.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 1rem;
 }
 
 .hero-text p {
   font-size: 1.5rem;
   font-weight: 300;
+  margin: 0;
+}
+
+/* Responsive (Mobile Optimized) */
+@media (max-width: 768px) {
+  .hero-overlay {
+    padding: 0 30px;
+  }
+
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1.2rem;
+  }
 }
