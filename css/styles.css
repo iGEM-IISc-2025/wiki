@@ -197,3 +197,47 @@ body {
   object-fit: cover;
   opacity: 1;
 }
+
+
+.collage-section {
+  padding: 4rem 2rem;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.collage-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.collage-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.collage-item {
+  width: 300px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.collage-item:hover {
+  transform: scale(1.03);
+}
+
+.collage-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.collage-item p {
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #333;
+}
