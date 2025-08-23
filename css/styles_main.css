@@ -193,7 +193,12 @@ body {
   -webkit-mask-repeat: no-repeat;
   mask-position: center;
   -webkit-mask-position: center;
-  z-index: 2;
+  opacity: 0;              /* hidden by default */
+  transition: opacity 0.3s ease;
+}
+
+.bacteria-mask.visible {
+  opacity: 1;              /* show only on hover */
 }
 
 .bacteria-image {
@@ -267,6 +272,14 @@ body {
   }
 }
 
-body {
-  background: pink !important;
+/* Progress Bar */
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(to right, #b859dd, #7a40d1);
+  width: 0%;
+  z-index: 3000; /* make sure it's above navbar */
+  transition: width 0.2s ease-out;
 }
