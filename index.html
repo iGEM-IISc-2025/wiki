@@ -55,21 +55,21 @@
             clearInterval(typer);
             consoleEl.innerHTML += "\n";
             i++;
-            setTimeout(typeLine, 1000);
+            setTimeout(typeLine, 500); // wait a bit before next line
           }
-        }, 40);
+        }, 40); // typing speed
+      } else {
+        // all lines done → pause, then fade out & redirect
+        setTimeout(() => {
+          document.body.classList.add("fade-out");
+          setTimeout(() => {
+            window.location.href = "main.html"; // your wiki homepage
+          }, 1000);
+        }, 4000); // pause for 4 seconds after last line
       }
     }
 
     typeLine();
-
-    // After 5 seconds, fade out then redirect
-    setTimeout(() => {
-      document.body.classList.add("fade-out");
-      setTimeout(() => {
-        window.location.href = "main.html"; // your wiki homepage
-      }, 1000); 
-    }, 5000);
   </script>
 </body>
 </html>
