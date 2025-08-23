@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Intro</title>
   <style>
     body {
@@ -11,7 +11,7 @@
       font-family: monospace;
       font-size: 1.2rem;
       padding: 20px;
-      white-space: pre-line;
+      white-space: pre-wrap;
       overflow: hidden;
       transition: opacity 1s ease-in-out;
     }
@@ -20,18 +20,19 @@
       padding-left: 10px;
       animation: blink 1s step-start infinite;
     }
-    @keyframes blink {
-      50% { border-color: transparent; }
-    }
-    body.fade-out {
-      opacity: 0;
-    }
+    @keyframes blink { 50% { border-color: transparent; } }
+    body.fade-out { opacity: 0; }
   </style>
 </head>
 <body>
-  <div id="console"></div>
+  <div id="console" aria-live="polite"></div>
 
   <script>
+    const CHAR_DELAY = 30;    // time per character
+    const LINE_DELAY = 1200;  // time between lines
+    const END_PAUSE  = 4000;  // time after last line before fade
+    const FADE_TIME  = 1000;  // time fade duration (matches CSS transition)
+
     const lines = [
       "Initializing groundwater analysis...",
       "85% of Indian households rely on groundwater for drinking",
@@ -42,36 +43,28 @@
       "Deploying counter-strategy: Engineered Pseudomonas putida..."
     ];
 
-    let i = 0;
-    function typeLine() {
-      if (i < lines.length) {
-        const consoleEl = document.getElementById("console");
-        let text = lines[i];
-        let j = 0;
-        let typer = setInterval(() => {
-          consoleEl.innerHTML += text[j];
-          j++;
-          if (j === text.length) {
-            clearInterval(typer);
-            consoleEl.innerHTML += "\n";
-            i++;
-            if (i < lines.length) {
-              setTimeout(typeLine, 1200);
-            } else {
-              setTimeout(() => {
-                document.body.classList.add("fade-out");
-                setTimeout(() => {
-                  window.location.href = "main.html";
-                }, 1000);
-              }, 4000);
-            }
-          }
-        }, 30);
+    const consoleEl = document.getElementById("console");
+
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+    async function typeLine(line) {
+      for (let k = 0; k < line.length; k++) {
+        consoleEl.textContent += line[k];
+        await sleep(CHAR_DELAY);
       }
+      consoleEl.textContent += "\n";
+      await sleep(LINE_DELAY);
     }
 
-    typeLine();
-
+    (async function run() {
+      for (const line of lines) {
+        await typeLine(line);
+      }
+      await sleep(END_PAUSE);
+      document.body.classList.add("fade-out");
+      await sleep(FADE_TIME);
+      window.location.href = "main.html";
+    })();
   </script>
 </body>
 </html>
