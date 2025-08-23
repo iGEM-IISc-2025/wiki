@@ -1,143 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iGEM Wiki</title>
-    <link rel="stylesheet" href="css/styles_main.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>iGEM Wiki</title>
+  <link rel="stylesheet" href="css/styles_main.css"/>
 </head>
 
 <body>
+  <!-- Scroll Progress -->
+  <div id="progress-bar"></div>
 
-    <nav class="navbar-1">
-        <div class="container">
+  <!-- Navbar -->
+  <nav class="navbar-1">
+    <div class="container">
+      <!-- Logo -->
+      <div class="navbar-brand">
+        <img src="images/igemlogo.png" alt="Site Logo"/>
+      </div>
 
-            <!-- Logo -->
-            <div class="navbar-brand">
-                <img src="images/igemlogo.png" alt="Site Logo">
+      <!-- Main Nav -->
+      <ul class="nav-menu">
+        <li>
+          <a href="#">Wet Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Plasmid</a></li>
+                <li><a href="#">Gene</a></li>
+                <li><a href="#">Protein</a></li>
+                <li><a href="#">Putida</a></li>
+                <li><a href="#">Biofilm</a></li>
+                <li><a href="#">Other</a></li>
+              </ul>
             </div>
+          </nav>
+        </li>
 
-            <!-- Headings -->
-            <ul class="nav-menu">
-                <li>
-                    <a href="#">Wet Lab</a>
-                    <nav class="navbar-2">
-                        <div class="container">
-                            
-                            <ul class="nav-menu_hovered">
-                                <li><a href="#">Plasmid</a></li>
-                                <li><a href="#">Gene</a></li>
-                                <li><a href="#">Protein</a></li>
-                                <li><a href="#">Putida</a></li>
-                                <li><a href="#">Biofilm</a></li>
-                                <li><a href="#">Other</a></li>
-                            </ul>
+        <li>
+          <a href="#">Dry Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">ML</a></li>
+                <li><a href="#">FBA</a></li>
+                <li><a href="#">Wiki</a></li>
+                <li><a href="#">Genetic Circuits</a></li>
+                <li><a href="#">GEM</a></li>
+                <li><a href="#">Other</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
 
-                        </div>
-                    </nav>
-                </li>
+        <li>
+          <a href="#">HP</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Legal</a></li>
+                <li><a href="#">Sponsorship</a></li>
+                <li><a href="#">Stuff</a></li>
+                <li><a href="#">Other</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
 
-                <li>
-                    <a href="#">Dry Lab</a>
-                    <nav class="navbar-2">
-                        <div class="container">
-                            
-                            <ul class="nav-menu_hovered">
-                                <li><a href="#">ML</a></li>
-                                <li><a href="#">FBA</a></li>
-                                <li><a href="#">Wiki</a></li>
-                                <li><a href="#">Genetic Circuits</a></li>
-                                <li><a href="#">GEM</a></li>
-                                <li><a href="#">Other</a></li>
-                            </ul>
+        <li>
+          <a href="#">Prizes</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Prize-1</a></li>
+                <li><a href="#">Prize-2</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-                        </div>
-                    </nav>
-                </li>
+  <!-- Hero -->
+  <header class="hero-fullscreen">
+    <div class="hero-overlay">
+      <div class="hero-text">
+        <h1>
+          Combatting nitrate<br/>
+          leaching in soil<br/>
+          with engineered <em>Pseudomonas putida</em>
+        </h1>
+        <p>Groundwater safety through synthetic biology</p>
+      </div>
+      <div class="bacteria-mask">
+        <img src="images/bacteria.gif" alt="Bacteria" class="bacteria-image"/>
+      </div>
+    </div>
+  </header>
 
-                <li>
-                    <a href="#">HP</a>
-                    <nav class="navbar-2">
-                        <div class="container">
-                            
-                            <ul class="nav-menu_hovered">
-                                <li><a href="#">Legal</a></li>
-                                <li><a href="#">Sponsorship</a></li>
-                                <li><a href="#">Stuff</a></li>
-                                <li><a href="#">Other</a></li>
-                            </ul>
-
-                        </div>
-                    </nav>
-                </li>
-                
-                <li>
-                    <a href="#">Prizes</a>
-                    <nav class="navbar-2">
-                        <div class="container">
-                            
-                            <ul class="nav-menu_hovered">
-                                <li><a href="#">Prize-1</a></li>
-                                <li><a href="#">Prize-1</a></li>
-                            </ul>
-
-                        </div>
-                    </nav>
-                </li>
-
-
-            </ul>
-
+  <!-- Collage Section -->
+  <section class="collage-section">
+    <div class="container">
+      <h2>Our Research Highlights</h2>
+      <div class="collage-grid">
+        <div class="collage-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Pseudomonas_aeruginosa_01.jpg/640px-Pseudomonas_aeruginosa_01.jpg" alt="Pseudomonas"/>
+          <p>Engineered <em>Pseudomonas</em> strains optimized for nitrate reduction.</p>
         </div>
-    </nav>
-
-    <header class="hero-fullscreen">
-        <div class="hero-overlay">
-            <div class="hero-text">
-                <h1>
-                    Combatting nitrate<br>
-                    leaching in soil<br>
-                    with engineered <em>Pseudomonas putida</em>
-                </h1>
-            </div>
-            <div class="bacteria-mask">
-                <img src="images/bacteria.gif" alt="Bacteria" class="bacteria-image" />
-            </div>
+        <div class="collage-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Nitrogen_Cycle.svg" alt="Nitrogen Cycle Diagram"/>
+          <p>Targeting nitrate hotspots in agricultural soils to restore balance.</p>
         </div>
-    </header>
-
-    <section class="collage-section">
-        <div class="container">
-            <h2>Lorem ipsum</h2>
-            <div class="collage-grid">
-            <div class="collage-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Pseudomonas_aeruginosa_01.jpg/640px-Pseudomonas_aeruginosa_01.jpg" alt="Pseudomonas">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In fermentum nulla a metus gravida.</p>
-            </div>
-            <div class="collage-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Nitrogen_Cycle.svg" alt="Nitrogen Cycle Diagram">
-                <p>Nulla facilisi. Sed sagittis, orci eget commodo placerat, sapien justo bibendum turpis.</p>
-            </div>
-            <div class="collage-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Biofilm_on_catheter.jpg" alt="Biofilm on catheter">
-                <p>Curabitur ut eros nec nulla sollicitudin lacinia. Phasellus a nunc at nunc aliquet egestas.</p>
-            </div>
-            </div>
+        <div class="collage-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Biofilm_on_catheter.jpg" alt="Biofilm on catheter"/>
+          <p>Investigating biofilm formation for enhanced microbial resilience.</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
+  <script>
+    // Scroll progress bar
+    window.addEventListener("scroll", () => {
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const scrolled = (window.scrollY / docHeight) * 100;
+      document.getElementById("progress-bar").style.width = scrolled + "%";
+    });
 
+    // Bacteria mask effect
+    document.querySelector(".hero-overlay").addEventListener("mousemove", function (e) {
+      const mask = document.querySelector(".bacteria-mask");
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      mask.style.setProperty("--x", `${x}px`);
+      mask.style.setProperty("--y", `${y}px`);
+    });
+  </script>
 </body>
 </html>
-
-
-<script>
-  document.querySelector(".hero-overlay").addEventListener("mousemove", function (e) {
-    const mask = document.querySelector(".bacteria-mask");
-    const rect = this.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    mask.style.setProperty("--x", `${x}px`);
-    mask.style.setProperty("--y", `${y}px`);
-  });
-</script>
