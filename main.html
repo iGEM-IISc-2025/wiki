@@ -8,7 +8,6 @@
 </head>
 
 <body>
-  <!-- Scroll progress bar -->
   <div id="progress-bar"></div>
 
   <!-- Navbar -->
@@ -86,12 +85,12 @@
   <header class="hero-fullscreen">
     <div class="hero-overlay">
       <div class="hero-text">
-        <h1 class="fade-in-up">
+        <h1>
           Combatting nitrate<br/>
           leaching in soil<br/>
           with engineered <em>Pseudomonas putida</em>
         </h1>
-        <p class="fade-in-up delay-1">Groundwater safety through synthetic biology</p>
+        <p>Groundwater safety through synthetic biology</p>
       </div>
       <div class="bacteria-mask">
         <img src="images/bacteria.gif" alt="Bacteria" class="bacteria-image"/>
@@ -102,67 +101,41 @@
   <!-- Collage Section -->
   <section class="collage-section">
     <div class="container">
-      <h2>Our Research Highlights</h2>
+      <h2>Water & Soil in Numbers</h2>
       <div class="collage-grid">
         <div class="collage-item">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Pseudomonas_aeruginosa_01.jpg/640px-Pseudomonas_aeruginosa_01.jpg" alt="Pseudomonas"/>
-          <p>Engineered <em>Pseudomonas</em> strains optimized for nitrate reduction.</p>
+          <img src="images/water.jpg" alt="Groundwater"/>
+          <p>85% of households in India depend on groundwater for drinking.</p>
         </div>
         <div class="collage-item">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Nitrogen_Cycle.svg" alt="Nitrogen Cycle Diagram"/>
-          <p>Targeting nitrate hotspots in agricultural soils to restore balance.</p>
+          <img src="images/soil.jpg" alt="Soil Health"/>
+          <p>30% of India’s land suffers from soil degradation.</p>
         </div>
         <div class="collage-item">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Biofilm_on_catheter.jpg" alt="Biofilm on catheter"/>
-          <p>Investigating biofilm formation for enhanced microbial resilience.</p>
+          <img src="images/farmers.jpg" alt="Farmers"/>
+          <p>Agriculture uses nearly 80% of India’s freshwater resources.</p>
         </div>
       </div>
     </div>
   </section>
 
   <script>
-    // --- Scroll progress bar ---
+    // Scroll progress bar
     window.addEventListener("scroll", () => {
-      const docHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
-      const scrolled = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const scrolled = (window.scrollY / docHeight) * 100;
       document.getElementById("progress-bar").style.width = scrolled + "%";
     });
 
-    // --- Smoother bacteria mask with rAF throttling + hover radius change ---
-    (function () {
-      const overlay = document.querySelector(".hero-overlay");
+    // Bacteria mask effect
+    document.querySelector(".hero-overlay").addEventListener("mousemove", function (e) {
       const mask = document.querySelector(".bacteria-mask");
-      let frameRequested = false;
-      let target = { x: 0.5, y: 0.5 };
-
-      function updateMask() {
-        mask.style.setProperty("--x", (target.x * 100) + "%");
-        mask.style.setProperty("--y", (target.y * 100) + "%");
-        frameRequested = false;
-      }
-
-      overlay.addEventListener("mousemove", (e) => {
-        const rect = overlay.getBoundingClientRect();
-        target.x = (e.clientX - rect.left) / rect.width;
-        target.y = (e.clientY - rect.top) / rect.height;
-        if (!frameRequested) {
-          frameRequested = true;
-          requestAnimationFrame(updateMask);
-        }
-      });
-
-      overlay.addEventListener("mouseenter", () => {
-        mask.style.setProperty("--r", "130px");
-      });
-      overlay.addEventListener("mouseleave", () => {
-        target = { x: 0.5, y: 0.5 };
-        mask.style.setProperty("--r", "100px");
-        updateMask();
-      });
-
-      // initialize center
-      updateMask();
-    })();
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      mask.style.setProperty("--x", `${x}px`);
+      mask.style.setProperty("--y", `${y}px`);
+    });
   </script>
 </body>
 </html>
