@@ -1,143 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iGEM Wiki</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intro</title>
+  <style>
+    body {
+      background: black;
+      color: #00ff00;
+      font-family: monospace;
+      font-size: 1.2rem;
+      padding: 20px;
+      white-space: pre-line;
+      overflow: hidden;
+      transition: opacity 1s ease-in-out;
+    }
+    #console {
+      border-left: 2px solid #00ff00;
+      padding-left: 10px;
+      animation: blink 1s step-start infinite;
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    body.fade-out {
+      opacity: 0;
+    }
+  </style>
 </head>
-
 <body>
+  <div id="console"></div>
 
-    <nav class="navbar-1">
-        <div class="container">
+  <script>
+    const lines = [
+      "Initializing groundwater analysis...",
+      "85% of Indian households rely on groundwater for drinking",
+      "Over 60% of districts report nitrate contamination",
+      "Safe nitrate limit (WHO): 50 mg/L",
+      "Levels found in some regions: > 300 mg/L",
+      "Excess nitrate causes methemoglobinemia in infants",
+      "Deploying counter-strategy: Engineered Pseudomonas putida..."
+    ];
 
-            <!-- Logo -->
-            <div class="navbar-brand">
-                <img src="images/igemlogo.png" alt="Site Logo">
-            </div>
+    let i = 0;
+    function typeLine() {
+      if (i < lines.length) {
+        const consoleEl = document.getElementById("console");
+        let text = lines[i];
+        let j = 0;
+        let typer = setInterval(() => {
+          consoleEl.innerHTML += text[j];
+          j++;
+          if (j === text.length) {
+            clearInterval(typer);
+            consoleEl.innerHTML += "\n";
+            i++;
+            setTimeout(typeLine, 500);
+          }
+        }, 40);
+      }
+    }
 
-            <!-- Headings -->
-            <ul class="nav-menu">
-                <li>
-                    <a href="#">Wet Lab</a>
-                    <nav class="navbar-2">
-                        <div class="container">
-                            
-                            <ul class="nav-menu_hovered">
-                                <li><a href="#">Plasmid</a></li>
-                                <li><a href="#">Gene</a></li>
-                                <li><a href="#">Protein</a></li>
-                                <li><a href="#">Putida</a></li>
-                                <li><a href="#">Biofilm</a></li>
-                                <li><a href="#">Other</a></li>
-                            </ul>
+    typeLine();
 
-                        </div>
-                    </nav>
-                </li>
-
-                <li>
-                    <a href="#">Dry Lab</a>
-                    <nav class="navbar-2">
-                        <div class="container">
-                            
-                            <ul class="nav-menu_hovered">
-                                <li><a href="#">ML</a></li>
-                                <li><a href="#">FBA</a></li>
-                                <li><a href="#">Wiki</a></li>
-                                <li><a href="#">Genetic Circuits</a></li>
-                                <li><a href="#">GEM</a></li>
-                                <li><a href="#">Other</a></li>
-                            </ul>
-
-                        </div>
-                    </nav>
-                </li>
-
-                <li>
-                    <a href="#">HP</a>
-                    <nav class="navbar-2">
-                        <div class="container">
-                            
-                            <ul class="nav-menu_hovered">
-                                <li><a href="#">Legal</a></li>
-                                <li><a href="#">Sponsorship</a></li>
-                                <li><a href="#">Stuff</a></li>
-                                <li><a href="#">Other</a></li>
-                            </ul>
-
-                        </div>
-                    </nav>
-                </li>
-                
-                <li>
-                    <a href="#">Prizes</a>
-                    <nav class="navbar-2">
-                        <div class="container">
-                            
-                            <ul class="nav-menu_hovered">
-                                <li><a href="#">Prize-1</a></li>
-                                <li><a href="#">Prize-1</a></li>
-                            </ul>
-
-                        </div>
-                    </nav>
-                </li>
-
-
-            </ul>
-
-        </div>
-    </nav>
-
-    <header class="hero-fullscreen">
-        <div class="hero-overlay">
-            <div class="hero-text">
-                <h1>
-                    Combatting nitrate<br>
-                    leaching in soil<br>
-                    with engineered <em>Pseudomonas putida</em>
-                </h1>
-            </div>
-            <div class="bacteria-mask">
-                <img src="images/bacteria.gif" alt="Bacteria" class="bacteria-image" />
-            </div>
-        </div>
-    </header>
-
-    <section class="collage-section">
-        <div class="container">
-            <h2>Lorem ipsum</h2>
-            <div class="collage-grid">
-            <div class="collage-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Pseudomonas_aeruginosa_01.jpg/640px-Pseudomonas_aeruginosa_01.jpg" alt="Pseudomonas">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In fermentum nulla a metus gravida.</p>
-            </div>
-            <div class="collage-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Nitrogen_Cycle.svg" alt="Nitrogen Cycle Diagram">
-                <p>Nulla facilisi. Sed sagittis, orci eget commodo placerat, sapien justo bibendum turpis.</p>
-            </div>
-            <div class="collage-item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Biofilm_on_catheter.jpg" alt="Biofilm on catheter">
-                <p>Curabitur ut eros nec nulla sollicitudin lacinia. Phasellus a nunc at nunc aliquet egestas.</p>
-            </div>
-            </div>
-        </div>
-    </section>
-
-
+    // After 5 seconds, fade out then redirect
+    setTimeout(() => {
+      document.body.classList.add("fade-out");
+      setTimeout(() => {
+        window.location.href = "main.html"; // your wiki homepage
+      }, 1000); 
+    }, 5000);
+  </script>
 </body>
 </html>
-
-
-<script>
-  document.querySelector(".hero-overlay").addEventListener("mousemove", function (e) {
-    const mask = document.querySelector(".bacteria-mask");
-    const rect = this.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    mask.style.setProperty("--x", `${x}px`);
-    mask.style.setProperty("--y", `${y}px`);
-  });
-</script>
