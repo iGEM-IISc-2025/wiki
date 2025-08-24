@@ -140,25 +140,80 @@
       mask.classList.add("visible");
     });
 
+    hero.addEventListener("mouseleave", () => {
+      mask.classList.remove("visible"); // Hide mask when not hovering
+    });
+  </script>
+  <script>
+  // === Scroll progress bar ===
+  window.addEventListener("scroll", () => {
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / docHeight) * 100;
+    document.getElementById("progress-bar").style.width = scrolled + "%";
+  });
+
+  // === Bacteria mask + custom image cursor inside hero ===
+  (function () {
+    const hero = document.querySelector(".hero-overlay");
+    const mask = document.querySelector(".bacteria-mask");
+    if (!hero || !mask) return;
+
+    // --- Create a cursor-following image (magnifying glass) ---
+    const CURSOR_SRC = "images/magnifying_glass.png"; // path is relative to THIS HTML file
+    const SIZE = 48;         // visible size of the cursor image in px (tweak as you like)
+    const HOTSPOT_X = 16;    // where the "tip" is inside the image (x)
+    const HOTSPOT_Y = 16;    // where the "tip" is inside the image (y)
+
+    const cursorEl = document.createElement("img");
+    cursorEl.src = CURSOR_SRC;
+    cursorEl.alt = "";
+    Object.assign(cursorEl.style, {
+      position: "fixed",
+      left: "0",
+      top: "0",
+      width: SIZE + "px",
+      height: SIZE + "px",
+      pointerEvents: "none",
+      zIndex: 2500,
+      transform: `translate(-${HOTSPOT_X}px, -${HOTSPOT_Y}px)`,
+      opacity: "0",
+      transition: "opacity 120ms ease"
+    });
+    document.body.appendChild(cursorEl);
+
+    function showCursor() {
+      // hide system cursor only inside hero
+      hero.style.cursor = "none";
+      cursorEl.style.opacity = "1";
+    }
+    function hideCursor() {
+      hero.style.cursor = "";
+      cursorEl.style.opacity = "0";
+    }
+
     hero.addEventListener("mousemove", (e) => {
+      // Move mask
       const rect = hero.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-
       mask.style.setProperty("--x", `${x}px`);
       mask.style.setProperty("--y", `${y}px`);
       mask.classList.add("visible");
 
-      // Change cursor to magnifying glass when inside hero
-      hero.style.cursor = 'url("images/magnifying_glass.png") 16 16, auto';
+      // Move custom cursor image
+      cursorEl.style.left = e.clientX + "px";
+      cursorEl.style.top = e.clientY + "px";
+      if (cursorEl.style.opacity !== "1") showCursor();
     });
+
+    hero.addEventListener("mouseenter", showCursor);
 
     hero.addEventListener("mouseleave", () => {
-      mask.classList.remove("visible"); // Hide mask when not hovering
-
-      // Reset cursor to default when leaving hero
-      hero.style.cursor = "auto";
+      mask.classList.remove("visible");
+      hideCursor();
     });
-  </script>
+  })();
+</script>
+
 </body>
 </html>
