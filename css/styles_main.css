@@ -40,11 +40,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 30px;
+  /* padding: 8px 20px; */
+  height: 60px;
 }
 
 .navbar-brand img {
-  max-height: 60px;
+  max-height: 50px;
   transition: transform 0.3s ease;
 }
 .navbar-brand img:hover {
