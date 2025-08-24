@@ -120,109 +120,80 @@
   </section>
 
   <script>
-    // Scroll progress bar
-    window.addEventListener("scroll", () => {
-      const docHeight = document.body.scrollHeight - window.innerHeight;
-      const scrolled = (window.scrollY / docHeight) * 100;
-      document.getElementById("progress-bar").style.width = scrolled + "%";
-    });
+  // Scroll progress bar
+  window.addEventListener("scroll", () => {
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / docHeight) * 100;
+    document.getElementById("progress-bar").style.width = scrolled + "%";
+  });
 
-    // Bacteria mask effect
+  // Hero + cursor + bacteria mask
+  (function () {
     const hero = document.querySelector(".hero-overlay");
     const mask = document.querySelector(".bacteria-mask");
+    if (!hero || !mask) return;
+
+    const CURSOR_SRC = "images/magnifying_glass.png";
+    const MAX_WIDTH = 200;
+
+    const cursorEl = document.createElement("img");
+    cursorEl.src = CURSOR_SRC;
+    cursorEl.alt = "";
+    Object.assign(cursorEl.style, {
+      position: "fixed",
+      left: "0",
+      top: "0",
+      width: MAX_WIDTH + "px",
+      height: "auto",
+      pointerEvents: "none",
+      zIndex: 2500,
+      opacity: "0",
+      transition: "opacity 120ms ease"
+    });
+    document.body.appendChild(cursorEl);
+
+    let hotspotX = MAX_WIDTH / 2;
+    let hotspotY = MAX_WIDTH / 2;
+
+    cursorEl.onload = () => {
+      const ratio = cursorEl.naturalHeight / cursorEl.naturalWidth;
+      const actualHeight = MAX_WIDTH * ratio;
+      hotspotX = MAX_WIDTH / 2;
+      hotspotY = actualHeight / 2;
+      cursorEl.style.transform = `translate(-${hotspotX}px, -${hotspotY}px)`;
+    };
+
+    function showCursor() {
+      hero.style.cursor = "none";
+      cursorEl.style.opacity = "1";
+    }
+    function hideCursor() {
+      hero.style.cursor = "";
+      cursorEl.style.opacity = "0";
+    }
 
     hero.addEventListener("mousemove", (e) => {
+      // Move mask
       const rect = hero.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       mask.style.setProperty("--x", `${x}px`);
       mask.style.setProperty("--y", `${y}px`);
       mask.classList.add("visible");
+
+      // Move custom cursor image
+      cursorEl.style.left = e.clientX + "px";
+      cursorEl.style.top = e.clientY + "px";
+      if (cursorEl.style.opacity !== "1") showCursor();
     });
 
+    hero.addEventListener("mouseenter", showCursor);
     hero.addEventListener("mouseleave", () => {
-      mask.classList.remove("visible"); // Hide mask when not hovering
+      mask.classList.remove("visible");
+      hideCursor();
     });
-  </script>
-<script>
-// === Scroll progress bar ===
-window.addEventListener("scroll", () => {
-  const docHeight = document.body.scrollHeight - window.innerHeight;
-  const scrolled = (window.scrollY / docHeight) * 100;
-  document.getElementById("progress-bar").style.width = scrolled + "%";
-});
-
-// === Bacteria mask + custom image cursor inside hero ===
-(function () {
-  const hero = document.querySelector(".hero-overlay");
-  const mask = document.querySelector(".bacteria-mask");
-  if (!hero || !mask) return;
-
-  // --- Cursor image settings ---
-  const CURSOR_SRC = "images/magnifying_glass.png";
-  const MAX_WIDTH = 200; // maximum width in px
-
-  const cursorEl = document.createElement("img");
-  cursorEl.src = CURSOR_SRC;
-  cursorEl.alt = "";
-  Object.assign(cursorEl.style, {
-    position: "fixed",
-    left: "0",
-    top: "0",
-    width: MAX_WIDTH + "px", // only width fixed
-    height: "auto",          // preserve aspect ratio
-    pointerEvents: "none",
-    zIndex: 2500,
-    opacity: "0",
-    transition: "opacity 120ms ease"
-  });
-  document.body.appendChild(cursorEl);
-
-  let hotspotX = MAX_WIDTH / 2;
-  let hotspotY = MAX_WIDTH / 2; // will update after image loads
-
-  // Once image loads, recalc hotspot based on natural aspect ratio
-  cursorEl.onload = () => {
-    const ratio = cursorEl.naturalHeight / cursorEl.naturalWidth;
-    const actualHeight = MAX_WIDTH * ratio;
-    hotspotX = MAX_WIDTH / 2;
-    hotspotY = actualHeight / 2;
-    cursorEl.style.transform = `translate(-${hotspotX}px, -${hotspotY}px)`;
-  };
-
-  function showCursor() {
-    hero.style.cursor = "none"; // hide system cursor
-    cursorEl.style.opacity = "1";
-  }
-  function hideCursor() {
-    hero.style.cursor = "";
-    cursorEl.style.opacity = "0";
-  }
-
-  hero.addEventListener("mousemove", (e) => {
-    // Move mask
-    const rect = hero.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    mask.style.setProperty("--x", `${x}px`);
-    mask.style.setProperty("--y", `${y}px`);
-    mask.classList.add("visible");
-
-    // Move custom cursor image
-    cursorEl.style.left = e.clientX + "px";
-    cursorEl.style.top = e.clientY + "px";
-    if (cursorEl.style.opacity !== "1") showCursor();
-  });
-
-  hero.addEventListener("mouseenter", showCursor);
-
-  hero.addEventListener("mouseleave", () => {
-    mask.classList.remove("visible");
-    hideCursor();
-  });
-})();
+  })();
 </script>
-
 
 </body>
 </html>
