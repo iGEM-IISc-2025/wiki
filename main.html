@@ -140,8 +140,24 @@
       mask.classList.add("visible");
     });
 
+    hero.addEventListener("mousemove", (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      mask.style.setProperty("--x", `${x}px`);
+      mask.style.setProperty("--y", `${y}px`);
+      mask.classList.add("visible");
+
+      // Change cursor to magnifying glass when inside hero
+      hero.style.cursor = 'url("images/magnifying_glass.png") 16 16, auto';
+    });
+
     hero.addEventListener("mouseleave", () => {
       mask.classList.remove("visible"); // Hide mask when not hovering
+
+      // Reset cursor to default when leaving hero
+      hero.style.cursor = "auto";
     });
   </script>
 </body>
