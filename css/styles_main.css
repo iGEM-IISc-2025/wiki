@@ -185,6 +185,15 @@ body {
   cursor: url("../images/magnifying_glass.png") 16 16, auto;
 }
 
+.hero-overlay {
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.4),
+    rgba(0, 0, 0, 0.1)
+  );
+}
+
+
 /* Bacteria Mask */
 .bacteria-mask {
   position: absolute;
