@@ -312,3 +312,15 @@ body {
   z-index: 3000; /* make sure it's above navbar */
   transition: width 0.2s ease-out;
 }
+
+/* Letter Magnify */
+.letter {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.letter:hover {
+  transform: scale(1.5);
+  position: relative;
+  z-index: 2; /* ensures it grows above neighbors */
+}

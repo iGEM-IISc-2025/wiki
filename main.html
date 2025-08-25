@@ -127,6 +127,20 @@
     document.getElementById("progress-bar").style.width = scrolled + "%";
   });
 
+  // Wrap each character of hero text inside spans (only letters)
+  document.querySelectorAll(".hero-text h1, .hero-text p").forEach(el => {
+    el.innerHTML = el.textContent
+      .replace(/\n/g, " ")
+      .split("")
+      .map(ch => {
+        if (ch === " ") return " ";
+        return `<span class="letter">${ch}</span>`;
+      })
+      .join("");
+  });
+
+
+
   // Hero + cursor + bacteria mask
   (function () {
     const hero = document.querySelector(".hero-overlay");
@@ -192,6 +206,36 @@
       hideCursor();
     });
   })();
+
+  (function () {
+    const hero = document.querySelector(".hero-overlay");
+    let activeLetter = null;
+
+    hero.addEventListener("mousemove", (e) => {
+      const letterEl = document.elementFromPoint(e.clientX, e.clientY);
+      if (letterEl && letterEl.classList.contains("letter")) {
+        if (activeLetter && activeLetter !== letterEl) {
+          activeLetter.style.transform = ""; // reset old
+        }
+        activeLetter = letterEl;
+        letterEl.style.transform = "scale(1.5)";
+        letterEl.style.display = "inline-block";
+        letterEl.style.transition = "transform 0.15s ease";
+      } else if (activeLetter) {
+        activeLetter.style.transform = "";
+        activeLetter = null;
+      }
+    });
+
+    hero.addEventListener("mouseleave", () => {
+      if (activeLetter) {
+        activeLetter.style.transform = "";
+        activeLetter = null;
+      }
+    });
+  })();
+
+  
 </script>
 
 </body>
