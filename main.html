@@ -131,13 +131,16 @@
   document.querySelectorAll(".hero-text h1, .hero-text p").forEach(el => {
     el.innerHTML = el.textContent
       .replace(/\n/g, " ")
-      .split("")
-      .map(ch => {
-        if (ch === " ") return " ";
-        return `<span class="letter">${ch}</span>`;
+      .split(/(\s+)/)
+      .map(word => {
+        if (word.trim() === "") return word;
+        return `<span class="word">${[...word].map(
+          ch => `<span class="letter">${ch}</span>`
+        ).join("")}</span>`;
       })
       .join("");
   });
+
 
 
 

@@ -324,3 +324,10 @@ body {
   position: relative;
   z-index: 2; /* ensures it grows above neighbors */
 }
+
+.word {
+  white-space: nowrap; /* prevent breaking inside a word */
+}
+.letter {
+  display: inline-block; /* lets you scale/animate without pushing neighbors */
+}
