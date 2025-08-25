@@ -205,13 +205,13 @@ body {
 
   /* Blurred edges */
   mask-image: radial-gradient(
-    circle 120px at var(--x, 50%) var(--y, 50%),
+    circle 180px at var(--x, 50%) var(--y, 50%),
     black 0%,
     black 70%,
     transparent 100%
   );
   -webkit-mask-image: radial-gradient(
-    circle 120px at var(--x, 50%) var(--y, 50%),
+    circle 180px at var(--x, 50%) var(--y, 50%),
     black 0%,
     black 70%,
     transparent 100%
