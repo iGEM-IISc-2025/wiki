@@ -85,10 +85,10 @@
   <header class="hero-fullscreen">
     <div class="hero-overlay">
       <div class="hero-text">
-        <h1>
-          Combatting nitrate<br/>
-          leaching in soil<br/>
-          with engineered <em>Pseudomonas putida</em>
+        <h1 class="hero-title">
+          <span class="line">Combatting nitrate</span><br/>
+          <span class="line">leaching in soil</span><br/>
+          <span class="line">with engineered <em>Pseudomonas putida</em></span>
         </h1>
       </div>
       <div class="bacteria-mask">
@@ -126,22 +126,65 @@
     document.getElementById("progress-bar").style.width = scrolled + "%";
   });
 
-  // Wrap each character of hero text inside spans (only letters)
-  document.querySelectorAll(".hero-text h1, .hero-text p").forEach(el => {
-    el.innerHTML = el.textContent
-      .replace(/\n/g, " ")
-      .split(/(\s+)/)
-      .map(word => {
-        if (word.trim() === "") return word;
-        return `<span class="word">${[...word].map(
-          ch => `<span class="letter">${ch}</span>`
-        ).join("")}</span>`;
-      })
-      .join("");
-  });
+  function wrapLettersPreserve(root) {
+    if (!root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        return node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
 
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
 
+    textNodes.forEach(textNode => {
+      const frag = document.createDocumentFragment();
+      const parts = textNode.nodeValue.split(/(\s+)/); // words + spaces
 
+      parts.forEach(part => {
+        if (/^\s+$/.test(part)) {
+          frag.appendChild(document.createTextNode(part)); // keep spaces as real spaces
+        } else {
+          const word = document.createElement('span');
+          word.className = 'word';
+          [...part].forEach(ch => {
+            const span = document.createElement('span');
+            span.className = 'letter';
+            span.textContent = ch;
+            word.appendChild(span);
+          });
+          frag.appendChild(word);
+        }
+      });
+
+      textNode.parentNode.replaceChild(frag, textNode);
+    });
+  }
+
+  // Call it on the hero title (after the DOM is ready or at end of body)
+  wrapLettersPreserve(document.querySelector('.hero-title'));
+
+  // Scale only the letter under the cursor; don’t touch spaces
+  (() => {
+    const hero = document.querySelector('.hero-overlay');
+    let active = null;
+
+    hero.addEventListener('mousemove', (e) => {
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      if (el && el.classList && el.classList.contains('letter')) {
+        if (active && active !== el) active.style.transform = '';
+        active = el;
+        el.style.transform = 'scale(1.5)';
+      } else if (active) {
+        active.style.transform = '';
+        active = null;
+      }
+    });
+
+    hero.addEventListener('mouseleave', () => {
+      if (active) { active.style.transform = ''; active = null; }
+    });
+  })();
 
   // Hero + cursor + bacteria mask
   (function () {

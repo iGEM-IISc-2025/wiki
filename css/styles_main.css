@@ -331,3 +331,5 @@ body {
 .letter {
   display: inline-block; /* lets you scale/animate without pushing neighbors */
 }
+
+.hero-text .letter { display:inline-block; transition: transform .15s ease; }
