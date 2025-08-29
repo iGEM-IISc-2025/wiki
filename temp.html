@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Interactive Pond — 3D Demo</title>
+
+<style>
+:root {
+  --bg: #081018;
+  --panel-bg: rgba(10, 12, 18, 0.65);
+  --accent: #8a4edd;
+  --muted: #bfc7d6;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(1200px 600px at 10% 10%, #071123 0%, var(--bg) 30%);
+  color: #e6eef8;
+}
+
+#app {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 3D canvas container */
+#renderContainer {
+  position: absolute;
+  inset: 0;
+}
+
+/* Top left control panel */
+.panel {
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  width: 320px;
+  background: var(--panel-bg);
+  border-radius: 12px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+  padding: 12px;
+  backdrop-filter: blur(6px) saturate(1.05);
+  -webkit-backdrop-filter: blur(6px) saturate(1.05);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.panel h2 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: white;
+  letter-spacing: 0.4px;
+}
+
+.panel p {
+  margin: 0 0 12px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.panel .row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.panel label {
+  font-size: 13px;
+  color: var(--muted);
+  min-width: 110px;
+}
+
+.panel input[type="range"] {
+  flex: 1;
+}
+
+/* Info box when clicking a region */
+#infoBox {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  width: 340px;
+  max-height: 70vh;
+  overflow: auto;
+  background: linear-gradient(180deg, rgba(8, 10, 14, 0.85), rgba(8, 10, 14, 0.75));
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+  display: none;
+}
+
+#infoBox h3 {
+  margin: 0 0 6px 0;
+  font-size: 16px;
+  color: #fff;
+}
+
+#infoBox p {
+  margin: 0 0 10px 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* legend bottom-left */
+.legend {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  background: rgba(6, 8, 10, 0.4);
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  font-size: 13px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.legend .item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.legend .sw {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+/* small credits top-right */
+.credits {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* hover tooltip */
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  transform: translate(-50%, -120%);
+  white-space: nowrap;
+  display: none;
+  z-index: 3000;
+}
+
+/* button style in panel */
+.btn {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* small responsive tweaks */
+@media (max-width: 760px) {
+  .panel {
+    width: calc(100% - 36px);
+    left: 18px;
+    top: 12px;
+  }
+
+  #infoBox {
+    display: none !important;
+  }
+}
+</style>
+
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.156.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.156.1/examples/jsm/"
+    }
+  }
+</script>
+</head>
+<body>
+<div id="app">
+  <div id="renderContainer"></div>
+
+  <div class="panel" id="controls">
+    <h2>Interactive Pond — Demo</h2>
+    <p>Rotate the scene. Hover to highlight regions. Click a part to learn more.</p>
+
+    <div class="row">
+      <label for="waterOpacity">Water opacity</label>
+      <input id="waterOpacity" type="range" min="0.05" max="1" step="0.01" value="0.7" />
+    </div>
+
+    <div class="row">
+      <label for="algaeOpacity">Algae visibility</label>
+      <input id="algaeOpacity" type="range" min="0" max="1" step="0.01" value="0.85" />
+    </div>
+
+    <div class="row">
+      <label for="highlightStrength">Highlight strength</label>
+      <input id="highlightStrength" type="range" min="0" max="1" step="0.05" value="0.6" />
+    </div>
+
+    <div class="row">
+      <label for="timescale">Timescale (Algae/Fish)</label>
+      <input id="timescale" type="range" min="0" max="1" step="0.01" value="0" />
+    </div>
+
+    <div class="row" style="margin-top:8px;">
+      <button id="resetBtn" class="btn">Reset view</button>
+      <div style="flex:1"></div>
+      <button id="toggleBubbles" class="btn">Toggle Bubbles</button>
+    </div>
+
+    <p style="margin-top:10px;font-size:12px;color:var(--muted)">This is an abstract educational model — click parts to see notes about nitrate leaching and eutrophication.</p>
+  </div>
+
+  <div id="infoBox" aria-live="polite"></div>
+
+  <div class="legend" aria-hidden="false">
+    <div class="item"><span class="sw" style="background:#1e90ff;"></span>Water</div>
+    <div class="item"><span class="sw" style="background:#8b4513;"></span>Soil</div>
+    <div class="item"><span class="sw" style="background:#2e8b57;"></span>Algae</div>
+  </div>
+
+  <div class="credits">Demo • 3D pond (Three.js)</div>
+
+  <div class="tooltip" id="tooltip"></div>
+</div>
+
+<script type="module">
+// Import three + extras using the import map
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
+
+// -------------------------
+// Global variables and materials
+// -------------------------
+const container = document.getElementById('renderContainer');
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x071123, 0.03);
+const pondGroup = new THREE.Group();
+let water, soilTop, soilBottom, bedrock;
+let algae;
+let fishes = [];
+
+const waterMat = new THREE.MeshPhysicalMaterial({
+  color: 0x1e90ff,
+  roughness: 0.15,
+  metalness: 0.02,
+  transparent: true,
+  opacity: 0.7,
+  ior: 1.333,
+  transmission: 0.6,
+  clearcoat: 0.06,
+  clearcoatRoughness: 0.04,
+});
+
+const algaeMat = new THREE.MeshStandardMaterial({
+  color: 0x2e8b57,
+  roughness: 0.7,
+  metalness: 0,
+  transparent: true,
+  opacity: 0.85
+});
+
+const fishMaterial = new THREE.MeshStandardMaterial({ color: 0xcccccc, roughness: 0.5 });
+const deadFishMaterial = new THREE.MeshStandardMaterial({ color: 0x999999, transparent: true, opacity: 0.5 });
+
+const highlightMat = new THREE.MeshStandardMaterial({ color:0xffffea, emissive: 0xffffff, emissiveIntensity: 0.2, transparent:true, opacity:1.0 });
+
+// -------------------------
+// Basic renderer + scene
+// -------------------------
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 200);
+camera.position.set(8,6,10);
+
+const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+container.appendChild(renderer.domElement);
+
+// Soft ambient + directional highlight
+const amb = new THREE.AmbientLight(0xffffff, 0.45);
+scene.add(amb);
+const dir = new THREE.DirectionalLight(0xffffff, 0.9);
+dir.position.set(10, 12, 6);
+dir.castShadow = true;
+scene.add(dir);
+
+// subtle ground rim light
+const hemi = new THREE.HemisphereLight(0x88aaff, 0x082033, 0.35);
+scene.add(hemi);
+
+// Resize handling
+window.addEventListener('resize', onWindowResize);
+function onWindowResize(){
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+// -------------------------
+// Controls
+// -------------------------
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 4;
+controls.maxDistance = 30;
+controls.target.set(0,0.3,0);
+
+// -------------------------
+// Scene objects: pond cross-section
+// -------------------------
+scene.add(pondGroup);
+
+function createPondCrossSection() {
+    // Clear existing pond components
+    while(pondGroup.children.length > 0){
+        pondGroup.remove(pondGroup.children[0]);
+    }
+
+    const segments = 48;
+    const pondRadius = 5.0;
+    const pondDepth = 1.5;
+    const waterDepth = 0.8;
+
+    const outerRadius = 6;
+    const height = 1.5;
+    const radialSegments = 32;
+    const heightSegments = 1;
+
+    const baseSoilGeometry = new THREE.CylinderGeometry(outerRadius, outerRadius, height, radialSegments, heightSegments, false, 0, Math.PI);
+    const baseSoilMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.9 });
+    soilTop = new THREE.Mesh(baseSoilGeometry, baseSoilMaterial);
+    soilTop.position.set(0, -height / 2 - 0.7, 0);
+    soilTop.rotation.y = -Math.PI / 2;
+    soilTop.name = "Topsoil";
+    pondGroup.add(soilTop);
+
+    const subSoilHeight = 0.7;
+    const subSoilGeometry = new THREE.CylinderGeometry(outerRadius, outerRadius, subSoilHeight, radialSegments, heightSegments, false, 0, Math.PI);
+    const subSoilMaterial = new THREE.MeshStandardMaterial({ color: 0x5a311a, roughness: 0.9 });
+    soilBottom = new THREE.Mesh(subSoilGeometry, subSoilMaterial);
+    soilBottom.position.set(0, -height - subSoilHeight / 2 - 0.7, 0);
+    soilBottom.rotation.y = -Math.PI / 2;
+    soilBottom.name = "Subsoil";
+    pondGroup.add(soilBottom);
+
+    const bedrockHeight = 0.5;
+    const bedrockGeometry = new THREE.CylinderGeometry(outerRadius, outerRadius, bedrockHeight, radialSegments, heightSegments, false, 0, Math.PI);
+    const bedrockMaterial = new THREE.MeshStandardMaterial({ color: 0x4f4f4f, roughness: 0.9 });
+    bedrock = new THREE.Mesh(bedrockGeometry, bedrockMaterial);
+    bedrock.position.set(0, -height - subSoilHeight - bedrockHeight / 2 - 0.7, 0);
+    bedrock.rotation.y = -Math.PI / 2;
+    bedrock.name = "Bedrock";
+    pondGroup.add(bedrock);
+
+    const waterOuterRadius = outerRadius - 0.1;
+    const waterPlaneGeometry = new THREE.CylinderGeometry(waterOuterRadius, waterOuterRadius, waterDepth * 2, radialSegments, heightSegments, false, 0, Math.PI);
+    water = new THREE.Mesh(waterPlaneGeometry, waterMat.clone());
+    water.position.set(0, -waterDepth / 2 - 0.1, 0);
+    water.rotation.y = -Math.PI / 2;
+    water.name = "Water";
+    pondGroup.add(water);
+
+    water.userData.originalPositions = waterPlaneGeometry.attributes.position.array.slice();
+
+    const algaeRadius = waterOuterRadius * 0.6;
+    const algaeGeom = new THREE.CircleGeometry(algaeRadius, 64);
+    algaeGeom.rotateX(-Math.PI/2);
+    algae = new THREE.Mesh(algaeGeom, algaeMat.clone());
+    algae.position.y = 0.3;
+    algae.name = "Algae";
+    pondGroup.add(algae);
+
+    const fishBodyGeometry = new THREE.SphereGeometry(0.1, 16, 12);
+    const fishTailGeometry = new THREE.ConeGeometry(0.05, 0.2, 8);
+    fishTailGeometry.translate(0, 0.1, 0);
+    fishTailGeometry.rotateX(Math.PI / 2);
+
+    fishes = [];
+    const numFish = 15;
+    for (let i = 0; i < numFish; i++) {
+        const fishGroup = new THREE.Group();
+        const body = new THREE.Mesh(fishBodyGeometry, fishMaterial);
+        const tail = new THREE.Mesh(fishTailGeometry, fishMaterial);
+        tail.position.x = -0.1;
+        fishGroup.add(body, tail);
+        const angle = Math.random() * Math.PI;
+        const r = Math.random() * (waterOuterRadius - 0.5);
+        const x = Math.cos(angle) * r;
+        const z = Math.sin(angle) * r;
+        const y = -Math.random() * waterDepth;
+        fishGroup.position.set(x, y, z);
+        fishGroup.rotation.y = Math.random() * Math.PI * 2;
+        fishGroup.userData = {
+            isDead: false,
+            initialY: y,
+            swimSpeed: 0.05 + Math.random() * 0.05,
+            deathTime: Math.random() * 0.8 + 0.2
+        };
+        fishes.push(fishGroup);
+        pondGroup.add(fishGroup);
+    }
+    interactiveMeshes.length = 0;
+    interactiveMeshes.push(water, soilTop, soilBottom, bedrock, algae, ...grassGroup.children, ...fishes);
+}
+
+// -------------------------
+// Grass clumps around rim (updated for cross-section)
+// -------------------------
+const grassGroup = new THREE.Group();
+const grassMat = new THREE.MeshStandardMaterial({ color: 0x2f6b34, roughness: 0.9 });
+for (let i=0;i<6;i++){
+  const t = i / 6 * Math.PI + Math.PI/2;
+  const r = 5.2 + (Math.random()*0.25);
+  const x = Math.cos(t) * r;
+  const z = Math.sin(t) * r;
+  const h = 0.9 + Math.random()*0.5;
+  const bladeGeo = new THREE.PlaneGeometry(0.25, h, 1, 2);
+  bladeGeo.translate(0, h/2, 0);
+  const blade = new THREE.Mesh(bladeGeo, grassMat.clone());
+  blade.position.set(x, -0.1 + Math.random()*0.05, z);
+  blade.lookAt(0,0,0);
+  blade.rotateX(THREE.MathUtils.degToRad(-10 + Math.random()*10));
+  blade.name = "Grass";
+  grassGroup.add(blade);
+}
+scene.add(grassGroup);
+
+// -------------------------
+// Bubbles particle system (inside water)
+// -------------------------
+const bubbleGroup = new THREE.Group();
+const bubbleCount = 60;
+const bubbleGeo = new THREE.SphereGeometry(0.04, 8, 6);
+const bubbleMat = new THREE.MeshStandardMaterial({ color: 0xcfe9ff, transparent:true, opacity:0.85, metalness:0.1, roughness:0.2 });
+const bubbles = [];
+for (let i=0;i<bubbleCount;i++){
+  const m = new THREE.Mesh(bubbleGeo, bubbleMat.clone());
+  const angle = Math.random() * Math.PI;
+  const r = Math.random() * 2.5;
+  const x = Math.cos(angle) * r;
+  const z = Math.sin(angle) * r;
+  m.position.set(x, -0.05 + Math.random()*0.6, z);
+  m.scale.setScalar(0.6 + Math.random()*1.4);
+  m.userData.vy = 0.002 + Math.random()*0.004;
+  bubbleGroup.add(m);
+  bubbles.push(m);
+}
+pondGroup.add(bubbleGroup);
+let bubblesEnabled = true;
+
+// -------------------------
+// Highlight outlines (on hover)
+// -------------------------
+function setHighlight(mesh, strength){
+  if(!mesh) return;
+  mesh.userData._origEmissive = mesh.material.emissive ? mesh.material.emissive.clone() : new THREE.Color(0x000000);
+  mesh.material.emissive = new THREE.Color(0xffffff);
+  mesh.material.emissiveIntensity = strength;
+}
+function clearHighlight(mesh){
+  if(!mesh) return;
+  if(mesh.userData._origEmissive) {
+    mesh.material.emissive = mesh.userData._origEmissive;
+    mesh.material.emissiveIntensity = 0;
+    delete mesh.userData._origEmissive;
+  } else {
+    mesh.material.emissive = new THREE.Color(0x000000);
+    mesh.material.emissiveIntensity = 0;
+  }
+}
+
+// -------------------------
+// Raycaster + hover/click interactions
+// -------------------------
+const ray = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+const interactiveMeshes = [];
+
+const infoData = {
+  "Water": {
+    title:"Pond Water",
+    text:"Water in the pond can receive nitrate from agricultural runoff — high nitrate fuels algal growth and can affect aquatic life, oxygen levels, and downstream water quality."
+  },
+  "Topsoil": {
+    title:"Topsoil",
+    text:"The uppermost layer of soil, rich in organic matter. This is where most plant roots grow and absorb nutrients, but also where runoff can carry pollutants into the pond."
+  },
+  "Subsoil": {
+    title:"Subsoil",
+    text:"Denser than topsoil, subsoil contains less organic matter but can still hold water and nutrients. It acts as a buffer layer for percolating water."
+  },
+  "Bedrock": {
+    title:"Bedrock",
+    text:"The solid rock layer beneath the soil. Water can flow over it or through fractures, potentially carrying dissolved substances into or out of the pond's system."
+  },
+  "Algae": {
+    title:"Algal bloom",
+    text:"Algal blooms form when excess nutrients (nitrate, phosphate) fuel rapid growth. Blooms lead to oxygen depletion (hypoxia) and can release toxins harmful to aquatic life."
+  },
+  "Grass": {
+    title:"Vegetation (riparian buffer)",
+    text:"Vegetation near ponds intercepts runoff, absorbs nutrients, and reduces erosion — buffers help reduce nitrate leaching."
+  },
+  "Fish": {
+    title:"Aquatic Life",
+    text:"Fish and other aquatic life are sensitive indicators of water health. Oxygen depletion caused by algal blooms can lead to fish die-offs, disrupting the entire ecosystem."
+  }
+};
+
+const tooltip = document.getElementById('tooltip');
+const infoBox = document.getElementById('infoBox');
+
+let hovered = null;
+function onMove(e){
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+  ray.setFromCamera(mouse, camera);
+  const intersects = ray.intersectObjects(interactiveMeshes, true);
+  if (intersects.length>0){
+    let mesh = intersects[0].object;
+    // Walk up the hierarchy to get the top-level name
+    while (mesh.parent && mesh.parent.name !== "" && mesh.parent.name !== "Scene") {
+        mesh = mesh.parent;
+    }
+
+    if (hovered !== mesh){
+      if (hovered) clearHighlight(hovered);
+      hovered = mesh;
+      const strength = parseFloat(document.getElementById('highlightStrength').value) || 0.6;
+      setHighlight(mesh, strength);
+    }
+    tooltip.style.display = 'block';
+    tooltip.style.left = (e.clientX) + 'px';
+    tooltip.style.top = (e.clientY - 10) + 'px';
+    const title = (infoData[mesh.name] && infoData[mesh.name].title) ? infoData[mesh.name].title : mesh.name;
+    tooltip.innerText = title;
+  } else {
+    if (hovered) clearHighlight(hovered);
+    hovered = null;
+    tooltip.style.display = 'none';
+  }
+}
+
+function onClick(e){
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  ray.setFromCamera(mouse, camera);
+  const intersects = ray.intersectObjects(interactiveMeshes, true);
+  if (intersects.length>0){
+    let mesh = intersects[0].object;
+    while (mesh.parent && mesh.parent.name !== "" && mesh.parent.name !== "Scene") {
+        mesh = mesh.parent;
+    }
+    showInfoFor(mesh);
+  } else {
+    infoBox.style.display = 'none';
+  }
+}
+
+function showInfoFor(mesh){
+  const key = (mesh.name === "Grass") ? "Grass" : mesh.name;
+  const data = infoData[key] || { title: mesh.name, text: "No information available."};
+  infoBox.innerHTML = `<h3>${data.title}</h3><p>${data.text}</p>`;
+  infoBox.style.display = 'block';
+}
+
+// Event listeners
+renderer.domElement.addEventListener('mousemove', onMove, {passive:true});
+renderer.domElement.addEventListener('click', onClick);
+
+// -------------------------
+// Simple sine wave on water using Simplex noise
+// -------------------------
+const noise = new SimplexNoise();
+let time = 0;
+
+function updateWater(dt){
+  time += dt * 0.6;
+  if (!water || !water.geometry) return;
+  const pos = water.geometry.attributes.position;
+  const arr = pos.array;
+  const origArr = water.userData.originalPositions;
+  for (let i = 0; i < arr.length; i += 3) {
+    const ox = origArr[i], oy = origArr[i+1], oz = origArr[i+2];
+    const n = noise.noise3d(ox * 0.25, oz * 0.25, time * 0.6);
+    arr[i+1] = oy + n * 0.08;
+  }
+  pos.needsUpdate = true;
+  water.geometry.computeVertexNormals();
+}
+
+function updatePondState(timescaleValue) {
+    if (!algae) return;
+    const algaeMaxOpacity = 0.9;
+    const algaeMinRadius = 6 * 0.6;
+    const algaeMaxRadius = 6 * 0.95;
+
+    algae.material.opacity = Math.min(algaeMaxOpacity, 0.5 + timescaleValue * 0.4);
+    const currentAlgaeRadius = algaeMinRadius + (algaeMaxRadius - algaeMinRadius) * timescaleValue;
+    algae.scale.set(currentAlgaeRadius / algaeMinRadius, currentAlgaeRadius / algaeMinRadius, 1);
+
+    fishes.forEach(fishGroup => {
+        if (!fishGroup.userData.isDead && timescaleValue >= fishGroup.userData.deathTime) {
+            fishGroup.userData.isDead = true;
+            fishGroup.children.forEach(part => {
+                part.material = deadFishMaterial;
+                part.castShadow = false;
+            });
+            fishGroup.name = "Fish"; // Set name for raycasting and info box
+        }
+        if (fishGroup.userData.isDead) {
+            fishGroup.position.y -= 0.005;
+            fishGroup.children.forEach(part => {
+                if (part.material.opacity > 0) {
+                    part.material.opacity -= 0.002;
+                    part.material.needsUpdate = true;
+                }
+            });
+        }
+    });
+}
+
+
+// -------------------------
+// bubble animation
+// -------------------------
+function updateBubbles(){
+  if (!bubblesEnabled) return;
+  for (let b of bubbles){
+    b.position.y += b.userData.vy;
+    b.material.opacity = 0.6 + 0.4*Math.sin(performance.now()*0.002 + b.id);
+    if (b.position.y > 0.5){
+      b.position.y = -0.05;
+      const angle = Math.random() * Math.PI;
+      const r = Math.random() * 2.5;
+      b.position.x = Math.cos(angle) * r;
+      b.position.z = Math.sin(angle) * r;
+    }
+  }
+}
+
+// -------------------------
+// UI wiring
+// -------------------------
+document.getElementById('waterOpacity').addEventListener('input', (ev)=>{
+  if (water) water.material.opacity = parseFloat(ev.target.value);
+});
+document.getElementById('algaeOpacity').addEventListener('input', (ev)=>{
+  if (algae) algae.material.opacity = parseFloat(ev.target.value);
+});
+document.getElementById('highlightStrength').addEventListener('input', (ev)=>{
+  if (hovered) {
+    clearHighlight(hovered);
+    setHighlight(hovered, parseFloat(ev.target.value));
+  }
+});
+document.getElementById('timescale').addEventListener('input', (ev)=>{
+    updatePondState(parseFloat(ev.target.value));
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  controls.reset();
+  camera.position.set(8,6,10);
+  controls.target.set(0,0.3,0);
+  document.getElementById('timescale').value = 0;
+  createPondCrossSection();
+  updatePondState(0);
+});
+document.getElementById('toggleBubbles').addEventListener('click', (e)=>{
+  bubblesEnabled = !bubblesEnabled;
+  e.target.innerText = bubblesEnabled ? 'Toggle Bubbles' : 'Bubbles Off';
+  bubbleGroup.visible = bubblesEnabled;
+});
+
+// -------------------------
+// Visual polish: subtle grid & rim
+// -------------------------
+const grid = new THREE.GridHelper(40, 40, 0x1b2a3a, 0x0a1116);
+grid.position.y = -1.2;
+grid.material.opacity = 0.06;
+grid.material.transparent = true;
+scene.add(grid);
+
+const rimGeom = new THREE.TorusGeometry(5.1, 0.08, 8, 64);
+const rimMat = new THREE.MeshBasicMaterial({ color: 0x3a6bff, transparent:true, opacity:0.06 });
+const rim = new THREE.Mesh(rimGeom, rimMat);
+rim.rotation.x = Math.PI/2;
+rim.position.y = -0.3;
+scene.add(rim);
+
+// -------------------------
+// Animation loop
+// -------------------------
+let last = performance.now();
+(function renderLoop(){
+  const now = performance.now();
+  const dt = (now - last) / 1000;
+  last = now;
+
+  updateWater(dt);
+  updateBubbles();
+
+  fishes.forEach(fishGroup => {
+      if (!fishGroup.userData.isDead) {
+          fishGroup.position.x += Math.cos(performance.now() * 0.001 * fishGroup.userData.swimSpeed + fishGroup.id) * 0.005;
+          fishGroup.position.z += Math.sin(performance.now() * 0.001 * fishGroup.userData.swimSpeed + fishGroup.id) * 0.005;
+          const waterOuterRadius = 6 - 0.1;
+          const dist = Math.sqrt(fishGroup.position.x * fishGroup.position.x + fishGroup.position.z * fishGroup.position.z);
+          if (dist > waterOuterRadius - 0.2) {
+             const angle = Math.atan2(fishGroup.position.z, fishGroup.position.x);
+             fishGroup.position.x = Math.cos(angle) * (waterOuterRadius - 0.2);
+             fishGroup.position.z = Math.sin(angle) * (waterOuterRadius - 0.2);
+          }
+      }
+  });
+
+
+  controls.update();
+  renderer.render(scene, camera);
+  requestAnimationFrame(renderLoop);
+})();
+
+// Call this once to set up the new pond
+createPondCrossSection();
+
+// -------------------------
+// Helpful dev: show axis (toggle via console)
+// -------------------------
+// window.showAxes = function(){ const axes = new THREE.AxesHelper(2); scene.add(axes); }
+
+// -------------------------
+// small accessibility: keyboard hide help/info
+// -------------------------
+window.addEventListener('keydown', (e)=>{
+  if (e.key === 'i'){ infoBox.style.display = infoBox.style.display === 'block' ? 'none' : 'block'; }
+});
+
+// -------------------------
+// End of module
+// -------------------------
+</script>
+</body>
+</html>
