@@ -337,98 +337,151 @@ controls.target.set(0,0.3,0);
 // -------------------------
 scene.add(pondGroup);
 
-function createPondCrossSection() {
-    // Clear existing pond components
-    while(pondGroup.children.length > 0){
-        pondGroup.remove(pondGroup.children[0]);
-    }
+// ---------- Helper: make a smooth bowl using LatheGeometry ----------
+function makeBowlLathe(outerRadius = 6, innerRadius = 2.8, depth = 1.6, segments = 64, thetaLength = Math.PI) {
+  // Build a smooth profile curve from rim down to base
+  // profile points are in X (radius), Y (height) for lathe
+  const pts = [];
+  const rimHeight = 0.15;      // small rim above edge
+  const lipDepth = 0.05;       // lip thickness
+  const baseY = -depth;        // bottom Y
+  
+  // We want a gentle rim, then slope down to base
+  // Use several points for smooth curvature
+  // Start at outer rim (radius = outerRadius)
+  pts.push(new THREE.Vector2(outerRadius, rimHeight));                         // rim top
+  pts.push(new THREE.Vector2(outerRadius - 0.08, rimHeight - 0.03));           // slight inward lip
+  pts.push(new THREE.Vector2(outerRadius - 0.6, rimHeight - 0.12));           // curve start
+  pts.push(new THREE.Vector2(outerRadius * 0.8, rimHeight - 0.28));
+  pts.push(new THREE.Vector2((outerRadius + innerRadius) * 0.5, -depth * 0.2));
+  pts.push(new THREE.Vector2(innerRadius * 0.95, -depth * 0.55));
+  pts.push(new THREE.Vector2(innerRadius * 0.6, -depth * 0.85));
+  pts.push(new THREE.Vector2(innerRadius * 0.2, baseY + 0.05));                // approach floor
+  pts.push(new THREE.Vector2(0.0, baseY));                                    // center bottom
 
-    const segments = 48;
-    const pondRadius = 5.0;
-    const pondDepth = 1.5;
-    const waterDepth = 0.8;
-
-    const outerRadius = 6;
-    const height = 1.5;
-    const radialSegments = 32;
-    const heightSegments = 1;
-
-    const baseSoilGeometry = new THREE.CylinderGeometry(outerRadius, outerRadius, height, radialSegments, heightSegments, false, 0, Math.PI);
-    const baseSoilMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.9 });
-    soilTop = new THREE.Mesh(baseSoilGeometry, baseSoilMaterial);
-    soilTop.position.set(0, -height / 2 - 0.7, 0);
-    soilTop.rotation.y = -Math.PI / 2;
-    soilTop.name = "Topsoil";
-    pondGroup.add(soilTop);
-
-    const subSoilHeight = 0.7;
-    const subSoilGeometry = new THREE.CylinderGeometry(outerRadius, outerRadius, subSoilHeight, radialSegments, heightSegments, false, 0, Math.PI);
-    const subSoilMaterial = new THREE.MeshStandardMaterial({ color: 0x5a311a, roughness: 0.9 });
-    soilBottom = new THREE.Mesh(subSoilGeometry, subSoilMaterial);
-    soilBottom.position.set(0, -height - subSoilHeight / 2 - 0.7, 0);
-    soilBottom.rotation.y = -Math.PI / 2;
-    soilBottom.name = "Subsoil";
-    pondGroup.add(soilBottom);
-
-    const bedrockHeight = 0.5;
-    const bedrockGeometry = new THREE.CylinderGeometry(outerRadius, outerRadius, bedrockHeight, radialSegments, heightSegments, false, 0, Math.PI);
-    const bedrockMaterial = new THREE.MeshStandardMaterial({ color: 0x4f4f4f, roughness: 0.9 });
-    bedrock = new THREE.Mesh(bedrockGeometry, bedrockMaterial);
-    bedrock.position.set(0, -height - subSoilHeight - bedrockHeight / 2 - 0.7, 0);
-    bedrock.rotation.y = -Math.PI / 2;
-    bedrock.name = "Bedrock";
-    pondGroup.add(bedrock);
-
-    const waterOuterRadius = outerRadius - 0.1;
-    const waterPlaneGeometry = new THREE.CylinderGeometry(waterOuterRadius, waterOuterRadius, waterDepth * 2, radialSegments, heightSegments, false, 0, Math.PI);
-    water = new THREE.Mesh(waterPlaneGeometry, waterMat.clone());
-    water.position.set(0, -waterDepth / 2 - 0.1, 0);
-    water.rotation.y = -Math.PI / 2;
-    water.name = "Water";
-    pondGroup.add(water);
-
-    water.userData.originalPositions = waterPlaneGeometry.attributes.position.array.slice();
-
-    const algaeRadius = waterOuterRadius * 0.6;
-    const algaeGeom = new THREE.CircleGeometry(algaeRadius, 64);
-    algaeGeom.rotateX(-Math.PI/2);
-    algae = new THREE.Mesh(algaeGeom, algaeMat.clone());
-    algae.position.y = 0.3;
-    algae.name = "Algae";
-    pondGroup.add(algae);
-
-    const fishBodyGeometry = new THREE.SphereGeometry(0.1, 16, 12);
-    const fishTailGeometry = new THREE.ConeGeometry(0.05, 0.2, 8);
-    fishTailGeometry.translate(0, 0.1, 0);
-    fishTailGeometry.rotateX(Math.PI / 2);
-
-    fishes = [];
-    const numFish = 15;
-    for (let i = 0; i < numFish; i++) {
-        const fishGroup = new THREE.Group();
-        const body = new THREE.Mesh(fishBodyGeometry, fishMaterial);
-        const tail = new THREE.Mesh(fishTailGeometry, fishMaterial);
-        tail.position.x = -0.1;
-        fishGroup.add(body, tail);
-        const angle = Math.random() * Math.PI;
-        const r = Math.random() * (waterOuterRadius - 0.5);
-        const x = Math.cos(angle) * r;
-        const z = Math.sin(angle) * r;
-        const y = -Math.random() * waterDepth;
-        fishGroup.position.set(x, y, z);
-        fishGroup.rotation.y = Math.random() * Math.PI * 2;
-        fishGroup.userData = {
-            isDead: false,
-            initialY: y,
-            swimSpeed: 0.05 + Math.random() * 0.05,
-            deathTime: Math.random() * 0.8 + 0.2
-        };
-        fishes.push(fishGroup);
-        pondGroup.add(fishGroup);
-    }
-    interactiveMeshes.length = 0;
-    interactiveMeshes.push(water, soilTop, soilBottom, bedrock, algae, ...grassGroup.children, ...fishes);
+  const latheGeom = new THREE.LatheGeometry(pts, segments, 0, thetaLength);
+  latheGeom.computeVertexNormals();
+  return latheGeom;
 }
+
+// ---------- Replacement createPondCrossSection ----------
+function createPondCrossSection() {
+  // clear
+  while (pondGroup.children.length > 0) pondGroup.remove(pondGroup.children[0]);
+
+  const outerRadius = 6.0;
+  const innerRadius = 3.0;
+  const pondDepth = 1.5;
+  const radialSegments = 128;
+  const thetaLength = Math.PI; // half (cross-section) — keep for side-cut view
+
+  // --- Smooth soil bowl (lathe) ---
+  const soilTopGeom = makeBowlLathe(outerRadius, innerRadius, pondDepth, radialSegments, thetaLength);
+  // apply gentle height noise to the rim/top side only so it looks natural
+  {
+    const pos = soilTopGeom.attributes.position;
+    const v = new THREE.Vector3();
+    for (let i = 0; i < pos.count; i++) {
+      v.fromBufferAttribute(pos, i);
+      // only perturb near top (y around > -0.2)
+      if (v.y > -0.25) {
+        // small noise by sine + random for reproducible-ish look (or use Simplex)
+        const nx = v.x * 0.3 + v.z * 0.2;
+        const nz = v.z * 0.2;
+        const perturb = Math.sin(nx * 2.3) * 0.02 + (Math.random() - 0.5) * 0.01;
+        v.y += perturb;
+      }
+      pos.setXYZ(i, v.x, v.y, v.z);
+    }
+    soilTopGeom.computeVertexNormals();
+  }
+  const soilTopMat = new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.95 });
+  soilTop = new THREE.Mesh(soilTopGeom, soilTopMat);
+  soilTop.name = "Topsoil";
+  soilTop.receiveShadow = true;
+  // position for cross-section: move slightly down so visible cut sits nicely
+  soilTop.position.y = -0.6;
+  // lathe produced geometry runs around Y axis — rotate so the open half faces camera
+  soilTop.rotation.y = -Math.PI / 2;
+  pondGroup.add(soilTop);
+
+  // --- Subsoil (thicker darker slice under top) ---
+  const subSoilGeom = makeBowlLathe(outerRadius * 0.98, innerRadius * 0.95, pondDepth * 1.05, radialSegments, thetaLength);
+  const subSoilMat = new THREE.MeshStandardMaterial({ color: 0x5a311a, roughness: 0.98 });
+  soilBottom = new THREE.Mesh(subSoilGeom, subSoilMat);
+  soilBottom.name = "Subsoil";
+  soilBottom.position.y = -0.9; // slightly lower so it peeks out under topsoil
+  soilBottom.rotation.y = -Math.PI / 2;
+  pondGroup.add(soilBottom);
+
+  // --- Bedrock (thin layer) ---
+  const bedrockGeom = makeBowlLathe(outerRadius * 0.99, innerRadius * 0.5, pondDepth * 1.25, radialSegments, thetaLength);
+  const bedrockMat = new THREE.MeshStandardMaterial({ color: 0x4f4f4f, roughness: 1.0 });
+  bedrock = new THREE.Mesh(bedrockGeom, bedrockMat);
+  bedrock.name = "Bedrock";
+  bedrock.position.y = -1.25;
+  bedrock.rotation.y = -Math.PI / 2;
+  pondGroup.add(bedrock);
+
+  // --- Water: flat disk clipped to the bowl interior (thin cylinder but trimmed) ---
+  // We'll use CircleGeometry for the surface and also a slightly thicker cylinder for depth visual.
+  const waterRadius = innerRadius * 0.98;
+  const waterSurfaceGeom = new THREE.CircleGeometry(waterRadius, 96);
+  waterSurfaceGeom.rotateX(-Math.PI / 2);
+  // move so it sits inside bowl
+  water = new THREE.Mesh(waterSurfaceGeom, waterMat.clone());
+  water.name = "Water";
+  water.position.y = -0.65; // sit slightly below rim so the bowl holds it
+  pondGroup.add(water);
+  // store original positions if we want waves
+  water.userData.originalPositions = waterSurfaceGeom.attributes.position.array.slice();
+
+  // Add a thin low-poly "volume" for water (slightly transparent cylinder) for a 3D feel
+  const waterVolGeom = new THREE.CylinderGeometry(waterRadius, waterRadius, 0.6, 64, 1, false, 0, Math.PI);
+  const waterVolume = new THREE.Mesh(waterVolGeom, new THREE.MeshPhysicalMaterial({
+    color: new THREE.Color(0x1e90ff),
+    roughness: 0.15, metalness: 0.02, transparent: true, opacity: 0.25, transmission: 0.8, depthWrite: false
+  }));
+  waterVolume.rotation.y = -Math.PI / 2;
+  waterVolume.position.y = water.position.y - 0.3;
+  pondGroup.add(waterVolume);
+
+  // --- Algae patch (circular on surface) ---
+  const algaeRadius = Math.min(2.2, waterRadius * 0.6);
+  const algaeGeom = new THREE.CircleGeometry(algaeRadius, 64);
+  algaeGeom.rotateX(-Math.PI / 2);
+  algae = new THREE.Mesh(algaeGeom, algaeMat.clone());
+  algae.position.y = water.position.y + 0.01; // slightly above surface so visible
+  algae.name = "Algae";
+  pondGroup.add(algae);
+
+  // --- Fish: distribute within the water radius (z positive since we're cross-section) ---
+  fishes = [];
+  const numFish = 14;
+  for (let i = 0; i < numFish; i++) {
+    const fg = new THREE.Group();
+    const body = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), fishMaterial);
+    const tail = new THREE.Mesh(new THREE.ConeGeometry(0.04, 0.12, 8), fishMaterial);
+    tail.position.x = -0.08;
+    tail.rotateX(Math.PI / 2);
+    fg.add(body, tail);
+    // random in semicircle (theta between 0 and PI)
+    const a = Math.random() * Math.PI;
+    const r = Math.random() * (waterRadius * 0.9);
+    const x = Math.cos(a) * r;
+    const z = Math.sin(a) * r;
+    const y = water.position.y - Math.random() * 0.35 - 0.05;
+    fg.position.set(x, y, z);
+    fg.userData = { isDead: false, swimSpeed: 0.03 + Math.random() * 0.05, deathTime: Math.random() * 0.8 + 0.25 };
+    fishes.push(fg);
+    pondGroup.add(fg);
+  }
+
+  // Rebuild interactive mesh list (replace previous entries)
+  interactiveMeshes.length = 0;
+  interactiveMeshes.push(water, soilTop, soilBottom, bedrock, algae, ...grassGroup.children, ...fishes);
+}
+
 
 // -------------------------
 // Grass clumps around rim (updated for cross-section)
