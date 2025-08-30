@@ -1,0 +1,419 @@
+<style>
+  /* CSS styles are scoped to the demo container to prevent conflicts */
+  #interactive-pond-demo {
+    width: 1000px;       /* smaller width */
+    height: 800px;      /* smaller height */
+    margin: 10px auto;  /* center horizontally */
+    background: transparent;   /* white background */
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+  #interactive-pond-demo #renderContainer {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+}
+
+  #interactive-pond-demo .panel {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;      /* bottom instead of top */
+    transform: translateX(-50%);
+    width: 90%;        /* almost full width */
+    background: #f9f9f9; /* light panel */
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    color: #222;
+    font-family: Inter, sans-serif;
+}
+
+  #interactive-pond-demo .panel h2 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #fff;
+  }
+
+  #interactive-pond-demo .panel p {
+    margin: 0 0 12px 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  #interactive-pond-demo .panel .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  #interactive-pond-demo .panel label {
+    min-width: 110px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  #interactive-pond-demo .panel input[type="range"] {
+    flex: 1;
+  }
+
+  #interactive-pond-demo .panel .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  #interactive-pond-demo #infoBox {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    width: 340px;
+    max-height: 70vh;
+    overflow: auto;
+    background: linear-gradient(180deg, rgba(8, 10, 14, 0.9), rgba(8, 10, 14, 0.8));
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+    display: none;
+  }
+
+  #interactive-pond-demo #infoBox h3 {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    color: #fff;
+  }
+
+  #interactive-pond-demo #infoBox p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  #interactive-pond-demo .legend {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    background: rgba(6, 8, 10, 0.4);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    color: var(--muted);
+    font-size: 13px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  #interactive-pond-demo .legend .sw {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  #interactive-pond-demo .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    transform: translate(-50%, -120%);
+    white-space: nowrap;
+    display: none;
+    z-index: 3000;
+  }
+
+  #interactive-pond-demo .btn {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--muted);
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  #interactive-pond-demo .btn:active {
+    transform: translateY(1px);
+  }
+
+  #interactive-pond-demo .btn {
+    background: #4fc3f7; /* nice blue */
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.2s;
+  }
+
+    #interactive-pond-demo .btn:hover {
+        background: #29b0f0;
+    }
+
+    #interactive-pond-demo input[type="range"] {
+        flex: 1;
+        accent-color: #4fc3f7; /* slider color */
+    }
+
+    #interactive-pond-demo .panel {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    transform: translateX(-50%);
+    width: 90%;
+    background: #f9f9f9; /* panel slightly off-white */
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    color: #222;
+    font-family: Inter, sans-serif;
+    }
+
+    /* Buttons with subtle grey background and purple text */
+    #interactive-pond-demo .btn {
+        background: rgba(200, 200, 200, 0.15); /* light grey with low opacity */
+        color: #6a0dad; /* purple text */
+        border: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.2s;
+    }
+
+    #interactive-pond-demo .btn:hover {
+        background: rgba(200, 200, 200, 0.25); /* slightly darker on hover */
+    }
+
+    /* Range sliders */
+    #interactive-pond-demo input[type="range"] {
+        flex: 1;
+        accent-color: #6a0dad; /* purple accent for sliders */
+    }
+
+
+
+  @media (max-width: 760px) {
+    #interactive-pond-demo .panel {
+      width: calc(100% - 36px);
+      left: 18px;
+      top: 12px;
+    }
+    #interactive-pond-demo #infoBox {
+      display: none !important;
+    }
+  }
+
+  #interactive-pond-demo {
+    width: 900px;
+    height: 700px;
+    margin: 10px auto;
+    background: transparent;  /* transparent so it blends with page */
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Render container stays the same */
+#interactive-pond-demo #renderContainer {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    top: -100px;
+}
+
+/* Panel style */
+#interactive-pond-demo .panel {
+    position: absolute;
+    left: 50%;
+    bottom: 10px;
+    transform: translateX(-50%);
+    width: 90%;
+    background: rgba(0, 0, 0, 0.4); /* black with ~8% opacity */
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    color: #fff;
+    font-family: Inter, sans-serif;
+}
+
+/* Headings inside panel */
+#interactive-pond-demo .panel h2 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #fff;
+}
+
+/* Paragraphs inside panel */
+#interactive-pond-demo .panel p {
+    margin: 0 0 12px 0;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+/* Row layout inside panel */
+#interactive-pond-demo .panel .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+/* Labels */
+#interactive-pond-demo .panel label {
+    min-width: 110px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+/* Buttons */
+#interactive-pond-demo .btn {
+    background: #6a0dad; /* purple */
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.2s;
+}
+#interactive-pond-demo .btn:hover {
+    background: #7b1fc6; /* slightly lighter purple on hover */
+}
+#interactive-pond-demo .btn:active {
+    transform: translateY(1px);
+}
+
+/* Range sliders */
+#interactive-pond-demo input[type="range"] {
+    flex: 1;
+    accent-color: #6a0dad; /* purple slider */
+}
+
+#interactive-pond-demo .legend {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    display: flex;                /* horizontal layout */
+    flex-direction: row;          /* default, can skip */
+    align-items: center;          /* vertically center the items inside */
+    height: 10px;                 /* small fixed height */
+    padding: 0 8px;               /* horizontal padding only */
+    background: rgba(0,0,0,0.1);
+    border-radius: 5px;
+    gap: 6px;
+    font-size: 12px;
+    color: #ccc;
+    line-height: 10px;            /* match small height */
+}
+#interactive-pond-demo .legend .sw {
+    width: 16px;
+    height: 14px;
+    border-radius: 2px;
+    display: inline-block;
+}
+#interactive-pond-demo .legend .item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #000000;
+}
+
+
+/* Tooltip */
+#interactive-pond-demo .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    transform: translate(-50%, -120%);
+    white-space: nowrap;
+    display: none;
+    z-index: 3000;
+}
+
+/* InfoBox stays the same */
+#interactive-pond-demo #infoBox {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    width: 340px;
+    max-height: 70vh;
+    overflow: auto;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0);
+    display: none;
+}
+
+#interactive-pond-demo #infoBox {
+    color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 760px) {
+    #interactive-pond-demo .panel {
+        width: calc(100% - 36px);
+        left: 18px;
+        top: 12px;
+    }
+    #interactive-pond-demo #infoBox {
+        display: none !important;
+    }
+}
+</style>
+
+<div id="interactive-pond-demo">
+  <div id="renderContainer"></div>
+  <div class="panel" id="controls">
+    <h2>Interactive Pond — Working Demo</h2>
+    <p>Rotate the scene. Hover to highlight regions. Click to show info.</p>
+    <div class="row">
+      <label for="timescale">Eutrophication</label>
+      <input id="timescale" type="range" min="0" max="1" step="0.01" value="0" />
+    </div>
+    <div class="row" style="margin-top: 8px">
+      <button id="resetBtn" class="btn">Reset view</button>
+      <div style="flex: 1"></div>
+      <button id="createBacteria" class="btn">Create Bacteria</button>
+    </div>
+    <p style="margin-top: 10px; font-size: 12px; color: var(--muted)">Click parts to read about nitrate leaching and algal blooms.</p>
+  </div>
+  <div id="infoBox" aria-live="polite"></div>
+  <div class="legend" aria-hidden="false">
+    <div class="item">
+      <span class="sw" style="background: #4fc3f7"></span>Water
+    </div>
+    <div class="item">
+      <span class="sw" style="background: #85532d"></span>Soil
+    </div>
+    <div class="item">
+      <span class="sw" style="background: #6fcf97"></span>Algae
+    </div>
+  </div>
+  <div class="tooltip" id="tooltip"></div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.156.1/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.156.1/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module" src="pond.js"></script>

@@ -64,15 +64,10 @@ html,body{height:100%;margin:0;background:radial-gradient(1200px 600px at 10% 10
     <h2>Interactive Pond — Working Demo</h2>
     <p>Rotate the scene. Hover to highlight regions. Click to show info.</p>
 
-    <div class="row"><label for="waterOpacity">Water opacity</label><input id="waterOpacity" type="range" min="0.05" max="1" step="0.01" value="0.7" /></div>
-    <div class="row"><label for="algaeOpacity">Algae visibility</label><input id="algaeOpacity" type="range" min="0" max="1" step="0.01" value="0.85" /></div>
-    <div class="row"><label for="highlightStrength">Highlight</label><input id="highlightStrength" type="range" min="0" max="1" step="0.05" value="0.6" /></div>
     <div class="row"><label for="timescale">Eutrophication</label><input id="timescale" type="range" min="0" max="1" step="0.01" value="0" /></div>
 
     <div class="row" style="margin-top:8px">
       <button id="resetBtn" class="btn">Reset view</button>
-      <div style="flex:1"></div>
-      <button id="toggleBubbles" class="btn">Toggle Bubbles</button>
       <div style="flex:1"></div>
       <button id="createBacteria" class="btn">Create Bacteria</button>
     </div>
@@ -782,7 +777,7 @@ function onMove(e){
     if (hovered !== mesh){
       if (hovered) clearHighlight(hovered);
       hovered = mesh;
-      setHighlight(mesh, parseFloat(document.getElementById('highlightStrength').value) || 0.6);
+      setHighlight(mesh, parseFloat(document.getElementById('highlightStrength').value) || 0.4);
     }
     tooltip.style.display = 'block';
     tooltip.style.left = (e.clientX)+'px';
@@ -964,18 +959,6 @@ function updatePondState(value) {
 
 // ---------- UI wiring ----------
 let bacteriaEnabled = false; // Add this line to control bacteria activity
-document.getElementById('waterOpacity').addEventListener('input', e=>{
-  const v = parseFloat(e.target.value);
-  if (waterSurface) waterSurface.material.opacity = v;
-  if (waterVolume) waterVolume.material.opacity = Math.min(0.65, v*0.35);
-});
-document.getElementById('algaeOpacity').addEventListener('input', e=>{
-  const v = parseFloat(e.target.value);
-  if (algaePatch) algaePatch.material.opacity = v;
-});
-document.getElementById('highlightStrength').addEventListener('input', e=>{
-  if (hovered){ clearHighlight(hovered); setHighlight(hovered, parseFloat(e.target.value)); }
-});
 document.getElementById('timescale').addEventListener('input', e=>{
   updatePondState(parseFloat(e.target.value));
 });
@@ -991,12 +974,6 @@ document.getElementById('resetBtn').addEventListener('click', ()=>{
   bacteriaEnabled = false; // Disable bacteria
   createNitrates(30);
   updatePondState(0);
-});
-let bubblesEnabled = true;
-document.getElementById('toggleBubbles').addEventListener('click', (ev)=>{
-  bubblesEnabled = !bubblesEnabled;
-  ev.target.innerText = bubblesEnabled ? 'Toggle Bubbles' : 'Bubbles Off';
-  if (bubbleGroup) bubbleGroup.visible = bubblesEnabled;
 });
 
 // New function to clear all ammonium from the scene
@@ -1044,7 +1021,6 @@ let last = performance.now();
 
   updateWater(dt);
   updateFishes();
-  if (bubblesEnabled) updateBubbles();
   updateNitrates();
   if (bacteriaEnabled) { // Only update ammonium and bacteria if bacteria are enabled
     updateAmmonium();
