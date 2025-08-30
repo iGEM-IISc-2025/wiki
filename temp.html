@@ -73,6 +73,8 @@ html,body{height:100%;margin:0;background:radial-gradient(1200px 600px at 10% 10
       <button id="resetBtn" class="btn">Reset view</button>
       <div style="flex:1"></div>
       <button id="toggleBubbles" class="btn">Toggle Bubbles</button>
+      <div style="flex:1"></div>
+      <button id="createBacteria" class="btn">Create Bacteria</button>
     </div>
 
     <p style="margin-top:10px;font-size:12px;color:var(--muted)">Click parts to read about nitrate leaching and algal blooms.</p>
@@ -98,7 +100,7 @@ import { SimplexNoise } from 'three/addons/math/SimplexNoise.js';
 // ---------- Scene setup ----------
 const container = document.getElementById('renderContainer');
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x071123, 0.03);
+// scene.fog = new THREE.FogExp2(0x071123, 0.03);
 
 const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 0.1, 200);
 camera.position.set(8, 6, 10);
@@ -112,6 +114,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 controls.target.set(0, 0.1, 0);
+
 
 // lights
 scene.add(new THREE.AmbientLight(0xffffff, 0.45));
@@ -251,27 +254,6 @@ function createLopsidedPond(){
     interactiveMeshes.push(fg);
   }
 
-  // grass around rim
-//   grassGroup.clear();
-//   const grassMat = new THREE.MeshStandardMaterial({ color: 0x2f6b34, roughness: 0.95 });
-//   const grassCount = 12;
-//   for (let i=0;i<grassCount;i++){
-//     const t = i / grassCount * Math.PI*2;
-//     const r = outerR + 0.12 + (Math.random()*0.25);
-//     const x = Math.cos(t) * r;
-//     const z = Math.sin(t) * r;
-//     const h = 0.7 + Math.random()*0.5;
-//     const bladeGeo = new THREE.PlaneGeometry(0.18, h, 1, 2);
-//     bladeGeo.translate(0, h/2, 0);
-//     const blade = new THREE.Mesh(bladeGeo, grassMat.clone());
-//     blade.position.set(x, -0.12 + (Math.random()*0.08), z);
-//     blade.lookAt(0,0,0);
-//     blade.rotateX(THREE.MathUtils.degToRad(-8 + Math.random()*14));
-//     blade.name = 'Grass';
-//     grassGroup.add(blade);
-//     interactiveMeshes.push(blade);
-//   }
-
   // bubbles
   bubbleGroup = new THREE.Group();
   const bubbleGeo = new THREE.SphereGeometry(0.035, 8, 6);
@@ -292,8 +274,13 @@ function createLopsidedPond(){
 const plantGroup = new THREE.Group();
 scene.add(plantGroup);
 
+// CORRECTED: This is the global roots array
+const roots = []; 
+
 function createPlantsAroundPond(count = 25){
     plantGroup.clear();
+    roots.length = 0; // CORRECTED: Clear the GLOBAL roots array
+
     const plantMat = new THREE.MeshStandardMaterial({ color: 0x2f6b34, roughness: 0.95 });
     const rootMat = new THREE.MeshStandardMaterial({ color: 0x8b5e3c, roughness: 0.9 });
 
@@ -321,6 +308,9 @@ function createPlantsAroundPond(count = 25){
         root.position.set(x, -0.5 - rootLength/2, z);
         plantGroup.add(root);
         interactiveMeshes.push(root);
+
+        // CORRECTED: Push the root to the global array
+        roots.push(root); 
     }
 }
 
@@ -393,6 +383,16 @@ function updateNitrates() {
         n.position.x += n.userData.driftX;
         n.position.z += n.userData.driftZ;
 
+        // Check for root interception (DNRA zone near edge)
+        const distFromCenter = Math.sqrt(n.position.x**2 + n.position.z**2);
+        if (distFromCenter > 3.5 && distFromCenter < 4.1 && Math.random() < 0.002) {
+            // Remove nitrate, create ammonium ion at same spot
+            scene.remove(n);
+            nitrates.splice(nitrates.indexOf(n), 1);
+            createAmmonium(n.position.clone());  // <-- updated
+            return; // skip further movement
+        }
+
         // If too deep, respawn at edge again
         if (n.position.y < -1) {
             const angle = Math.random() * Math.PI * 2;
@@ -412,6 +412,185 @@ function updateNitrates() {
 }
 
 
+// ---------- DNRA conversion (nitrate -> ammonium near roots) ----------
+
+// Group to hold all ammonium ions
+const ammoniumGroup = new THREE.Group();
+scene.add(ammoniumGroup);
+
+// Create one ammonium ion (NH4+)
+function createAmmoniumMolecule() {
+  const group = new THREE.Group();
+
+  // Nitrogen atom (blue)
+  const nitrogen = new THREE.Mesh(
+    new THREE.SphereGeometry(0.08, 16, 16),
+    new THREE.MeshStandardMaterial({ color: 0x0000ff })
+  );
+  group.add(nitrogen);
+
+  // Hydrogens (white)
+  const hydMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  const radius = 0.2; // N–H bond distance (scaled)
+
+  // Approx tetrahedral arrangement
+  const positions = [
+    new THREE.Vector3( radius, 0, 0),
+    new THREE.Vector3(-radius, 0, 0),
+    new THREE.Vector3(0,  radius, 0),
+    new THREE.Vector3(0, -radius, 0)
+  ];
+
+  positions.forEach(pos => {
+    const hydrogen = new THREE.Mesh(
+      new THREE.SphereGeometry(0.05, 16, 16),
+      hydMat
+    );
+    hydrogen.position.copy(pos);
+    group.add(hydrogen);
+  });
+
+  return group;
+}
+
+// Create ammonium ion at position
+function createAmmonium(pos) {
+  const ammonium = createAmmoniumMolecule();
+  ammonium.position.copy(pos);
+  ammonium.userData.vy = 0.001 + Math.random() * 0.002;
+  ammonium.userData.life = 1.0;
+  ammoniumGroup.add(ammonium);
+}
+
+// Update ammonium ions
+function updateAmmonium() {
+  for (let i = ammoniumGroup.children.length - 1; i >= 0; i--) {
+    const ion = ammoniumGroup.children[i];
+
+    if (!ion.userData.attached) {
+      if (roots.length > 0) {
+        let nearest = roots[0];
+        let minDist = ion.position.distanceTo(nearest.position);
+        for (let r of roots) {
+          const d = ion.position.distanceTo(r.position);
+          if (d < minDist) {
+            nearest = r;
+            minDist = d;
+          }
+        }
+        const dir = new THREE.Vector3().subVectors(nearest.position, ion.position).normalize();
+        ion.position.addScaledVector(dir, 0.01);
+
+        if (minDist < 0.1) {
+          ion.userData.attached = true;
+          ion.userData.waitTime = 200 + Math.floor(Math.random() * 200);
+          ion.position.copy(nearest.position.clone().add(new THREE.Vector3(
+            (Math.random() - 0.5) * 0.1,
+            -0.05,
+            (Math.random() - 0.5) * 0.1
+          )));
+        }
+      }
+    } else {
+      ion.userData.waitTime--;
+      if (ion.userData.waitTime <= 0) {
+        ammoniumGroup.remove(ion);
+        continue;
+      }
+    }
+
+    ion.children.forEach(atom => {
+      atom.material.opacity = ion.userData.attached ? 0.9 : ion.userData.life;
+      atom.material.transparent = true;
+    });
+
+    if (!ion.userData.attached) {
+      ion.userData.life -= 0.001;
+      if (ion.userData.life <= 0) {
+        ammoniumGroup.remove(ion);
+      }
+    }
+  }
+}
+
+// Add a global raycaster and a list of ground meshes
+const groundMeshes = [];
+const bacteriaRaycaster = new THREE.Raycaster();
+
+
+// ---------- Bacteria (around pond edge) ----------
+const bacteriaGroup = new THREE.Group();
+scene.add(bacteriaGroup);
+
+function createBacterium(x, y, z) {
+    const group = new THREE.Group();
+
+    // Body (ellipsoid)
+    const bodyGeo = new THREE.SphereGeometry(0.12, 12, 12);
+    bodyGeo.scale(1.4, 0.7, 0.7);
+    const bodyMat = new THREE.MeshStandardMaterial({ color: 0x22aa22 });
+    const body = new THREE.Mesh(bodyGeo, bodyMat);
+    group.add(body);
+
+    // Flagella (3 small tubes)
+    const flagella = [];
+    for (let i = 0; i < 3; i++) {
+        const points = [
+        new THREE.Vector3(0.07, 0, 0),    // start at top
+        new THREE.Vector3(0.20, 0, 0),
+        new THREE.Vector3(0.35, 0, 0)
+    ];
+        const curve = new THREE.CatmullRomCurve3(points);
+        const tubeGeo = new THREE.TubeGeometry(curve, 16, 0.015, 6, false);
+        const tubeMat = new THREE.MeshStandardMaterial({ color: 0x006600 });
+        const tube = new THREE.Mesh(tubeGeo, tubeMat);
+        // tube.rotation.y = (i / 3) * Math.PI * 2;
+        tube.rotation.y = i/10;
+        group.add(tube);
+        flagella.push({ mesh: tube, basePoints: points });
+    }
+
+    group.position.set(x, y, z);
+    group.userData.flagella = flagella;
+    group.userData.phase = Math.random() * Math.PI * 2;
+
+    return group;
+}
+
+function createBacteriaRing(count=40, minR=3.7, maxR=4.0) {
+    bacteriaGroup.clear();
+
+    for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const radius = minR + Math.random() * (maxR - minR);
+        const x = Math.cos(angle) * radius;
+        const z = Math.sin(angle) * radius;
+        const y = -0.75 - 0.05; // slightly under water surface
+
+        const b = createBacterium(x, y, z);
+        bacteriaGroup.add(b);
+    }
+}
+
+// animate flagella
+function updateBacteria(delta) {
+    bacteriaGroup.children.forEach(b => {
+        const phase = b.userData.phase;
+        b.userData.phase += delta * 2;
+
+        b.userData.flagella.forEach(f => {
+            const newPoints = f.basePoints.map((p,i) => {
+                const wiggle = Math.sin(phase + i) * 0.05 * i;
+                return new THREE.Vector3(p.x + wiggle, p.y, p.z);
+            });
+            const curve = new THREE.CatmullRomCurve3(newPoints);
+            f.mesh.geometry.dispose();
+            f.mesh.geometry = new THREE.TubeGeometry(curve, 16, 0.015, 6, false);
+        });
+    });
+}
+
+createBacteriaRing(10);
 
 
 // ---------- fish maker (slim-profile body + tail + eyes) ----------
@@ -634,6 +813,7 @@ document.getElementById('resetBtn').addEventListener('click', ()=>{
   // rebuild and reset
   createLopsidedPond();
   createPlantsAroundPond();
+  createBacteriaRing(40);
   createNitrates(30);
   updatePondState(0);
 });
@@ -670,7 +850,8 @@ let last = performance.now();
   if (bubbleGroup && bubblesEnabled) updateBubbles();
   updateFishes();
   updateNitrates();
-
+  updateAmmonium();
+  updateBacteria(dt);
   controls.update();
   renderer.render(scene, camera);
   
