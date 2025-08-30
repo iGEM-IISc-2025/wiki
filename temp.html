@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Interactive Pond — Working Demo</title>
-
 <style>
 :root{
   --bg:#081018; --panel-bg: rgba(10,12,18,0.65); --muted:#bfc7d6;
@@ -48,7 +47,6 @@ html,body{height:100%;margin:0;background:radial-gradient(1200px 600px at 10% 10
 }
 </style>
 
-<!-- import map lets us use bare 'three' specifiers in the module below -->
 <script type="importmap">
 {
   "imports": {
@@ -83,9 +81,9 @@ html,body{height:100%;margin:0;background:radial-gradient(1200px 600px at 10% 10
   <div id="infoBox" aria-live="polite"></div>
 
   <div class="legend" aria-hidden="false">
-    <div class="item"><span class="sw" style="background:#1e90ff"></span>Water</div>
-    <div class="item"><span class="sw" style="background:#8b4513"></span>Soil</div>
-    <div class="item"><span class="sw" style="background:#2e8b57"></span>Algae</div>
+    <div class="item"><span class="sw" style="background:#4fc3f7"></span>Water</div>
+    <div class="item"><span class="sw" style="background:#d29b70"></span>Soil</div>
+    <div class="item"><span class="sw" style="background:#6fcf97"></span>Algae</div>
   </div>
 
   <div class="credits">Three.js demo — interactive pond</div>
@@ -97,7 +95,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { SimplexNoise } from 'three/addons/math/SimplexNoise.js';
 
-// ---------- Globals ----------
+// ---------- Scene setup ----------
 const container = document.getElementById('renderContainer');
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0x071123, 0.03);
@@ -121,125 +119,114 @@ const dir = new THREE.DirectionalLight(0xffffff, 0.9); dir.position.set(10,12,6)
 scene.add(new THREE.HemisphereLight(0x88aaff, 0x082033, 0.35));
 
 // ---------- Materials ----------
-const landMat = new THREE.MeshStandardMaterial({ color: 0x5c442c, roughness: 0.92 });
-const soilTopMat = new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness:0.95 });
-const rockMat = new THREE.MeshStandardMaterial({ color: 0x4f4f4f, roughness:1.0 });
-
+const topsoilMat = new THREE.MeshStandardMaterial({ color: 0xd29b70, roughness:0.85 });
+const subsoilMat = new THREE.MeshStandardMaterial({ color:0xc68c5c, roughness:0.85 });
+const rockMat = new THREE.MeshStandardMaterial({ color:0x888888, roughness:1.0 });
 const waterMat = new THREE.MeshPhysicalMaterial({
-  color: 0x1e90ff, roughness:0.15, metalness:0.02,
-  transparent:true, opacity:0.72, ior:1.333, transmission:0.7, clearcoat:0.06, clearcoatRoughness:0.04,
-  depthWrite:false
+    color:0x4fc3f7, roughness:0.1, metalness:0.03, transparent:true, opacity:0.7,
+    transmission:0.75, ior:1.33, clearcoat:0.05, clearcoatRoughness:0.02
 });
-
-const algaeMat = new THREE.MeshStandardMaterial({ color: 0x2e8b57, roughness:0.7, transparent:true, opacity:0.85 });
-const fishMat = new THREE.MeshStandardMaterial({ color: 0x9fb7c9, roughness:0.45 });
+const algaeMat = new THREE.MeshStandardMaterial({ color:0x6fcf97, roughness:0.6, transparent:true, opacity:0.85 });
+const fishMat = new THREE.MeshStandardMaterial({ color:0x9fb7c9, roughness:0.45 });
 const deadFishMat = new THREE.MeshStandardMaterial({ color:0x4a4a4a, transparent:true, opacity:0.45 });
 
-// ---------- Scene groups ----------
-const pondGroup = new THREE.Group();
-scene.add(pondGroup);
-
-const grassGroup = new THREE.Group();
-scene.add(grassGroup);
-
-// ---------- Utility: make bowl with LatheGeometry ----------
-function makeBowlLathe(outerRadius = 6, innerRadius = 2.8, depth = 1.6, segments = 128) {
-  const pts = [];
-  const rimH = 0.12;
-  pts.push(new THREE.Vector2(outerRadius, rimH));
-  pts.push(new THREE.Vector2(outerRadius - 0.08, rimH - 0.03));
-  pts.push(new THREE.Vector2(outerRadius * 0.8, rimH - 0.25));
-  pts.push(new THREE.Vector2((outerRadius + innerRadius) * 0.5, -depth * 0.15));
-  pts.push(new THREE.Vector2(innerRadius * 0.95, -depth * 0.5));
-  pts.push(new THREE.Vector2(innerRadius * 0.5, -depth * 0.85));
-  pts.push(new THREE.Vector2(0.0, -depth));
-  return new THREE.LatheGeometry(pts, segments);
-}
-
-// ---------- Create island + pond ----------
-let waterSurface, waterVolume, algaePatch;
-let fishes = [];
-let bubbleGroup;
-const interactiveMeshes = []; // for raycasting
+// ---------- Groups ----------
+const pondGroup = new THREE.Group(); scene.add(pondGroup);
+const grassGroup = new THREE.Group(); scene.add(grassGroup);
+const interactiveMeshes = [];
 const simplex = new SimplexNoise();
 
-function createPond() {
-  // clear
-  pondGroup.clear();
-  interactiveMeshes.length = 0;
-  fishes.length = 0;
+// ---------- Helpers ----------
+function makeLopsidedBowl(outerRadius=6, innerRadius=3, depth=1.6, segments=128){
+    const pts = [];
+    pts.push(new THREE.Vector2(outerRadius, 0.12));
+    pts.push(new THREE.Vector2(outerRadius*0.85, 0.07));
+    pts.push(new THREE.Vector2((outerRadius+innerRadius)*0.5, -depth*0.15));
+    pts.push(new THREE.Vector2(innerRadius*0.95, -depth*0.5));
+    pts.push(new THREE.Vector2(innerRadius*0.5, -depth*0.85));
+    pts.push(new THREE.Vector2(0, -depth));
+    let geom = new THREE.LatheGeometry(pts, segments);
+    let waterSurface, algaePatch, fishes=[], bubbleGroup;
+    let waterVolume;
 
-  const outerR = 6;
-  const innerR = 3.0;
-  const depth = 1.6;
-
-  // topsoil (lathe)
-  const topGeom = makeBowlLathe(outerR, innerR, depth, 256);
-  // add slight rim noise
-  {
-    const p = topGeom.attributes.position;
+    const pos = geom.attributes.position;
     const v = new THREE.Vector3();
-    for (let i=0;i<p.count;i++){
-      v.fromBufferAttribute(p,i);
-      // only perturb near rim (y > -0.25)
-      if (v.y > -0.25) {
-        const noise = Math.sin(v.x*1.5 + v.y*0.8) * 0.02 + (Math.random()-0.5)*0.01;
-        v.y += noise;
-      }
-      p.setXYZ(i, v.x, v.y, v.z);
+    for (let i=0; i<pos.count; i++){
+        v.fromBufferAttribute(pos,i);
+        const angle = Math.atan2(v.z, v.x);
+        v.y += Math.cos(angle*3)*0.2 + (Math.random()-0.5)*0.02; // lopsided
+        pos.setXYZ(i, v.x, v.y, v.z);
     }
-    topGeom.computeVertexNormals();
-  }
-  const topMesh = new THREE.Mesh(topGeom, soilTopMat);
-  topMesh.name = 'Topsoil';
-  topMesh.position.y = -0.55;
-  pondGroup.add(topMesh);
-  interactiveMeshes.push(topMesh);
+    geom.computeVertexNormals();
+    return geom;
+}
 
-  // subsoil (slightly darker)
-  const subGeom = makeBowlLathe(outerR*0.98, innerR*0.96, depth*1.05, 256);
-  const subMesh = new THREE.Mesh(subGeom, landMat);
-  subMesh.name = 'Subsoil';
-  subMesh.position.y = -0.9;
-  pondGroup.add(subMesh);
-  interactiveMeshes.push(subMesh);
+// ---------- Create pond ----------
+let waterSurface, algaePatch, fishes=[], bubbleGroup;
+let waterVolume = new THREE.Mesh(
+    new THREE.CylinderGeometry(3.5, 3.5, 1.0, 32),
+    waterMat.clone()
+);
+waterVolume.position.y = -0.75;
+pondGroup.add(waterVolume);
 
-  // bedrock (thin)
-  const rockGeom = makeBowlLathe(outerR*0.99, innerR*0.6, depth*1.25, 256);
-  const rockMesh = new THREE.Mesh(rockGeom, rockMat);
-  rockMesh.name = 'Bedrock';
-  rockMesh.position.y = -1.25;
-  pondGroup.add(rockMesh);
-  interactiveMeshes.push(rockMesh);
+function createLopsidedPond(){
+    const outerR = 6;
+    const innerR = 3;
+    pondGroup.clear();
+    interactiveMeshes.length = 0;
 
-  // water surface (circle) - sits inside bowl
-  const waterRadius = innerR * 0.98;
-  const surfGeom = new THREE.CircleGeometry(waterRadius, 128);
-  surfGeom.rotateX(-Math.PI/2);
-  waterSurface = new THREE.Mesh(surfGeom, waterMat.clone());
-  waterSurface.name = 'Water';
-  waterSurface.position.y = -0.65;
-  pondGroup.add(waterSurface);
-  interactiveMeshes.push(waterSurface);
-  waterSurface.userData.originalPositions = surfGeom.attributes.position.array.slice();
+    // Topsoil
+    const topGeom = makeLopsidedBowl(6, 3, 1.6, 256);
+    const topMesh = new THREE.Mesh(topGeom, topsoilMat);
+    topMesh.name = 'Topsoil';
+    topMesh.position.y = -0.5;
+    pondGroup.add(topMesh); interactiveMeshes.push(topMesh);
 
-  // water volume - translucent cylinder segment to give depth
-  const volGeom = new THREE.CylinderGeometry(waterRadius, waterRadius, 0.6, 64);
-  waterVolume = new THREE.Mesh(volGeom, waterMat.clone());
-  waterVolume.material.opacity = 0.18;
-  waterVolume.material.depthWrite = false;
-  waterVolume.position.y = waterSurface.position.y - 0.3;
-  pondGroup.add(waterVolume);
+    // Subsoil
+    const subGeom = makeLopsidedBowl(6*0.97, 3*0.95, 1.7, 256);
+    const subMesh = new THREE.Mesh(subGeom, subsoilMat);
+    subMesh.name = 'Subsoil';
+    subMesh.position.y = -0.9;
+    pondGroup.add(subMesh); interactiveMeshes.push(subMesh);
 
-  // algae patch
-  const algaeRadius = Math.min(2.2, waterRadius * 0.6);
-  const algaeGeom = new THREE.CircleGeometry(algaeRadius, 64);
-  algaeGeom.rotateX(-Math.PI/2);
-  algaePatch = new THREE.Mesh(algaeGeom, algaeMat.clone());
-  algaePatch.name = 'Algae';
-  algaePatch.position.y = waterSurface.position.y + 0.01;
-  pondGroup.add(algaePatch);
-  interactiveMeshes.push(algaePatch);
+    // Bedrock
+    const rockGeom = makeLopsidedBowl(6*0.99, 3*0.6, 2.0, 256);
+    const rockMesh = new THREE.Mesh(rockGeom, rockMat);
+    rockMesh.name = 'Bedrock';
+    rockMesh.position.y = -1.25;
+    pondGroup.add(rockMesh); interactiveMeshes.push(rockMesh);
+
+    // Water surface
+    const waterRadius = 3.7;
+    const waterGeom = new THREE.CircleGeometry(waterRadius, 128);
+    waterGeom.rotateX(-Math.PI/2);
+    waterSurface = new THREE.Mesh(waterGeom, waterMat.clone());
+    waterSurface.position.y = -0.75;
+    pondGroup.add(waterSurface); interactiveMeshes.push(waterSurface);
+    waterSurface.userData.originalPositions = waterGeom.attributes.position.array.slice();
+
+    // NEW: water volume (the “filling-ness”)
+    const volHeight = 0.9;
+    const volRadius = waterRadius * 0.98;
+    waterVolume = new THREE.Mesh(
+        new THREE.CylinderGeometry(volRadius, volRadius, volHeight, 48),
+        waterMat.clone()
+    );
+    waterVolume.material.opacity = 0.35;    // subtle fill
+    waterVolume.material.transparent = true;
+    waterVolume.material.depthWrite = false; // avoids hiding things behind it
+    waterVolume.position.y = waterSurface.position.y - volHeight/2 + 0.02;
+    pondGroup.add(waterVolume);
+
+    // Algae
+    const algaeRadius = 2.0;
+    const algaeGeom = new THREE.CircleGeometry(algaeRadius, 64);
+    algaeGeom.rotateX(-Math.PI/2);
+    algaePatch = new THREE.Mesh(algaeGeom, algaeMat.clone());
+    algaePatch.position.y = waterSurface.position.y + 0.01;
+    pondGroup.add(algaePatch); interactiveMeshes.push(algaePatch);
+
 
   // fish (create groups with userData)
   const fishCount = 14;
@@ -265,25 +252,25 @@ function createPond() {
   }
 
   // grass around rim
-  grassGroup.clear();
-  const grassMat = new THREE.MeshStandardMaterial({ color: 0x2f6b34, roughness: 0.95 });
-  const grassCount = 12;
-  for (let i=0;i<grassCount;i++){
-    const t = i / grassCount * Math.PI*2;
-    const r = outerR + 0.12 + (Math.random()*0.25);
-    const x = Math.cos(t) * r;
-    const z = Math.sin(t) * r;
-    const h = 0.7 + Math.random()*0.5;
-    const bladeGeo = new THREE.PlaneGeometry(0.18, h, 1, 2);
-    bladeGeo.translate(0, h/2, 0);
-    const blade = new THREE.Mesh(bladeGeo, grassMat.clone());
-    blade.position.set(x, -0.12 + (Math.random()*0.08), z);
-    blade.lookAt(0,0,0);
-    blade.rotateX(THREE.MathUtils.degToRad(-8 + Math.random()*14));
-    blade.name = 'Grass';
-    grassGroup.add(blade);
-    interactiveMeshes.push(blade);
-  }
+//   grassGroup.clear();
+//   const grassMat = new THREE.MeshStandardMaterial({ color: 0x2f6b34, roughness: 0.95 });
+//   const grassCount = 12;
+//   for (let i=0;i<grassCount;i++){
+//     const t = i / grassCount * Math.PI*2;
+//     const r = outerR + 0.12 + (Math.random()*0.25);
+//     const x = Math.cos(t) * r;
+//     const z = Math.sin(t) * r;
+//     const h = 0.7 + Math.random()*0.5;
+//     const bladeGeo = new THREE.PlaneGeometry(0.18, h, 1, 2);
+//     bladeGeo.translate(0, h/2, 0);
+//     const blade = new THREE.Mesh(bladeGeo, grassMat.clone());
+//     blade.position.set(x, -0.12 + (Math.random()*0.08), z);
+//     blade.lookAt(0,0,0);
+//     blade.rotateX(THREE.MathUtils.degToRad(-8 + Math.random()*14));
+//     blade.name = 'Grass';
+//     grassGroup.add(blade);
+//     interactiveMeshes.push(blade);
+//   }
 
   // bubbles
   bubbleGroup = new THREE.Group();
@@ -300,6 +287,132 @@ function createPond() {
   }
   pondGroup.add(bubbleGroup);
 }
+
+// ---------- Riparian plants with roots ----------
+const plantGroup = new THREE.Group();
+scene.add(plantGroup);
+
+function createPlantsAroundPond(count = 25){
+    plantGroup.clear();
+    const plantMat = new THREE.MeshStandardMaterial({ color: 0x2f6b34, roughness: 0.95 });
+    const rootMat = new THREE.MeshStandardMaterial({ color: 0x8b5e3c, roughness: 0.9 });
+
+    const waterRadius = waterSurface.geometry.parameters.radius || 3.7;
+    const plantOuterRadius = waterRadius + 0.3;
+
+    for(let i=0;i<count;i++){
+        const angle = Math.random()*Math.PI*2;
+        const r = plantOuterRadius + (Math.random()*0.3);
+        const x = Math.cos(angle)*r;
+        const z = Math.sin(angle)*r;
+
+        // stem/leaf
+        const stemHeight = 0.5 + Math.random()*0.5;
+        const stemGeo = new THREE.CylinderGeometry(0.05, 0.05, stemHeight, 6);
+        const stem = new THREE.Mesh(stemGeo, plantMat.clone());
+        stem.position.set(x, -0.5 + stemHeight/2, z);
+        plantGroup.add(stem);
+        interactiveMeshes.push(stem);
+
+        // root
+        const rootLength = 0.3 + Math.random()*0.2;
+        const rootGeo = new THREE.CylinderGeometry(0.03, 0.03, rootLength, 6);
+        const root = new THREE.Mesh(rootGeo, rootMat.clone());
+        root.position.set(x, -0.5 - rootLength/2, z);
+        plantGroup.add(root);
+        interactiveMeshes.push(root);
+    }
+}
+
+// ---------- Nitrate particles (leaching into pond centre) ----------
+
+function createNitrateMolecule() {
+    const group = new THREE.Group();
+
+    // Nitrogen atom (blue)
+    const nitrogen = new THREE.Mesh(
+        new THREE.SphereGeometry(0.08, 16, 16),
+        new THREE.MeshStandardMaterial({ color: 0x0000ff })
+    );
+    group.add(nitrogen);
+
+    // Oxygen atoms (red)
+    const oxyMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+    const radius = 0.2;
+    for (let i = 0; i < 3; i++) {
+        const angle = (i / 3) * Math.PI * 2;
+        const oxygen = new THREE.Mesh(
+            new THREE.SphereGeometry(0.06, 16, 16),
+            oxyMat
+        );
+        oxygen.position.set(
+            Math.cos(angle) * radius,
+            0,
+            Math.sin(angle) * radius
+        );
+        group.add(oxygen);
+    }
+
+    return group;
+}
+
+const nitrates = [];
+
+function createNitrates(count) {
+    nitrates.forEach(n => scene.remove(n));
+    nitrates.length = 0;
+
+    for (let i = 0; i < count; i++) {
+        const nitrate = createNitrateMolecule();
+
+        // Spawn near water edge (~radius 3.7–4), slightly above roots
+        const angle = Math.random() * Math.PI * 2;
+        const r = 3.7 + Math.random() * 0.3;
+        nitrate.position.set(
+            Math.cos(angle) * r,
+            Math.random() * 0.1 - 0.6, // just under surface at edge
+            Math.sin(angle) * r
+        );
+
+        // Movement: slightly downward + drift inward (towards pond centre)
+        nitrate.userData.speedY = -(0.002 + Math.random() * 0.002); // downward
+        nitrate.userData.driftX = -(nitrate.position.x) * 0.0005;   // pull toward x=0
+        nitrate.userData.driftZ = -(nitrate.position.z) * 0.0005;   // pull toward z=0
+
+        scene.add(nitrate);
+        nitrates.push(nitrate);
+    }
+}
+
+createNitrates(30);
+
+function updateNitrates() {
+    nitrates.forEach(n => {
+        // Apply motion
+        n.position.y += n.userData.speedY;
+        n.position.x += n.userData.driftX;
+        n.position.z += n.userData.driftZ;
+
+        // If too deep, respawn at edge again
+        if (n.position.y < -1) {
+            const angle = Math.random() * Math.PI * 2;
+            const r = 3.7 + Math.random() * 0.3;
+
+            n.position.set(
+                Math.cos(angle) * r,
+                Math.random() * 0.2 - 0.6, // near surface edge
+                Math.sin(angle) * r
+            );
+
+            n.userData.speedY = -(0.002 + Math.random() * 0.002);
+            n.userData.driftX = -(n.position.x) * 0.0005;
+            n.userData.driftZ = -(n.position.z) * 0.0005;
+        }
+    });
+}
+
+
+
 
 // ---------- fish maker (slim-profile body + tail + eyes) ----------
 function makeFish(color=0x9fb7c9){
@@ -519,7 +632,9 @@ document.getElementById('resetBtn').addEventListener('click', ()=>{
   controls.target.set(0,0.1,0);
   document.getElementById('timescale').value = 0;
   // rebuild and reset
-  createPond();
+  createLopsidedPond();
+  createPlantsAroundPond();
+  createNitrates(30);
   updatePondState(0);
 });
 let bubblesEnabled = true;
@@ -541,7 +656,8 @@ window.addEventListener('resize', ()=>{
 });
 
 // ---------- Make initial pond ----------
-createPond();
+createLopsidedPond();
+createPlantsAroundPond();
 
 // ---------- animation loop ----------
 let last = performance.now();
@@ -553,9 +669,11 @@ let last = performance.now();
   updateWater(dt);
   if (bubbleGroup && bubblesEnabled) updateBubbles();
   updateFishes();
+  updateNitrates();
 
   controls.update();
   renderer.render(scene, camera);
+  
   requestAnimationFrame(loop);
 })();
 
