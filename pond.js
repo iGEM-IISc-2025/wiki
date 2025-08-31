@@ -23,6 +23,9 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 controls.target.set(0, 0.1, 0);
+// Limit vertical rotation
+controls.minPolarAngle = 0;          // look straight up
+controls.maxPolarAngle = Math.PI / 2; // cannot go below horizon
 
 // lights
 scene.add(new THREE.AmbientLight(0xffffff, 0.45));
@@ -36,17 +39,17 @@ const topsoilMat = new THREE.MeshStandardMaterial({ color: 0x85532d, roughness: 
 const subsoilMat = new THREE.MeshStandardMaterial({ color: 0xc38a3a, roughness: 0.85 });
 const rockMat = new THREE.MeshStandardMaterial({ color: 0x65400c, roughness: 1.0 });
 const waterMat = new THREE.MeshPhysicalMaterial({
-  color: 0x4fc3f7,
+  color: 0x1CA3EC,
   roughness: 0.1,
   metalness: 0.03,
   transparent: true,
-  opacity: 0.7,
-  transmission: 0.75,
+  opacity: 0.5,       // current opacity
+  transmission: 0.3, // controls light passing through
   ior: 1.33,
   clearcoat: 0.05,
   clearcoatRoughness: 0.02,
 });
-const algaeMat = new THREE.MeshStandardMaterial({ color: 0x6fcf97, roughness: 0.6, transparent: true, opacity: 0.85 });
+const algaeMat = new THREE.MeshStandardMaterial({ color: 0x64E986, roughness: 0.6, transparent: true, opacity: 0.85 });
 const deadFishMat = new THREE.MeshStandardMaterial({ color: 0x4a4a4a, transparent: true, opacity: 0.45 });
 const clownfishOrangeMat = new THREE.MeshStandardMaterial({ color: 0xff7f00, roughness: 0.45 });
 const clownfishWhiteMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.45 });
@@ -197,46 +200,109 @@ const plantGroup = new THREE.Group();
 scene.add(plantGroup);
 const roots = [];
 
-
 function createPlantsAroundPond(count = 25) {
-  plantGroup.clear();
-  roots.length = 0;
+    plantGroup.clear();
+    roots.length = 0;
 
-  const stemMat = new THREE.MeshStandardMaterial({ color: 0x3a5d2b, roughness: 0.9 });
-  const leavesMat = new THREE.MeshStandardMaterial({ color: 0x2f6b34, roughness: 2 });
-  const rootMat = new THREE.MeshStandardMaterial({ color: 0x8b5e3c, roughness: 0.9 });
+    const stemMat = new THREE.MeshStandardMaterial({ color: 0x735621, roughness: 0.7 }); // main brown stem
+    const branchMat = new THREE.MeshStandardMaterial({ color: 0xa87e31, roughness: 0.7 }); // thin connector branches
+    const rootMat = new THREE.MeshStandardMaterial({ color: 0x8b5e3c, roughness: 0.9 });
 
-  const waterRadius = waterSurface.geometry.parameters.radius || 3.7;
-  const plantOuterRadius = waterRadius + 0.3;
-  const leafGroup = new THREE.Group();
-  scene.add(leafGroup);
-  const rootGroup = new THREE.Group();
-  scene.add(rootGroup);
+    function brightenColor(hex, factor = 1.3) {
+        const r = Math.min(255, ((hex >> 16) & 0xff) * factor);
+        const g = Math.min(255, ((hex >> 8) & 0xff) * factor);
+        const b = Math.min(255, (hex & 0xff) * factor);
+        return (r << 16) | (g << 8) | b;
+    }
+
+    const leafColors = [
+        brightenColor(0x228B22),
+        brightenColor(0x9ACD32),
+        brightenColor(0x556B2F),
+        brightenColor(0x6B8E23)
+    ];
+
+    const waterRadius = waterSurface.geometry.parameters.radius || 3.7;
+    const plantOuterRadius = waterRadius + 0.3;
+
+    const leafGroup = new THREE.Group();
+    scene.add(leafGroup);
+    const rootGroup = new THREE.Group();
+    scene.add(rootGroup);
 
   for (let i = 0; i < count; i++) {
     const angle = Math.random() * Math.PI * 2;
-    const r = plantOuterRadius + (Math.random() * 0.3);
+    const r = plantOuterRadius + Math.random() * 0.3;
     const x = Math.cos(angle) * r;
-    const z = Math.sin(angle) * r;
+    const z = 0.3 + Math.sin(angle) * r;
 
-    const stemHeight = 0.2 + Math.random() * 0.3;
-    const stemRadius = 0.05 + Math.random() * 0.05;
+    // ----- Main stem -----
+    const stemHeight = 0.5 + Math.random() * 0.3;
+    const stemRadius = 0.03 + Math.random() * 0.01;
     const stemGeo = new THREE.CylinderGeometry(stemRadius, stemRadius, stemHeight, 6);
     const stem = new THREE.Mesh(stemGeo, stemMat.clone());
     stem.position.set(x, -0.5 + stemHeight / 2, z);
+    stem.rotation.z = (Math.random() - 0.5) * 0.1;
+    stem.rotation.x = (Math.random() - 0.5) * 0.1;
     plantGroup.add(stem);
     stem.name = 'Grass';
     interactiveMeshes.push(stem);
 
-    const leafRadius = 0.15 + Math.random() * 0.1;
-    const leafGeo = new THREE.IcosahedronGeometry(leafRadius, 1);
-    const leaves = new THREE.Mesh(leafGeo, leavesMat.clone());
-    leaves.position.set(x, -0.5 + stemHeight + leafRadius / 2, z);
-    plantGroup.add(leaves);
-    leaves.name = 'Grass';
-    interactiveMeshes.push(leaves);
-    leafGroup.add(leaves); 
+    // ----- Tree spheres -----
+    const spheresCount = 2 + Math.floor(Math.random() * 2); // 2-3 spheres
+    const treeColor = leafColors[Math.floor(Math.random() * leafColors.length)];
+    const spheres = [];
 
+    for (let s = 0; s < spheresCount; s++) {
+        const sphereSize = 0.08 + Math.random() * 0.12;
+        const sphereGeo = new THREE.SphereGeometry(sphereSize, 8, 8);
+        const sphereMat = new THREE.MeshStandardMaterial({ color: treeColor, roughness: 0.5 });
+        const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+
+        // place near top of stem
+        sphere.position.set(
+            stem.position.x + (Math.random() * 0.1 - 0.05),
+            stem.position.y + stemHeight * 0.5 + Math.random() * 0.05,
+            stem.position.z + (Math.random() * 0.1 - 0.05)
+        );
+
+        plantGroup.add(sphere);
+        leafGroup.add(sphere);
+        interactiveMeshes.push(sphere);
+        sphere.name = 'Grass';
+        spheres.push(sphere);
+
+        // ----- Curved connector branch -----
+        // start point on stem (slightly below top)
+        const startPoint = new THREE.Vector3(
+            stem.position.x,
+            stem.position.y - stemHeight * (Math.random() * 0.4),
+            stem.position.z
+        );
+
+        // end point just below sphere
+        const endPoint = new THREE.Vector3(
+            sphere.position.x + (Math.random() * 0.02 - 0.01),
+            sphere.position.y,
+            sphere.position.z + (Math.random() * 0.02 - 0.01)
+        );
+
+        // mid point for curvature
+        const midPoint = startPoint.clone().lerp(endPoint, 0.5);
+        midPoint.x += (Math.random() - 0.5) * 0.12;
+        midPoint.z += (Math.random() - 0.5) * 0.12;
+
+        const curve = new THREE.CatmullRomCurve3([startPoint, midPoint, endPoint]);
+
+        const connectorRadius = 0.008 + Math.random() * 0.004;
+        const connectorGeo = new THREE.TubeGeometry(curve, 12, connectorRadius, 6, false);
+        const connector = new THREE.Mesh(connectorGeo, branchMat.clone());
+
+        plantGroup.add(connector);
+        interactiveMeshes.push(connector);
+    }
+
+    // ----- Roots -----
     const rootLength = 0.2 + Math.random() * 0.2;
     const rootGeo = new THREE.CylinderGeometry(0.03, 0.03, rootLength, 6);
     const root = new THREE.Mesh(rootGeo, rootMat.clone());
@@ -245,10 +311,11 @@ function createPlantsAroundPond(count = 25) {
     root.name = 'Grass';
     interactiveMeshes.push(root);
     rootGroup.add(root);
-
     roots.push(root);
   }
 }
+
+
 
 // ---------- Nitrate particles ----------
 function createNitrateMolecule() {
@@ -479,6 +546,63 @@ function updateBacteria(delta) {
   });
 }
 
+// ---------- Rocks group ----------
+const rocksGroup = new THREE.Group();
+scene.add(rocksGroup);
+
+function createRocks(count = 15) {
+  if (!waterSurface) return; // safety check
+  rocksGroup.clear();
+
+  const waterRadius = waterSurface.geometry?.parameters?.radius || 3.7;
+  const minR = waterRadius + 1;
+  const maxR = waterRadius + 1.6;
+
+  for (let i = 0; i < count; i++) {
+    // Base geometry: icosahedron or dodecahedron
+    const geo = new THREE.IcosahedronGeometry(0.3 + Math.random() * 0.3, 2); 
+    
+    // Distort vertices to make irregular rock shape
+    const pos = geo.attributes.position;
+    for (let j = 0; j < pos.count; j++) {
+      const vx = pos.getX(j) + (Math.random() - 0.5) * 0.1;
+      const vy = pos.getY(j) + (Math.random() - 0.5) * 0.1;
+      const vz = pos.getZ(j) + (Math.random() - 0.5) * 0.1;
+      pos.setXYZ(j, vx, vy, vz);
+    }
+    geo.computeVertexNormals();
+
+    const rockMat = new THREE.MeshStandardMaterial({ 
+      color: 0x555555 + Math.random() * 0x222222, 
+      roughness: 1, 
+      flatShading: true 
+    });
+    const rock = new THREE.Mesh(geo, rockMat);
+
+    // Random position around pond
+    const angle = Math.random() * Math.PI * 2;
+    const r = minR + Math.random() * (maxR - minR);
+    const x = Math.cos(angle) * r;
+    const z = Math.sin(angle) * r;
+    const y = -0.5 + Math.random() * 0.1;
+    rock.position.set(x, y, z);
+
+    // Random rotation
+    rock.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+
+    // Non-uniform scale
+    rock.scale.set(
+      0.6 + Math.random() * 0.8,
+      0.4 + Math.random() * 0.8,
+      0.6 + Math.random() * 0.8
+    );
+
+    rocksGroup.add(rock);
+    interactiveMeshes.push(rock);
+  }
+}
+
+
 // ---------- fish maker ----------
 function makeFish(id) {
   const g = new THREE.Group();
@@ -590,7 +714,6 @@ function makeFish(id) {
 // ---------- Interactivity ----------
 const ray = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-const tooltip = demoContainer.querySelector('#tooltip');
 const infoBox = demoContainer.querySelector('#infoBox');
 const infoData = {
   'Water': { 
@@ -657,15 +780,15 @@ function onMove(e) {
       hovered = mesh;
       setHighlight(mesh, 0.1);
     }
-    tooltip.style.display = 'block';
-    tooltip.style.left = (e.clientX) + 'px';
-    tooltip.style.top = (e.clientY - 10) + 'px';
+    // tooltip.style.display = 'block';
+    // tooltip.style.left = (e.clientX) + 'px';
+    // tooltip.style.top = (e.clientY - 10) + 'px';
     const key = infoData[mesh.name] ? mesh.name : (mesh.userData && mesh.userData.isDead !== undefined ? 'Fish' : (mesh.parent.userData.isBacteria ? 'Bacteria' : mesh.name));
-    tooltip.innerText = (infoData[key] && infoData[key].title) ? infoData[key].title : mesh.name;
+    // tooltip.innerText = (infoData[key] && infoData[key].title) ? infoData[key].title : mesh.name;
   } else {
     if (hovered) clearHighlight(hovered);
     hovered = null;
-    tooltip.style.display = 'none';
+    // tooltip.style.display = 'none';
   }
 }
 
@@ -896,6 +1019,7 @@ window.addEventListener('resize', () => {
 // ---------- Make initial pond ----------
 createLopsidedPond();
 createPlantsAroundPond();
+createRocks(20);
 createNitrates(30);
 
 // ---------- animation loop ----------
