@@ -35,18 +35,71 @@ scene.add(dir);
 scene.add(new THREE.HemisphereLight(0x88aaff, 0x082033, 0.35));
 
 // ---------- Materials ----------
-const topsoilMat = new THREE.MeshStandardMaterial({ color: 0x85532d, roughness: 0.85 });
-const subsoilMat = new THREE.MeshStandardMaterial({ color: 0xc38a3a, roughness: 0.85 });
-const rockMat = new THREE.MeshStandardMaterial({ color: 0x65400c, roughness: 1.0 });
+// const topsoilMat = new THREE.MeshStandardMaterial({ color: 0x85532d, roughness: 0.85 });
+// const subsoilMat = new THREE.MeshStandardMaterial({ color: 0xc38a3a, roughness: 0.85 });
+// --- Load soil textures (do this once at top of file, not inside function) ---
+const loader = new THREE.TextureLoader();
+
+const soilColor = loader.load('textures/Ground048_1K-JPG_Color.jpg');
+const soilNormal = loader.load('textures/Ground048_1K-JPG_NormalGL.jpg');
+const soilRoughness = loader.load('textures/Ground048_1K-JPG_Rough.jpg');
+const soilDisplacement = loader.load('textures/Ground048_1K-JPG_Displacement.jpg');
+
+// Make textures tile across the pond
+[soilColor, soilNormal, soilRoughness, soilDisplacement].forEach(tex => {
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(4, 4); // tweak density if needed
+});
+
+const topsoilMat = new THREE.MeshStandardMaterial({
+  map: soilColor,
+  normalMap: soilNormal,
+  bumpMap: soilDisplacement, // use displacement as bump
+  bumpScale: 0.05,           // adjust strength
+  roughness: 1.0,
+  metalness: 0,
+  color: new THREE.Color(0xa37141)
+});
+
+const soilGeo = new THREE.PlaneGeometry(20, 20, 256, 256); 
+// ↑ more segments = smoother displacement
+
+soilRoughness.encoding = THREE.LinearEncoding;
+soilRoughness.minFilter = THREE.LinearMipMapLinearFilter;
+soilRoughness.magFilter = THREE.LinearFilter;
+
+
+const subsoilMat = new THREE.MeshStandardMaterial({
+  map: soilColor,
+  normalMap: soilNormal,
+  roughnessMap: soilRoughness,
+  displacementMap: soilDisplacement,
+  displacementScale: 0.02,
+  roughness: 1.0,
+  metalness: 0,
+  color: new THREE.Color(0x4d2623)
+});
+
+topsoilMat.envMapIntensity = 0;
+
+subsoilMat.normalScale.set(0.3, 0.3);
+
+topsoilMat.roughness = 1.0;
+subsoilMat.roughness = 1.0;
+
+topsoilMat.normalScale.set(0.1, 0.1);
+
+
+const rockMat = new THREE.MeshStandardMaterial({ color: 0x381714, roughness: 1.0 });
 const waterMat = new THREE.MeshPhysicalMaterial({
   color: 0x1CA3EC,
   roughness: 0.1,
-  metalness: 0.03,
+  metalness: 0.0,
   transparent: true,
   opacity: 0.5,       // current opacity
   transmission: 0.3, // controls light passing through
   ior: 1.33,
-  clearcoat: 0.05,
+  clearcoat: 1.0,
   clearcoatRoughness: 0.02,
 });
 const algaeMat = new THREE.MeshStandardMaterial({ color: 0x64E986, roughness: 0.6, transparent: true, opacity: 0.85 });
@@ -95,27 +148,31 @@ let waterVolume = new THREE.Mesh(
 waterVolume.position.y = -0.75;
 pondGroup.add(waterVolume);
 
+// --- Updated pond function ---
 function createLopsidedPond() {
   const outerR = 6;
   const innerR = 3;
   pondGroup.clear();
   interactiveMeshes.length = 0;
 
-  const topGeom = makeLopsidedBowl(6, 3, 1.6, 256);
+  // Topsoil
+  const topGeom = makeLopsidedBowl(outerR, innerR, 1.6, 256);
   const topMesh = new THREE.Mesh(topGeom, topsoilMat);
   topMesh.name = 'Topsoil';
   topMesh.position.y = -0.5;
   pondGroup.add(topMesh);
   interactiveMeshes.push(topMesh);
 
-  const subGeom = makeLopsidedBowl(6 * 0.97, 3 * 0.95, 1.7, 256);
+  // Subsoil
+  const subGeom = makeLopsidedBowl(outerR * 0.97, innerR * 0.95, 1.7, 256);
   const subMesh = new THREE.Mesh(subGeom, subsoilMat);
   subMesh.name = 'Subsoil';
   subMesh.position.y = -0.9;
   pondGroup.add(subMesh);
   interactiveMeshes.push(subMesh);
 
-  const rockGeom = makeLopsidedBowl(6 * 0.99, 3 * 0.6, 2.0, 256);
+  // Bedrock
+  const rockGeom = makeLopsidedBowl(outerR * 0.99, innerR * 0.6, 2.0, 256);
   const rockMesh = new THREE.Mesh(rockGeom, rockMat);
   rockMesh.name = 'Bedrock';
   rockMesh.position.y = -1.25;
@@ -183,7 +240,7 @@ function createLopsidedPond() {
     opacity: 0.75,
     roughness: 0.2,
   });
-  for (let i = 0; i < 60; i++) {
+  for (let i = 0; i < 90; i++) {
     const b = new THREE.Mesh(bubbleGeo, bubbleMat.clone());
     const a = Math.random() * Math.PI * 2;
     const r = Math.random() * (waterRadius * 0.8);
@@ -200,7 +257,7 @@ const plantGroup = new THREE.Group();
 scene.add(plantGroup);
 const roots = [];
 
-function createPlantsAroundPond(count = 25) {
+function createPlantsAroundPond(count = 150) {
     plantGroup.clear();
     roots.length = 0;
 
@@ -232,7 +289,7 @@ function createPlantsAroundPond(count = 25) {
 
   for (let i = 0; i < count; i++) {
     const angle = Math.random() * Math.PI * 2;
-    const r = plantOuterRadius + Math.random() * 0.3;
+    const r = plantOuterRadius + Math.random() * 1.5;
     const x = Math.cos(angle) * r;
     const z = 0.3 + Math.sin(angle) * r;
 
@@ -546,62 +603,6 @@ function updateBacteria(delta) {
   });
 }
 
-// ---------- Rocks group ----------
-const rocksGroup = new THREE.Group();
-scene.add(rocksGroup);
-
-function createRocks(count = 15) {
-  if (!waterSurface) return; // safety check
-  rocksGroup.clear();
-
-  const waterRadius = waterSurface.geometry?.parameters?.radius || 3.7;
-  const minR = waterRadius + 1;
-  const maxR = waterRadius + 1.6;
-
-  for (let i = 0; i < count; i++) {
-    // Base geometry: icosahedron or dodecahedron
-    const geo = new THREE.IcosahedronGeometry(0.3 + Math.random() * 0.3, 2); 
-    
-    // Distort vertices to make irregular rock shape
-    const pos = geo.attributes.position;
-    for (let j = 0; j < pos.count; j++) {
-      const vx = pos.getX(j) + (Math.random() - 0.5) * 0.1;
-      const vy = pos.getY(j) + (Math.random() - 0.5) * 0.1;
-      const vz = pos.getZ(j) + (Math.random() - 0.5) * 0.1;
-      pos.setXYZ(j, vx, vy, vz);
-    }
-    geo.computeVertexNormals();
-
-    const rockMat = new THREE.MeshStandardMaterial({ 
-      color: 0x555555 + Math.random() * 0x222222, 
-      roughness: 1, 
-      flatShading: true 
-    });
-    const rock = new THREE.Mesh(geo, rockMat);
-
-    // Random position around pond
-    const angle = Math.random() * Math.PI * 2;
-    const r = minR + Math.random() * (maxR - minR);
-    const x = Math.cos(angle) * r;
-    const z = Math.sin(angle) * r;
-    const y = -0.5 + Math.random() * 0.1;
-    rock.position.set(x, y, z);
-
-    // Random rotation
-    rock.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-
-    // Non-uniform scale
-    rock.scale.set(
-      0.6 + Math.random() * 0.8,
-      0.4 + Math.random() * 0.8,
-      0.6 + Math.random() * 0.8
-    );
-
-    rocksGroup.add(rock);
-    interactiveMeshes.push(rock);
-  }
-}
-
 
 // ---------- fish maker ----------
 function makeFish(id) {
@@ -826,9 +827,17 @@ function onClick(e) {
 
 function setHighlight(mesh, strength = 0.2) {
     if (!mesh || !mesh.material) return;
+
     if (Array.isArray(mesh.material)) {
-        const hoverColor = new THREE.Color(0xffffff);
-        const highlightStrength = 0.01; // Change this value to reduce intensity
+        let hoverColor = new THREE.Color(0xffffff); // default white
+        const highlightStrength = 0.01; // reduced intensity
+
+        // Custom colors for soil/rock
+        if (mesh.name === "Topsoil" || mesh.name === "Subsoil") {
+            hoverColor = new THREE.Color(0x553311); // warm brown
+        } else if (mesh.name === "Bedrock") {
+            hoverColor = new THREE.Color(0x444444); // dark gray
+        }
 
         mesh.material.forEach((mat) => {
             if (!mat.userData._orig) {
@@ -850,10 +859,25 @@ function setHighlight(mesh, strength = 0.2) {
                 emissiveIntensity: mesh.material.emissiveIntensity || 0,
             };
         }
-        if (mesh.material.emissive) mesh.material.emissive.set(0xffffff);
-        mesh.material.emissiveIntensity = strength;
+
+        if (mesh.material.emissive) {
+            if (mesh.name === "Topsoil" || mesh.name === "Subsoil") {
+                mesh.material.emissive.set(0x553311); // warm brown
+                mesh.material.emissiveIntensity = 0.3;
+            } else if (mesh.name === "Bedrock") {
+                mesh.material.emissive.set(0x444444); // dark gray
+                mesh.material.emissiveIntensity = 0.25;
+            } else if (mesh.name === "Water") {
+                mesh.material.emissive.set(0x3399ff); // soft blue
+                mesh.material.emissiveIntensity = 0.2;
+            } else {
+                mesh.material.emissive.set(0xffffff); // default
+                mesh.material.emissiveIntensity = strength;
+            }
+        }
     }
 }
+
 
 function clearHighlight(mesh) {
   if (!mesh || !mesh.material) return;
@@ -1001,7 +1025,7 @@ demoContainer.querySelector('#createBacteria').addEventListener('click', (e) => 
     clearAmmonium();
     e.target.innerText = "Create Bacteria";
   } else {
-    createBacteriaRing(10);
+    createBacteriaRing(20);
     bacteriaEnabled = true;
     e.target.innerText = "Remove Bacteria";
   }
@@ -1019,7 +1043,6 @@ window.addEventListener('resize', () => {
 // ---------- Make initial pond ----------
 createLopsidedPond();
 createPlantsAroundPond();
-createRocks(20);
 createNitrates(30);
 
 // ---------- animation loop ----------
