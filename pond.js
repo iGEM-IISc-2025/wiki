@@ -359,19 +359,56 @@ function createPlantsAroundPond(count = 150) {
         interactiveMeshes.push(connector);
     }
 
-    // ----- Roots -----
-    const rootLength = 0.2 + Math.random() * 0.2;
-    const rootGeo = new THREE.CylinderGeometry(0.03, 0.03, rootLength, 6);
-    const root = new THREE.Mesh(rootGeo, rootMat.clone());
-    root.position.set(x, -0.5 - rootLength / 2, z);
-    plantGroup.add(root);
-    root.name = 'Grass';
-    interactiveMeshes.push(root);
-    rootGroup.add(root);
-    roots.push(root);
+        // ----- Roots (main tap root) -----
+        const rootLength = 0.2 + Math.random() * 0.2;
+        const rootGeo = new THREE.CylinderGeometry(0.03, 0.03, rootLength, 6);
+        const root = new THREE.Mesh(rootGeo, rootMat.clone());
+        root.position.set(x, -0.5 - rootLength / 2, z);
+        plantGroup.add(root);
+        root.name = 'Grass';
+        interactiveMeshes.push(root);
+        rootGroup.add(root);
+        roots.push(root);
+
+        // ----- Fibrous Roots (root-2) -----
+        const fibrousCount = 6 + Math.floor(Math.random() * 5); // 6-10 small roots
+        for (let f = 0; f < fibrousCount; f++) {
+            // start at bottom of tap root
+            const start = new THREE.Vector3(
+                root.position.x + (Math.random() * 0.04 - 0.02), 
+                root.position.y - rootLength / 2,
+                root.position.z + (Math.random() * 0.04 - 0.02)
+            );
+
+            // make it curve down with 2-3 bends
+            const mid1 = start.clone().add(new THREE.Vector3(
+                (Math.random() - 0.5) * 0.05, 
+                -0.1, 
+                (Math.random() - 0.5) * 0.05
+            ));
+            const mid2 = mid1.clone().add(new THREE.Vector3(
+                (Math.random() - 0.5) * 0.05,
+                -0.1, 
+                (Math.random() - 0.5) * 0.05
+            ));
+            const end = mid2.clone().add(new THREE.Vector3(
+                (Math.random() - 0.5) * 0.03,
+                -0.15 - Math.random() * 0.1,
+                (Math.random() - 0.5) * 0.03
+            ));
+
+            const curve = new THREE.CatmullRomCurve3([start, mid1, mid2, end]);
+            const fibrousGeo = new THREE.TubeGeometry(curve, 12, 0.005, 6, false);
+            const fibrousRoot = new THREE.Mesh(fibrousGeo, rootMat.clone());
+            fibrousRoot.name = 'root-2';
+
+            plantGroup.add(fibrousRoot);
+            rootGroup.add(fibrousRoot);
+            interactiveMeshes.push(fibrousRoot);
+            roots.push(fibrousRoot);
+        }
   }
 }
-
 
 
 // ---------- Nitrate particles ----------
