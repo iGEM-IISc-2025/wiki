@@ -18,8 +18,13 @@
         <img src="images/igemlogo.png" alt="Site Logo"/>
       </div>
 
+      <!-- Mobile toggle -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-icon"></span>
+      </button>
+
       <!-- Main Nav -->
-      <ul class="nav-menu">
+      <ul class="nav-menu" id="nav-menu">
         <li>
           <a href="#">Wet Lab</a>
           <nav class="navbar-2">
@@ -132,6 +137,15 @@
     const docHeight = document.body.scrollHeight - window.innerHeight;
     const scrolled = (window.scrollY / docHeight) * 100;
     document.getElementById("progress-bar").style.width = scrolled + "%";
+  });
+
+  // Navbar toggle
+  const navToggle = document.getElementById("nav-toggle");
+
+  navToggle.addEventListener("click", () => {
+    const expanded = navToggle.getAttribute("aria-expanded") === "true";
+    navToggle.setAttribute("aria-expanded", !expanded);
+    document.getElementById("nav-menu").classList.toggle("open");
   });
 
   function wrapLettersPreserve(root) {
