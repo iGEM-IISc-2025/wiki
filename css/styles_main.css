@@ -419,50 +419,6 @@ body {
   opacity: 1;
 }
 
-/* Collage Section */
-.collage-section {
-  padding: 4rem 2rem;
-  background-color: #f9f9f9;
-  text-align: center;
-}
-
-.collage-section h2 {
-  font-size: 2.2rem;
-  margin-bottom: 2rem;
-}
-
-.collage-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.collage-item {
-  width: 300px;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.collage-item:hover {
-  transform: scale(1.04);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
-}
-
-.collage-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.collage-item p {
-  padding: 1rem;
-  font-size: 1rem;
-  color: #333;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
   .hero-overlay {
@@ -515,3 +471,118 @@ body {
 }
 
 .hero-text .letter { display:inline-block; transition: transform .15s ease; }
+
+
+/* Stats Section */
+.stat-band {
+  padding: 60px 40px;
+}
+
+.stat-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.stat-text h2 {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #2ecc71; /* green accent */
+  margin-bottom: 10px;
+  opacity: 0;                   /* start hidden */
+  transform: translateY(20px);  /* slight slide */
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.stat-text.visible h2 {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stat-text p {
+  font-size: 1.3rem;
+  line-height: 1.5;
+  color: #111; /* black text */
+}
+
+.stat-diagram img {
+  max-width: 250px;
+  height: auto;
+  filter: drop-shadow(0 0 12px rgba(128, 0, 128, 0.3)); /* purple glow */
+}
+
+@media (max-width: 768px) {
+  .stat-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+  .stat-diagram img {
+    max-width: 180px;
+  }
+}
+
+.stat-band {
+  padding: 4rem 2rem;
+}
+
+.stat-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Zig-zag layout */
+.stat-inner.reverse {
+  flex-direction: row-reverse;
+}
+
+/* Animation defaults */
+.stat-band {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.stat-band.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Optional: slide from sides instead of only Y */
+.stat-inner {
+  transform: translateX(-40px);
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+.stat-inner.reverse {
+  transform: translateX(40px); /* opposite direction */
+}
+.stat-band.visible .stat-inner {
+  transform: translateX(0);
+}
+
+.counter {
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
+  filter: none !important;
+}
+
+.stat-band {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.stat-band.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Force reverse layout for second stat */
+.stat-band.reverse .stat-text { order: 2 !important; }
+.stat-band.reverse .stat-diagram { order: 1 !important; }

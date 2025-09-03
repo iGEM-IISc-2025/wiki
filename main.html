@@ -103,6 +103,46 @@
     </div>
   </header>
 
+<!-- 1st stat (normal) -->
+<section class="stat-band">
+  <div class="stat-inner">
+    <div class="stat-text">
+      <h2><span class="counter" data-target="85">0</span>%</h2>
+      <p>of rural households in India depend on <strong>groundwater</strong> for drinking.</p>
+    </div>
+    <div class="stat-diagram">
+      <img src="images/water_icon.svg" alt="Water icon"/>
+    </div>
+  </div>
+</section>
+
+<!-- 2nd stat (REVERSED via class on section) -->
+<section class="stat-band reverse">
+  <div class="stat-inner">
+    <div class="stat-text">
+      <h2><span class="counter" data-target="30">0</span>%</h2>
+      <p>of India’s land suffers from <strong>soil degradation</strong>.</p>
+    </div>
+    <div class="stat-diagram">
+      <img src="images/soil_icon.svg" alt="Soil icon"/>
+    </div>
+  </div>
+</section>
+
+<!-- 3rd stat (normal) -->
+<section class="stat-band">
+  <div class="stat-inner">
+    <div class="stat-text">
+      <h2><span class="counter" data-target="80">0</span>%</h2>
+      <p>of India’s freshwater resources are consumed by <strong>agriculture</strong>.</p>
+    </div>
+    <div class="stat-diagram">
+      <img src="images/farm_icon.svg" alt="Farm icon"/>
+    </div>
+  </div>
+</section>
+
+
   <iframe src="pond.html" 
     width="100%" 
     height="800px" 
@@ -110,27 +150,6 @@
     scrolling="no" 
     style="border: none;">
   </iframe>
-
-  <!-- Collage Section -->
-  <section class="collage-section">
-    <div class="container">
-      <h2>Water & Soil in Numbers</h2>
-      <div class="collage-grid">
-        <div class="collage-item">
-          <img src="images/water.jpg" alt="Groundwater"/>
-          <p>85% of households in India depend on groundwater for drinking.</p>
-        </div>
-        <div class="collage-item">
-          <img src="images/soil.jpg" alt="Soil Health"/>
-          <p>30% of India’s land suffers from soil degradation.</p>
-        </div>
-        <div class="collage-item">
-          <img src="images/farmers.jpg" alt="Farmers"/>
-          <p>Agriculture uses nearly 80% of India’s freshwater resources.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <script>
   // Scroll progress bar
@@ -302,7 +321,54 @@
     });
   })();
 
-  
+// Percentage increases over time:
+const statBands = document.querySelectorAll('.stat-band');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const band = entry.target;
+
+      // stagger: delay each band a bit
+      setTimeout(() => {
+        band.classList.add('visible');
+
+        // also reveal the text block itself
+        const text = band.querySelector('.stat-text');
+        if (text) text.classList.add('visible');
+
+        // animate the number counter
+        const counter = band.querySelector('.counter');
+        if (counter && !counter.classList.contains('done')) {
+          const end = +counter.getAttribute('data-target');
+          const duration = 1200; // total animation time (ms)
+          const startTime = performance.now();
+
+          const step = (now) => {
+            const progress = Math.min((now - startTime) / duration, 1);
+            // ease-out cubic
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const value = Math.floor(eased * end);
+
+            counter.textContent = value; // update number
+
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              counter.textContent = end; // final number
+              counter.classList.add('done');
+            }
+          };
+
+          requestAnimationFrame(step);
+        }
+      }, i * 300); // 300ms stagger between each stat band
+    }
+  });
+}, { threshold: 0.3 });
+
+statBands.forEach(band => observer.observe(band));
+ 
 </script>
 
 </body>
