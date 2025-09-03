@@ -91,6 +91,7 @@
     <div class="hero-overlay">
       <div class="hero-text">
         <h1 class="hero-title">
+          <span class="line">ARGUS-2440:</span><br/>
           <span class="line">Combatting nitrate</span><br/>
           <span class="line">leaching in soil</span><br/>
           <span class="line">with engineered <em>Pseudomonas putida</em></span>
@@ -261,7 +262,6 @@
       mask.style.setProperty("--y", `${y}px`);
       mask.classList.add("visible");
 
-      // Move custom cursor image
       cursorEl.style.left = e.clientX + "px";
       cursorEl.style.top = e.clientY + "px";
       if (cursorEl.style.opacity !== "1") showCursor();
@@ -282,7 +282,7 @@
       const letterEl = document.elementFromPoint(e.clientX, e.clientY);
       if (letterEl && letterEl.classList.contains("letter")) {
         if (activeLetter && activeLetter !== letterEl) {
-          activeLetter.style.transform = ""; // reset old
+          activeLetter.style.transform = "";
         }
         activeLetter = letterEl;
         letterEl.style.transform = "scale(1.5)";
