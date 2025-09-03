@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Docs | iGEM Wiki</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollspy highlight */
+    .active-link {
+      @apply text-green-600 font-semibold;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Navbar placeholder -->
+  <div id="navbar-placeholder"></div>
+
+  <div class="flex flex-col lg:flex-row max-w-7xl mx-auto px-4 py-8 gap-8">
+
+    <!-- Sidebar -->
+    <aside class="hidden lg:block lg:w-64 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto border-r border-gray-200 pr-4">
+      <h2 class="text-xl font-bold text-gray-700 mb-4">Documentation</h2>
+      <nav>
+        <ul class="space-y-2">
+          <li><a href="#intro" class="active-link block hover:text-green-600 transition">Introduction</a></li>
+          <li><a href="#setup" class="block hover:text-green-600 transition">Setup</a></li>
+          <li><a href="#usage" class="block hover:text-green-600 transition">Usage</a></li>
+          <li><a href="#api" class="block hover:text-green-600 transition">API</a></li>
+          <li><a href="#faq" class="block hover:text-green-600 transition">FAQ</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 prose prose-green max-w-none">
+      <article class="space-y-8">
+
+        <header class="mb-8">
+          <h1 class="text-4xl font-extrabold">Project Documentation</h1>
+          <p class="text-lg text-gray-600 mt-2">Comprehensive guide to working with the iGEM Wiki platform</p>
+        </header>
+
+        <section id="intro">
+          <h2>Introduction</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non urna vel lectus convallis scelerisque. Integer eget magna quis justo cursus gravida.</p>
+        </section>
+
+        <section id="setup">
+          <h2>Setup</h2>
+          <p>To get started, clone the repository and install dependencies:</p>
+          <pre class="bg-gray-100 p-4 rounded"><code>git clone https://github.com/igem/wiki-project.git
+cd wiki-project
+npm install</code></pre>
+        </section>
+
+        <section id="usage">
+          <h2>Usage</h2>
+          <p>Run the project locally with:</p>
+          <pre class="bg-gray-100 p-4 rounded"><code>npm run dev</code></pre>
+        </section>
+
+        <section id="api">
+          <h2>API</h2>
+          <p>The system exposes a REST API. Example request:</p>
+          <pre class="bg-gray-100 p-4 rounded"><code>GET /api/data
+Content-Type: application/json</code></pre>
+        </section>
+
+        <section id="faq">
+          <h2>FAQ</h2>
+          <p><strong>Q:</strong> How do I contribute?<br>
+          <strong>A:</strong> Fork the repository, make your changes, and submit a pull request.</p>
+        </section>
+      </article>
+    </main>
+
+  </div>
+
+  <!-- JS for navbar -->
+  <script>
+    // Insert navbar
+    fetch("templates/navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar-placeholder").innerHTML = html;
+      });
+
+    // Scrollspy effect
+    const sections = document.querySelectorAll("main section");
+    const navLinks = document.querySelectorAll(".docs-sidebar nav ul li a");
+
+    window.addEventListener("scroll", () => {
+      let current = "";
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (pageYOffset >= sectionTop) {
+          current = section.getAttribute("id");
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove("active-link");
+        if (link.getAttribute("href") === "#" + current) {
+          link.classList.add("active-link");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
