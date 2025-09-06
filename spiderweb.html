@@ -391,14 +391,33 @@
 
   <!-- Navbar end -->
 
+    <!-- Page intro -->
+  <section class="max-w-3xl mx-auto text-center py-12 bg-transparent">
+    <h2 class="text-3xl font-bold mb-4">Integrated Human Practices Network</h2>
+    <p class="text-lg text-gray-700 leading-relaxed">
+      This interactive spiderweb shows how we connected with <strong>farmers, scientists, policymakers, and communities</strong>
+      as part of our Integrated Human Practices (iHP) framework.
+      Hover over the nodes to see quick details, or click on them for longer descriptions.
+    </p>
+  </section>
+
+
   <!-- Spiderweb -->
 
-<div class="flex justify-center pt-20">
-  <canvas id="spiderweb" width="1000" height="800"></canvas>
+<div class="flex justify-center pt-5">
+  <canvas id="spiderweb" width="1000" height="600"></canvas>
   <div id="tooltip" 
        class="absolute bg-gray-900 text-white text-sm px-3 py-2 rounded shadow-lg hidden pointer-events-none"
        style="max-width: 200px;"></div>
 </div>
+
+<!-- Footer -->
+
+ <footer class="bg-blue-900 text-white text-center py-6 mt-12">
+    <p class="text-sm">
+      © 2025 ARGUS-2440 iGEM Project — Built for community-driven science
+    </p>
+  </footer>
 
 <script>
 const canvas = document.getElementById("spiderweb");
