@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spiderweb | iGEM Wiki</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollspy highlight */
+    .active-link {
+      color: #16a34a; /* Tailwind's text-green-600 */
+      font-weight: 600; /* Tailwind's font-semibold */
+    }
+  </style>
+  <style>
+    canvas { display: block; margin: 2rem auto; }
+    .tooltip {
+      position: absolute;
+      background: white;
+      border: 1px solid #333;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      display: none;
+      pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Navbar placeholder -->
+        <style>
+        /* Premium Navbar */
+        .navbar-1 {
+        position: sticky;
+        top: 0;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: saturate(180%) blur(20px);
+        border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar-1 .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+        }
+
+
+        /* Main Navigation */
+        .nav-menu {
+        display: flex;
+        list-style: none;
+        align-items: center;
+        gap: 8px;
+        }
+
+        .nav-menu > li {
+        position: relative;
+        }
+
+        .nav-menu > li > a {
+        display: flex;
+        align-items: center;
+        padding: 8px 16px;
+        color: #1c1f28;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        position: relative;
+        font-weight: bold;
+        }
+
+        .nav-menu > li > a:hover {
+        background: rgba(0, 0, 0, 0.05);
+        color: #ca74ec;
+        }
+
+        /* macOS-style Dropdown */
+        .navbar-2 {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: saturate(180%) blur(20px);
+        border: 0.5px solid rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.12),
+            0 2px 8px rgba(0, 0, 0, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-50%) translateY(-8px) scale(0.95);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        min-width: 180px;
+        padding: 8px;
+        }
+
+        .navbar-2::before {
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 4px solid rgba(255, 255, 255, 0.95);
+        filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.1));
+        }
+
+        .nav-menu > li:hover .navbar-2 {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0) scale(1);
+        }
+
+        .navbar-2 .container {
+        padding: 0;
+        height: auto;
+        display: block;
+        }
+
+        .nav-menu_hovered {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        }
+
+        .nav-menu_hovered a {
+        display: block;
+        padding: 8px 12px;
+        color: #1c1f28;
+        text-decoration: none;
+        font-weight: 400;
+        font-size: 0.9rem;
+        border-radius: 6px;
+        transition: all 0.15s ease;
+        position: relative;
+        }
+
+        .nav-menu_hovered a:hover {
+        background: #ca74ec;
+        color: white;
+        transform: translateX(2px);
+        }
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+        .navbar-1 .container {
+            height: 60px;
+            padding: 0 1rem;
+            justify-content: space-between; /* logo left, toggle right */
+        }
+
+        .nav-menu {
+            max-height: 0;                 /* hidden by default */
+            overflow: hidden;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            padding: 0 1rem;
+            flex-direction: column;
+            gap: 0;
+            z-index: 999;
+            transition: max-height 0.4s ease; /* smooth slide */
+        }
+
+        .nav-menu.open {
+            max-height: 600px; /* enough space for all links */
+            padding: 1rem;
+        }
+
+        .nav-menu > li {
+            width: 100%;
+        }
+
+        .nav-menu > li > a {
+            padding: 12px 16px;
+            border-radius: 8px;
+            justify-content: space-between;
+        }
+
+        .navbar-2 {
+            position: static;
+            transform: none;
+            opacity: 1;
+            visibility: visible;
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: none;
+            border: none;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-top: 8px;
+            padding: 8px;
+        }
+
+        .navbar-2::before {
+            display: none;
+        }
+
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-text {
+            padding: 2rem 1.5rem;
+        }
+        }
+
+        /* Default (desktop) — hidden */
+        .nav-toggle {
+        display: none;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        padding: 0.5rem;
+        justify-content: center;
+        align-items: center;
+        }
+
+        /* Show only on mobile */
+        @media (max-width: 768px) {
+        .nav-toggle {
+            display: flex;
+        }
+        }
+
+        /* Hamburger icon (3 bars) */
+        .nav-toggle-icon {
+        position: relative;
+        width: 28px;
+        height: 3px;
+        background-color: #333;
+        display: block;
+        transition: background-color 0.2s ease-in-out;
+        }
+
+        .nav-toggle-icon::before,
+        .nav-toggle-icon::after {
+        content: '';
+        position: absolute;
+        width: 28px;
+        height: 3px;
+        background-color: #333;
+        transition: transform 0.2s ease-in-out, top 0.2s ease-in-out;
+        }
+
+        .nav-toggle-icon::before {
+        top: -8px;
+        }
+
+        .nav-toggle-icon::after {
+        top: 8px;
+        }
+
+        /* Expanded (turn into X) */
+        .nav-toggle[aria-expanded="true"] .nav-toggle-icon {
+        background-color: transparent;
+        }
+
+        .nav-toggle[aria-expanded="true"] .nav-toggle-icon::before {
+        transform: rotate(45deg);
+        top: 0;
+        }
+
+        .nav-toggle[aria-expanded="true"] .nav-toggle-icon::after {
+        transform: rotate(-45deg);
+        top: 0;
+        }
+
+
+        /* Logo */
+        .navbar-brand {
+        margin-top: 50px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.6rem;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+        top: 60px;
+        }
+
+        .navbar-brand img {
+        height: 200px;
+        width: auto;
+        transition: transform 0.2s ease;
+        }
+
+        .navbar-brand:hover img {
+        transform: scale(1.05);
+        }
+        </style>
+
+
+        <!-- Navbar -->
+        <nav class="navbar-1">
+            <div class="container">
+            <!-- Logo -->
+            <div class="navbar-brand">
+                <img src="images/igemlogo.png" alt="Site Logo"/>
+            </div>
+
+            <!-- Mobile toggle -->
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+                <span class="nav-toggle-icon"></span>
+            </button>
+
+            <!-- Main Nav -->
+            <ul class="nav-menu" id="nav-menu">
+                <li>
+                <a href="#">Wet Lab</a>
+                <nav class="navbar-2">
+                    <div class="container">
+                    <ul class="nav-menu_hovered">
+                        <li><a href="#">Plasmid</a></li>
+                        <li><a href="#">Gene</a></li>
+                        <li><a href="#">Protein</a></li>
+                        <li><a href="#">Putida</a></li>
+                        <li><a href="#">Biofilm</a></li>
+                        <li><a href="#">Other</a></li>
+                    </ul>
+                    </div>
+                </nav>
+                </li>
+
+                <li>
+                <a href="#">Dry Lab</a>
+                <nav class="navbar-2">
+                    <div class="container">
+                    <ul class="nav-menu_hovered">
+                        <li><a href="#">ML</a></li>
+                        <li><a href="#">FBA</a></li>
+                        <li><a href="#">Wiki</a></li>
+                        <li><a href="#">Genetic Circuits</a></li>
+                        <li><a href="#">GEM</a></li>
+                        <li><a href="#">Other</a></li>
+                    </ul>
+                    </div>
+                </nav>
+                </li>
+
+                <li>
+                <a href="#">HP</a>
+                <nav class="navbar-2">
+                    <div class="container">
+                    <ul class="nav-menu_hovered">
+                        <li><a href="#">Legal</a></li>
+                        <li><a href="#">Sponsorship</a></li>
+                        <li><a href="#">Stuff</a></li>
+                        <li><a href="#">Other</a></li>
+                    </ul>
+                    </div>
+                </nav>
+                </li>
+
+                <li>
+                <a href="#">Prizes</a>
+                <nav class="navbar-2">
+                    <div class="container">
+                    <ul class="nav-menu_hovered">
+                        <li><a href="#">Prize-1</a></li>
+                        <li><a href="#">Prize-2</a></li>
+                    </ul>
+                    </div>
+                </nav>
+                </li>
+            </ul>
+            </div>
+        </nav>
+
+  <!-- Navbar end -->
+
+  <!-- Spiderweb -->
+
+<div class="flex justify-center pt-20">
+  <canvas id="spiderweb" width="1000" height="800"></canvas>
+  <div id="tooltip" 
+       class="absolute bg-gray-900 text-white text-sm px-3 py-2 rounded shadow-lg hidden pointer-events-none"
+       style="max-width: 200px;"></div>
+</div>
+
+<script>
+const canvas = document.getElementById("spiderweb");
+const ctx = canvas.getContext("2d");
+const tooltip = document.getElementById("tooltip");
+
+const center = { x: canvas.width/2, y: canvas.height/2 };
+const radiusStep = 100;
+
+// Example node set with emoji icons
+const spokes = [
+  { angle: 0, levels: 1, labels:[{name:"iHP", info:"Central Hub", desc:"Integrates perspectives", icon:"🕸"}]},
+  { angle: 60, levels: 2, labels:[
+    {name:"Farmer", info:"Practitioner", desc:"Grows crops", icon:"🌾"},
+    {name:"Soil Sci.", info:"Soil Research", desc:"Analyzes pH/nutrients", icon:"🧪"}]},
+  { angle: 120, levels: 3, labels:[
+    {name:"Policy", info:"Policy Maker", desc:"Writes regulations", icon:"📜"},
+    {name:"Advisor", info:"Advisor", desc:"Provides guidance", icon:"👩‍🏫"},
+    {name:"Regulator", info:"Regulator", desc:"Enforces rules", icon:"⚖️"}]},
+  { angle: 180, levels: 2, labels:[
+    {name:"Engineer", info:"Engineer", desc:"Designs systems", icon:"🛠️"},
+    {name:"Economist", info:"Economist", desc:"Analyzes costs", icon:"💰"}]},
+  { angle: 240, levels: 3, labels:[
+    {name:"Student", info:"Student", desc:"Learns practices", icon:"🎓"},
+    {name:"Researcher", info:"Researcher", desc:"Does experiments", icon:"🔬"},
+    {name:"Biologist", info:"Biologist", desc:"Studies microbes", icon:"🧬"}]},
+  { angle: 300, levels: 3, labels:[
+    {name:"NGO", info:"NGO Worker", desc:"Outreach", icon:"🌍"},
+    {name:"Activist", info:"Activist", desc:"Advocates", icon:"✊"},
+    {name:"Extension", info:"Extension", desc:"Connects farmers", icon:"🤝"}]}
+];
+
+// Build nodes with positions
+const nodes = [];
+spokes.forEach(sp=>{
+  for(let i=0;i<sp.levels;i++){
+    const rad = sp.angle * Math.PI/180;
+    const r = (i+1)*radiusStep;
+    const label = sp.labels[i];
+    nodes.push({
+      ...label,
+      r:r, angle:sp.angle,
+      x:center.x+r*Math.cos(rad),
+      y:center.y+r*Math.sin(rad),
+      size:60
+    });
+  }
+});
+// Add center manually at r=0
+const centerNode = { ...spokes[0].labels[0], r:0, angle:0, x:center.x, y:center.y, size:70 };
+nodes.unshift(centerNode);
+
+// Define connections manually (adjacent spokes only)
+const links = [];
+
+// Radial links
+spokes.forEach(sp=>{
+  for(let i=1;i<sp.levels;i++){
+    const child = nodes.find(n=>n.angle===sp.angle && n.r===(i+1)*radiusStep);
+    const parent = nodes.find(n=>n.angle===sp.angle && n.r===i*radiusStep);
+    if(child && parent) links.push([parent,child]);
+  }
+  // first level links to center
+  const first = nodes.find(n=>n.angle===sp.angle && n.r===radiusStep);
+  if(first) links.push([centerNode, first]);
+});
+
+// Ring links (only adjacent spokes, same radius, manually)
+function connectAdjacent(angleA, angleB, r){
+  const a = nodes.find(n=>n.angle===angleA && n.r===r);
+  const b = nodes.find(n=>n.angle===angleB && n.r===r);
+  if(a && b) links.push([a,b]);
+}
+
+// Example adjacency links
+connectAdjacent(60,120,100); // Soil Scientist ↔ Policy
+connectAdjacent(120,180,200);
+connectAdjacent(240,300,200);
+connectAdjacent(240,300,100);
+connectAdjacent(300,0,100);
+connectAdjacent(120,180,100);
+
+// Draw
+function drawWeb(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Links
+  links.forEach(([a,b])=>{
+    ctx.beginPath();
+    ctx.moveTo(a.x,a.y);
+    ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle="black"; ctx.lineWidth=4; ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(a.x,a.y);
+    ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle="white"; ctx.lineWidth=2; ctx.stroke();
+  });
+
+  // Nodes (dark blue + emoji icons)
+  nodes.forEach(n=>{
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,n.size/2,0,Math.PI*2);
+    ctx.fillStyle = "#1e3a8a"; // dark blue
+    ctx.fill();
+    ctx.strokeStyle="white";
+    ctx.lineWidth=2;
+    ctx.stroke();
+
+    // Emoji icon in center
+    ctx.fillStyle = "white";
+    ctx.font = "24px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(n.icon, n.x, n.y);
+  });
+}
+
+drawWeb();
+
+// Tooltip handling
+let hoveredNode=null;
+canvas.addEventListener("mousemove", e=>{
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = e.clientX-rect.left, mouseY = e.clientY-rect.top;
+  hoveredNode = nodes.find(n=>{
+    const dx=mouseX-n.x, dy=mouseY-n.y;
+    return Math.sqrt(dx*dx+dy*dy) < n.size/2;
+  });
+  if(hoveredNode){
+    tooltip.innerText = hoveredNode.info;
+    tooltip.style.left = e.pageX+10+"px";
+    tooltip.style.top = e.pageY+10+"px";
+    tooltip.classList.remove("hidden");
+  } else {
+    tooltip.classList.add("hidden");
+  }
+});
+canvas.addEventListener("click", e=>{
+  if(hoveredNode){
+    tooltip.innerText = hoveredNode.desc;
+    tooltip.style.left = e.pageX+10+"px";
+    tooltip.style.top = e.pageY+10+"px";
+    tooltip.classList.remove("hidden");
+  }
+});
+</script>
+</body>
+</html>
