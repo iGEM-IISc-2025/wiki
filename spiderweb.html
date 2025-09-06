@@ -410,26 +410,34 @@ const radiusStep = 100;
 
 // Example node set with emoji icons
 const spokes = [
-  { angle: 0, levels: 1, labels:[{name:"iHP", info:"Central Hub", desc:"Integrates perspectives", icon:"🕸"}]},
+  { angle: 0, levels: 1, labels:[
+    {name:"iHP", info:"Central Hub", desc:"Integrated Human Practices (iHP) brings together insights from diverse stakeholders to ensure that technology development is aligned with community values, societal needs, and ethical responsibility.", icon:"🕸"}
+  ]},
   { angle: 60, levels: 2, labels:[
-    {name:"Farmer", info:"Practitioner", desc:"Grows crops", icon:"🌾"},
-    {name:"Soil Sci.", info:"Soil Research", desc:"Analyzes pH/nutrients", icon:"🧪"}]},
+    {name:"Farmer", info:"Practitioner", desc:"Farmers are the frontline practitioners who directly experience soil challenges, crop health issues, and market pressures. Their feedback ensures that solutions are practical, usable, and beneficial at the ground level.", icon:"🌾"},
+    {name:"Soil Sci.", info:"Soil Research", desc:"Soil scientists provide in-depth analysis of nutrient cycles, pH balance, and microbial interactions in the soil. Their expertise helps optimize practices that sustain long-term fertility and reduce harmful runoff.", icon:"🧪"}
+  ]},
   { angle: 120, levels: 3, labels:[
-    {name:"Policy", info:"Policy Maker", desc:"Writes regulations", icon:"📜"},
-    {name:"Advisor", info:"Advisor", desc:"Provides guidance", icon:"👩‍🏫"},
-    {name:"Regulator", info:"Regulator", desc:"Enforces rules", icon:"⚖️"}]},
+    {name:"Policy", info:"Policy Maker", desc:"Policy makers draft regulations and frameworks that determine how agricultural innovations are adopted. They balance farmer needs with sustainability goals and long-term national interests.", icon:"📜"},
+    {name:"Advisor", info:"Advisor", desc:"Advisors act as intermediaries, helping farmers, researchers, and decision-makers interpret scientific findings into actionable steps that fit within local practices and regulations.", icon:"👩‍🏫"},
+    {name:"Regulator", info:"Regulator", desc:"Regulators enforce standards to ensure innovations are safe, effective, and environmentally responsible. They safeguard both human health and ecological balance.", icon:"⚖️"}
+  ]},
   { angle: 180, levels: 2, labels:[
-    {name:"Engineer", info:"Engineer", desc:"Designs systems", icon:"🛠️"},
-    {name:"Economist", info:"Economist", desc:"Analyzes costs", icon:"💰"}]},
+    {name:"Engineer", info:"Engineer", desc:"Engineers design and build systems, tools, and prototypes that bring research into practical application. They translate abstract models into real-world technologies.", icon:"🛠️"},
+    {name:"Economist", info:"Economist", desc:"Economists evaluate the costs, benefits, and trade-offs of proposed solutions. They analyze market impacts, scalability, and long-term economic sustainability.", icon:"💰"}
+  ]},
   { angle: 240, levels: 3, labels:[
-    {name:"Student", info:"Student", desc:"Learns practices", icon:"🎓"},
-    {name:"Researcher", info:"Researcher", desc:"Does experiments", icon:"🔬"},
-    {name:"Biologist", info:"Biologist", desc:"Studies microbes", icon:"🧬"}]},
+    {name:"Student", info:"Student", desc:"Students represent the future generation of practitioners and innovators. By learning from these practices, they carry forward knowledge and fresh perspectives.", icon:"🎓"},
+    {name:"Researcher", info:"Researcher", desc:"Researchers conduct controlled experiments and field trials to test hypotheses, validate outcomes, and provide reliable data for informed decision-making.", icon:"🔬"},
+    {name:"Biologist", info:"Biologist", desc:"Biologists study microbes, plants, and ecosystems to understand how living systems interact. Their insights help optimize bio-based solutions to agricultural problems.", icon:"🧬"}
+  ]},
   { angle: 300, levels: 3, labels:[
-    {name:"NGO", info:"NGO Worker", desc:"Outreach", icon:"🌍"},
-    {name:"Activist", info:"Activist", desc:"Advocates", icon:"✊"},
-    {name:"Extension", info:"Extension", desc:"Connects farmers", icon:"🤝"}]}
+    {name:"NGO", info:"NGO Worker", desc:"NGO workers connect with rural communities, spread awareness, and ensure that marginalized voices are heard. They provide crucial outreach and capacity building.", icon:"🌍"},
+    {name:"Activist", info:"Activist", desc:"Activists advocate for sustainable practices, social justice, and environmental protection. They push for accountability and amplify the concerns of local communities.", icon:"✊"},
+    {name:"Extension", info:"Extension", desc:"Extension workers bridge the gap between research and practice. They help farmers adopt new techniques and adapt innovations into everyday agricultural workflows.", icon:"🤝"}
+  ]}
 ];
+
 
 // Build nodes with positions
 const nodes = [];
