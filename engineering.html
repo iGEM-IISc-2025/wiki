@@ -3,29 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spiderweb | iGEM Wiki</title>
+  <title>Docs | iGEM Wiki</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/styles_wetlab.css"/>
   <style>
     /* Custom scrollspy highlight */
     .active-link {
-      color: #16a34a; /* Tailwind's text-green-600 */
-      font-weight: 600; /* Tailwind's font-semibold */
-    }
-  </style>
-  <style>
-    canvas { display: block; margin: 2rem auto; }
-    .tooltip {
-      position: absolute;
-      background: white;
-      border: 1px solid #333;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 14px;
-      display: none;
-      pointer-events: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      z-index: 10;
+      @apply text-green-600 font-semibold;
     }
   </style>
 </head>
@@ -316,7 +300,7 @@
 
         <!-- Navbar -->
         <nav class="navbar-1">
-            <div class="container">
+          <div class="container">
             <!-- Logo -->
             <a class="navbar-brand" href="/main.html">
               <img src="images/igemlogo.png" alt="Site Logo"/>
@@ -324,7 +308,7 @@
 
             <!-- Mobile toggle -->
             <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
-                <span class="nav-toggle-icon"></span>
+              <span class="nav-toggle-icon"></span>
             </button>
 
             <!-- Main Nav -->
@@ -388,186 +372,90 @@
           </div>
         </nav>
 
-    <!-- Page intro -->
-  <section class="max-w-3xl mx-auto text-center py-12 bg-transparent">
-    <h2 class="text-3xl font-bold mb-4">Integrated Human Practices Network</h2>
-    <p class="text-lg text-gray-700 leading-relaxed">
-      This interactive spiderweb shows how we connected with <strong>farmers, scientists, policymakers, and communities</strong>
-      as part of our Integrated Human Practices (iHP) framework.
-      Hover over the nodes to see quick details, or click on them for longer descriptions.
-    </p>
-  </section>
+  <!-- Navbar end -->
 
+  <div class="flex flex-col lg:flex-row max-w-7xl mx-auto">
 
-  <!-- Spiderweb -->
+    <!-- Sidebar -->
+    <aside class="hidden lg:block lg:w-64 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto border-r border-gray-200 pr-4">
+      <h2 class="text-xl font-bold text-gray-700 mb-4">Documentation</h2>
+      <nav> 
+        <ul class="space-y-2">
+          <li><a href="#intro" class="active-link block hover:text-green-600 transition">Introduction</a></li>
+          <li><a href="#setup" class="block hover:text-green-600 transition">Setup</a></li>
+          <li><a href="#usage" class="block hover:text-green-600 transition">Usage</a></li>
+          <li><a href="#api" class="block hover:text-green-600 transition">API</a></li>
+          <li><a href="#faq" class="block hover:text-green-600 transition">FAQ</a></li>
+        </ul>
+      </nav>
+    </aside>
 
-<div class="flex justify-center pt-5">
-  <canvas id="spiderweb" width="1000" height="600"></canvas>
-  <div id="tooltip" 
-       class="absolute bg-gray-900 text-white text-sm px-3 py-2 rounded shadow-lg hidden pointer-events-none"
-       style="max-width: 200px;"></div>
-</div>
+    <!-- Main content -->
+    <main class="flex-1 prose prose-green max-w-none">
+      <article class="space-y-8">
 
-<!-- Footer -->
+        <header class="mb-8">
+          <h1 class="text-4xl font-extrabold">Project Documentation</h1>
+          <p class="text-lg text-gray-600 mt-2">Comprehensive guide to working with the iGEM Wiki platform</p>
+        </header>
 
- <footer class="bg-purple-900 text-white text-center py-6 mt-12">
-    <p class="text-sm">
-      © 2025 ARGUS-2440 iGEM Project — Built for community-driven science
-    </p>
-  </footer>
+        <section id="intro">
+          <h2>Introduction</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non urna vel lectus convallis scelerisque. Integer eget magna quis justo cursus gravida.</p>
+        </section>
 
-<script>
-const canvas = document.getElementById("spiderweb");
-const ctx = canvas.getContext("2d");
-const tooltip = document.getElementById("tooltip");
+        <section id="setup">
+          <h2>Setup</h2>
+          <p>To get started, clone the repository and install dependencies:</p>
+          <pre class="bg-gray-100 p-4 rounded"><code>git clone https://github.com/igem/wiki-project.git
+cd wiki-project
+npm install</code></pre>
+        </section>
 
-const center = { x: canvas.width/2, y: canvas.height/2 };
-const radiusStep = 100;
+        <section id="usage">
+          <h2>Usage</h2>
+          <p>Run the project locally with:</p>
+          <pre class="bg-gray-100 p-4 rounded"><code>npm run dev</code></pre>
+        </section>
 
-// Example node set with emoji icons
-const spokes = [
-  { angle: 0, levels: 1, labels:[
-    {name:"iHP", info:"Central Hub", desc:"Integrated Human Practices (iHP) brings together insights from diverse stakeholders to ensure that technology development is aligned with community values, societal needs, and ethical responsibility.", icon:"🕸"}
-  ]},
-  { angle: 60, levels: 2, labels:[
-    {name:"Farmer", info:"Practitioner", desc:"Farmers are the frontline practitioners who directly experience soil challenges, crop health issues, and market pressures. Their feedback ensures that solutions are practical, usable, and beneficial at the ground level.", icon:"🌾"},
-    {name:"Soil Sci.", info:"Soil Research", desc:"Soil scientists provide in-depth analysis of nutrient cycles, pH balance, and microbial interactions in the soil. Their expertise helps optimize practices that sustain long-term fertility and reduce harmful runoff.", icon:"🧪"}
-  ]},
-  { angle: 120, levels: 3, labels:[
-    {name:"Policy", info:"Policy Maker", desc:"Policy makers draft regulations and frameworks that determine how agricultural innovations are adopted. They balance farmer needs with sustainability goals and long-term national interests.", icon:"📜"},
-    {name:"Advisor", info:"Advisor", desc:"Advisors act as intermediaries, helping farmers, researchers, and decision-makers interpret scientific findings into actionable steps that fit within local practices and regulations.", icon:"👩‍🏫"},
-    {name:"Regulator", info:"Regulator", desc:"Regulators enforce standards to ensure innovations are safe, effective, and environmentally responsible. They safeguard both human health and ecological balance.", icon:"⚖️"}
-  ]},
-  { angle: 180, levels: 2, labels:[
-    {name:"Engineer", info:"Engineer", desc:"Engineers design and build systems, tools, and prototypes that bring research into practical application. They translate abstract models into real-world technologies.", icon:"🛠️"},
-    {name:"Economist", info:"Economist", desc:"Economists evaluate the costs, benefits, and trade-offs of proposed solutions. They analyze market impacts, scalability, and long-term economic sustainability.", icon:"💰"}
-  ]},
-  { angle: 240, levels: 3, labels:[
-    {name:"Student", info:"Student", desc:"Students represent the future generation of practitioners and innovators. By learning from these practices, they carry forward knowledge and fresh perspectives.", icon:"🎓"},
-    {name:"Researcher", info:"Researcher", desc:"Researchers conduct controlled experiments and field trials to test hypotheses, validate outcomes, and provide reliable data for informed decision-making.", icon:"🔬"},
-    {name:"Biologist", info:"Biologist", desc:"Biologists study microbes, plants, and ecosystems to understand how living systems interact. Their insights help optimize bio-based solutions to agricultural problems.", icon:"🧬"}
-  ]},
-  { angle: 300, levels: 3, labels:[
-    {name:"NGO", info:"NGO Worker", desc:"NGO workers connect with rural communities, spread awareness, and ensure that marginalized voices are heard. They provide crucial outreach and capacity building.", icon:"🌍"},
-    {name:"Activist", info:"Activist", desc:"Activists advocate for sustainable practices, social justice, and environmental protection. They push for accountability and amplify the concerns of local communities.", icon:"✊"},
-    {name:"Extension", info:"Extension", desc:"Extension workers bridge the gap between research and practice. They help farmers adopt new techniques and adapt innovations into everyday agricultural workflows.", icon:"🤝"}
-  ]}
-];
+        <section id="api">
+          <h2>API</h2>
+          <p>The system exposes a REST API. Example request:</p>
+          <pre class="bg-gray-100 p-4 rounded"><code>GET /api/data
+Content-Type: application/json</code></pre>
+        </section>
 
+        <section id="faq">
+          <h2>FAQ</h2>
+          <p><strong>Q:</strong> How do I contribute?<br>
+          <strong>A:</strong> Fork the repository, make your changes, and submit a pull request.</p>
+        </section>
+      </article>
+    </main>
 
-// Build nodes with positions
-const nodes = [];
-spokes.forEach(sp=>{
-  for(let i=0;i<sp.levels;i++){
-    const rad = sp.angle * Math.PI/180;
-    const r = (i+1)*radiusStep;
-    const label = sp.labels[i];
-    nodes.push({
-      ...label,
-      r:r, angle:sp.angle,
-      x:center.x+r*Math.cos(rad),
-      y:center.y+r*Math.sin(rad),
-      size:60
+  </div>
+
+  <script>
+    // Scrollspy effect
+    const sections = document.querySelectorAll("main section");
+    const navLinks = document.querySelectorAll(".docs-sidebar nav ul li a");
+
+    window.addEventListener("scroll", () => {
+      let current = "";
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (pageYOffset >= sectionTop) {
+          current = section.getAttribute("id");
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove("active-link");
+        if (link.getAttribute("href") === "#" + current) {
+          link.classList.add("active-link");
+        }
+      });
     });
-  }
-});
-// Add center manually at r=0
-const centerNode = { ...spokes[0].labels[0], r:0, angle:0, x:center.x, y:center.y, size:70 };
-nodes.unshift(centerNode);
-
-// Define connections manually (adjacent spokes only)
-const links = [];
-
-// Radial links
-spokes.forEach(sp=>{
-  for(let i=1;i<sp.levels;i++){
-    const child = nodes.find(n=>n.angle===sp.angle && n.r===(i+1)*radiusStep);
-    const parent = nodes.find(n=>n.angle===sp.angle && n.r===i*radiusStep);
-    if(child && parent) links.push([parent,child]);
-  }
-  // first level links to center
-  const first = nodes.find(n=>n.angle===sp.angle && n.r===radiusStep);
-  if(first) links.push([centerNode, first]);
-});
-
-// Ring links (only adjacent spokes, same radius, manually)
-function connectAdjacent(angleA, angleB, r){
-  const a = nodes.find(n=>n.angle===angleA && n.r===r);
-  const b = nodes.find(n=>n.angle===angleB && n.r===r);
-  if(a && b) links.push([a,b]);
-}
-
-// Example adjacency links
-connectAdjacent(60,120,100); // Soil Scientist ↔ Policy
-connectAdjacent(120,180,200);
-connectAdjacent(240,300,200);
-connectAdjacent(240,300,100);
-connectAdjacent(300,0,100);
-connectAdjacent(120,180,100);
-
-// Draw
-function drawWeb(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  // Links
-  links.forEach(([a,b])=>{
-    ctx.beginPath();
-    ctx.moveTo(a.x,a.y);
-    ctx.lineTo(b.x,b.y);
-    ctx.strokeStyle="black"; ctx.lineWidth=4; ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(a.x,a.y);
-    ctx.lineTo(b.x,b.y);
-    ctx.strokeStyle="white"; ctx.lineWidth=2; ctx.stroke();
-  });
-
-  // Nodes (dark purple + emoji icons)
-  nodes.forEach(n=>{
-    ctx.beginPath();
-    ctx.arc(n.x,n.y,n.size/2,0,Math.PI*2);
-    ctx.fillStyle = "#7337a3"; // dark purple
-    ctx.fill();
-    ctx.strokeStyle="white";
-    ctx.lineWidth=2;
-    ctx.stroke();
-
-    // Emoji icon in center
-    ctx.fillStyle = "white";
-    ctx.font = "24px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(n.icon, n.x, n.y);
-  });
-}
-
-drawWeb();
-
-// Tooltip handling
-let hoveredNode=null;
-canvas.addEventListener("mousemove", e=>{
-  const rect = canvas.getBoundingClientRect();
-  const mouseX = e.clientX-rect.left, mouseY = e.clientY-rect.top;
-  hoveredNode = nodes.find(n=>{
-    const dx=mouseX-n.x, dy=mouseY-n.y;
-    return Math.sqrt(dx*dx+dy*dy) < n.size/2;
-  });
-  if(hoveredNode){
-    tooltip.innerText = hoveredNode.info;
-    tooltip.style.left = e.pageX+10+"px";
-    tooltip.style.top = e.pageY+10+"px";
-    tooltip.classList.remove("hidden");
-  } else {
-    tooltip.classList.add("hidden");
-  }
-});
-canvas.addEventListener("click", e=>{
-  if(hoveredNode){
-    tooltip.innerText = hoveredNode.desc;
-    tooltip.style.left = e.pageX+10+"px";
-    tooltip.style.top = e.pageY+10+"px";
-    tooltip.classList.remove("hidden");
-  }
-});
-</script>
+  </script>
 </body>
 </html>
