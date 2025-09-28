@@ -113,44 +113,64 @@
     </div>
   </section>
 
-  <!-- 1st stat (normal) -->
-  <section class="stat-band">
-    <div class="stat-inner">
-      <div class="stat-text">
-        <h2><span class="counter" data-target="85">0</span>%</h2>
-        <p>of rural households in India depend on <strong>groundwater</strong> for drinking.</p>
-      </div>
-      <div class="stat-diagram">
-        <img src="images/water_icon.svg" alt="Water icon"/>
-      </div>
-    </div>
-  </section>
+  <!-- Statistics with animated dials -->
 
-  <!-- 2nd stat (REVERSED via class on section) -->
-  <section class="stat-band reverse">
-    <div class="stat-inner">
-      <div class="stat-text">
-        <h2><span class="counter" data-target="30">0</span>%</h2>
-        <p>of India’s land suffers from <strong>soil degradation</strong>.</p>
-      </div>
-      <div class="stat-diagram">
-        <img src="images/soil_icon.svg" alt="Soil icon"/>
+ <section class="stat-band">
+  <div class="stat-inner">
+    <div class="stat-text">
+      <p>of rural households in India depend on <strong>groundwater</strong> for drinking.</p>
+    </div>
+    <div class="stat-diagram">
+      <div class="dial-container">
+        <svg class="dial-svg" viewBox="0 0 36 36">
+          <path class="dial-track" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          <path class="dial-progress" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+        </svg>
+        <div class="dial-text">
+          <h2><span class="counter" data-target="85"></span>%</h2>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 3rd stat (normal) -->
-  <section class="stat-band">
-    <div class="stat-inner">
-      <div class="stat-text">
-        <h2><span class="counter" data-target="80">0</span>%</h2>
-        <p>of India’s freshwater resources are consumed by <strong>agriculture</strong>.</p>
-      </div>
-      <div class="stat-diagram">
-        <img src="images/farm_icon.svg" alt="Farm icon"/>
+<section class="stat-band reverse">
+  <div class="stat-inner">
+    <div class="stat-text">
+      <p>of India’s land suffers from <strong>soil degradation</strong>.</p>
+    </div>
+    <div class="stat-diagram">
+      <div class="dial-container">
+        <svg class="dial-svg" viewBox="0 0 36 36">
+          <path class="dial-track" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          <path class="dial-progress" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+        </svg>
+        <div class="dial-text">
+          <h2><span class="counter" data-target="30"></span>%</h2>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
+<section class="stat-band">
+  <div class="stat-inner">
+    <div class="stat-text">
+      <p>of India’s freshwater resources are consumed by <strong>agriculture</strong>.</p>
+    </div>
+    <div class="stat-diagram">
+      <div class="dial-container">
+        <svg class="dial-svg" viewBox="0 0 36 36">
+          <path class="dial-track" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          <path class="dial-progress" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+        </svg>
+        <div class="dial-text">
+          <h2><span class="counter" data-target="80"></span>%</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
       
   <section id="visual-expl" class="visual-expl" aria-labelledby="solution-heading">
     <div class="visual-grid">
@@ -239,7 +259,7 @@
 
   <a href="wetlab.html" class="floating-cta" aria-label="Open Wet Lab page">Wet Lab</a>
 
-
+  <!--
   <iframe src="pond.html" 
     width="100%" 
     height="800px" 
@@ -247,7 +267,8 @@
     scrolling="no" 
     style="border: none;">
   </iframe>
-
+  -->
+  
     <!-- Footer -->
   <footer class="bg-gradient-to-r from-green-700 to-purple-700 text-white py-8 text-center">
     <p>© 2025 iGEM Team ARGUS-2440 | Wet Lab</p>
@@ -428,53 +449,48 @@
   })();
 
 // Percentage increases over time:
+
 const statBands = document.querySelectorAll('.stat-band');
 
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      const band = entry.target;
-
-      // stagger: delay each band a bit
-      setTimeout(() => {
-        band.classList.add('visible');
-
-        // also reveal the text block itself
-        const text = band.querySelector('.stat-text');
-        if (text) text.classList.add('visible');
-
-        // animate the number counter
+    entries.forEach(entry => {
+        const band = entry.target;
         const counter = band.querySelector('.counter');
-        if (counter && !counter.classList.contains('done')) {
-          const end = +counter.getAttribute('data-target');
-          const duration = 1200; // total animation time (ms)
-          const startTime = performance.now();
+        const dialProgress = band.querySelector('.dial-progress');
 
-          const step = (now) => {
-            const progress = Math.min((now - startTime) / duration, 1);
-            // ease-out cubic
-            const eased = 1 - Math.pow(1 - progress, 3);
-            const value = Math.floor(eased * end);
+        if (!counter || !dialProgress) return;
 
-            counter.textContent = value; // update number
+        if (entry.isIntersecting) {
+            // --- ELEMENT IS IN VIEW ---
+            band.classList.add('visible');
 
-            if (progress < 1) {
-              requestAnimationFrame(step);
-            } else {
-              counter.textContent = end; // final number
-              counter.classList.add('done');
-            }
-          };
+            const end = counter.getAttribute('data-target');
+            
+            // Trigger CSS animation for the dial
+            dialProgress.style.strokeDashoffset = 100 - end;
 
-          requestAnimationFrame(step);
+            // Trigger CSS animation for the number
+            counter.style.setProperty('--num', end);
+
+        } else {
+            // --- ELEMENT IS OUT OF VIEW ---
+            band.classList.remove('visible');
+            
+            // Reset the dial
+            dialProgress.style.strokeDashoffset = 100;
+
+            // Reset the number
+            counter.style.setProperty('--num', 0);
         }
-      }, i * 300); // 300ms stagger between each stat band
-    }
-  });
-}, { threshold: 0.3 });
+    });
+}, { 
+    threshold: 0.5 // Trigger when 50% of the element is visible
+});
 
-statBands.forEach(band => observer.observe(band));
- 
+statBands.forEach(band => {
+    observer.observe(band);
+});
+
 </script>
 
 </body>
