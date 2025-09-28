@@ -122,9 +122,9 @@
     </div>
     <div class="stat-diagram">
       <div class="dial-container">
-        <svg class="dial-svg" viewBox="0 0 36 36">
-          <path class="dial-track" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-          <path class="dial-progress" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+        <svg class="dial-svg" viewBox="0 0 40 40">
+          <path class="dial-track" d="M20 4.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          <path class="dial-progress" stroke-dasharray="100, 100" d="M20 4.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
         </svg>
         <div class="dial-text">
           <h2><span class="counter" data-target="85"></span>%</h2>
@@ -452,44 +452,44 @@
 
 const statBands = document.querySelectorAll('.stat-band');
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        const band = entry.target;
-        const counter = band.querySelector('.counter');
-        const dialProgress = band.querySelector('.dial-progress');
+function updateDialsOnScroll() {
+  statBands.forEach(band => {
+    const counter = band.querySelector('.counter');
+    const dialProgress = band.querySelector('.dial-progress');
+    if (!counter || !dialProgress) return;
 
-        if (!counter || !dialProgress) return;
+    // --- Calculate animation progress based on scroll position ---
+    const rect = band.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
 
-        if (entry.isIntersecting) {
-            // --- ELEMENT IS IN VIEW ---
-            band.classList.add('visible');
+    // The animation zone is from the bottom of the screen to the middle
+    const animationStart = viewportHeight;
+    const animationEnd = viewportHeight*0.25;
+    const animationZoneHeight = animationStart - animationEnd;
 
-            const end = counter.getAttribute('data-target');
-            
-            // Trigger CSS animation for the dial
-            dialProgress.style.strokeDashoffset = 100 - end;
+    // Calculate the progress (a value from 0 to 1)
+    let progress = (animationStart - rect.top) / animationZoneHeight;
+    // Clamp the value between 0 and 1
+    progress = Math.max(0, Math.min(1, progress));
+    
+    // --- Apply the progress to the dial and the number ---
+    const target = +counter.getAttribute('data-target');
+    const currentValue = progress * target;
+    
+    // Update the dial's progress
+    const offset = 100 - currentValue;
+    dialProgress.style.strokeDashoffset = offset;
 
-            // Trigger CSS animation for the number
-            counter.style.setProperty('--num', end);
+    // Update the number using the CSS custom property
+    counter.style.setProperty('--num', Math.floor(currentValue));
+  });
+}
 
-        } else {
-            // --- ELEMENT IS OUT OF VIEW ---
-            band.classList.remove('visible');
-            
-            // Reset the dial
-            dialProgress.style.strokeDashoffset = 100;
+// Add the event listener to run the function on every scroll
+window.addEventListener('scroll', updateDialsOnScroll);
 
-            // Reset the number
-            counter.style.setProperty('--num', 0);
-        }
-    });
-}, { 
-    threshold: 0.5 // Trigger when 50% of the element is visible
-});
-
-statBands.forEach(band => {
-    observer.observe(band);
-});
+// Run the function once on page load to set the initial state correctly
+document.addEventListener('DOMContentLoaded', updateDialsOnScroll);
 
 </script>
 
