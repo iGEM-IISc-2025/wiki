@@ -11,6 +11,11 @@ body {
   margin: 0;
 }
 
+body {
+    overflow-x: hidden; /* Prevents horizontal scrollbars */
+    overflow-y: visible; /* Allows vertical scrolling and lets sticky work */
+}
+
 /* Progress Bar */
 #progress-bar {
   position: fixed;

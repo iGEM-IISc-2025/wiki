@@ -524,36 +524,81 @@ main article pre {
 
 <div id="progress-bar"></div>
 
-<nav class="navbar-1">
+  <div id="progress-bar"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar-1">
     <div class="container">
-        <a class="navbar-brand" href="/main.html"> <img src="images/igemlogo.png" alt="Site Logo"/> </a>
-        
-        <ul class="nav-menu" id="nav-menu">
-            <li>
-                <a href="project.html">Project</a>
-                <nav class="navbar-2">
-                    <ul class="nav-menu_hovered">
-                        <li><a href="#">Ideation</a></li>
-                        <li><a href="#">Overview</a></li>
-                        <li><a href="#">Team</a></li>
-                    </ul>
-                </nav>
-            </li>
-            <li>
-                <a href="wetlab.html">Wet Lab</a>
-                <nav class="navbar-2">
-                    <ul class="nav-menu_hovered">
-                        <li><a href="#">Engineering</a></li>
-                        <li><a href="#">Experimentation</a></li>
-                        <li><a href="#">Results and Parts</a></li>
-                    </ul>
-                </nav>
-            </li>
-            <li><a href="#">Dry Lab</a></li>
-            <li><a href="#">Human Practices</a></li>
-        </ul>
+      <!-- Logo -->
+      <a class="navbar-brand" href="/main.html">
+        <img src="images/igemlogo.png" alt="Site Logo"/>
+      </a>
+
+      <!-- Mobile toggle -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-icon"></span>
+      </button>
+
+      <!-- Main Nav -->
+      <ul class="nav-menu" id="nav-menu">
+        <li>
+          <a href="project.html">Project</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Ideation</a></li>
+                <li><a href="#">Overview</a></li>
+                <li><a href="#">Team</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="wetlab.html">Wet Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="wetlab/engineering.html">Engineering</a></li>
+                <li><a href="#">Experimentation</a></li>
+                <li><a href="#">Results and Parts</a></li>
+                <li><a href="#">Delivery Mechanisms</a></li>
+                <li><a href="#">Parts</a></li>
+                <li><a href="#">Biosafety</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="#">Dry Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="hp/spiderweb.html">Legal</a></li>
+                <li><a href="#">Sponsorship</a></li>
+                <li><a href="#">Stuff</a></li>
+                <li><a href="#">Other</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="#">Human Practices</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Integrated Human Practices</a></li>
+                <li><a href="#">Education</a></li>
+                <li><a href="#">Safety</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+      </ul>
     </div>
-</nav>
+  </nav>
 
 <div class="docs-layout">
     <aside class="docs-sidebar">

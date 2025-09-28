@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Wet Lab | ARGUS-2440</title>
+  <title>Dry Lab | ARGUS-2440</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <base href="/">
 </head>
@@ -12,7 +12,6 @@
 
   <!-- Navbar placeholder -->
   <style>
-    /* Premium Navbar */
     .navbar-1 {
       position: sticky;
       top: 0;
@@ -404,10 +403,6 @@
   }
   </style>
 
-
-  <div id="progress-bar"></div>
-
-  <!-- Navbar -->
   <nav class="navbar-1">
     <div class="container">
       <!-- Logo -->
@@ -456,10 +451,10 @@
           <nav class="navbar-2">
             <div class="container">
               <ul class="nav-menu_hovered">
-                <li><a href="#">Legal</a></li>
-                <li><a href="#">Sponsorship</a></li>
-                <li><a href="#">Stuff</a></li>
-                <li><a href="#">Other</a></li>
+                <li><a href="#">Modeling</a></li>
+                <li><a href="#">Simulations</a></li>
+                <li><a href="#">ML Tools</a></li>
+                <li><a href="#">Genetic Circuits</a></li>
               </ul>
             </div>
           </nav>
@@ -484,148 +479,155 @@
   <!-- Hero Section -->
   <section id="intro" class="relative h-[70vh] flex items-center justify-center">
     <div class="absolute inset-0">
-      <img src="https://images.unsplash.com/photo-1631556097152-c39479bbff93?q=80&w=1170&auto=format&fit=crop" class="w-full h-full object-cover"/>
-      <div class="absolute inset-0 bg-gradient-to-br from-purple-800/70 via-green-900/60 to-black/60"></div>
+      <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=1200&auto=format&fit=crop" class="w-full h-full object-cover"/>
+      <div class="absolute inset-0 bg-gradient-to-br from-green-900/70 via-purple-900/60 to-black/60"></div>
     </div>
     <div class="relative text-center px-6">
-      <h2 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg">Welcome to the Wet Lab</h2>
+      <h2 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg">Welcome to the Dry Lab</h2>
       <p class="mt-4 text-lg text-gray-200 max-w-2xl mx-auto">
-        Hands-on biology powering ARGUS-2440: experiments, breakthroughs, and discoveries.
+        Where computation fuels biology — modeling, simulation, and prediction for ARGUS-2440.
       </p>
       <p class="mt-6 text-gray-100 max-w-3xl mx-auto leading-relaxed">
-        Our wet lab is where design ideas become tangible experiments. From engineering microbes 
-        that regulate nitrate levels to refining genetic circuits through iterative testing, 
-        this space represents the heartbeat of our project. Every experiment we run brings us closer 
-        to sustainable agricultural solutions.
+        The dry lab is our project’s digital engine. From machine learning models predicting 
+        soil ammonia levels, to ODE-based simulations of nitrogen flux, we ensure designs 
+        are optimized before entering the wet lab. This saves time, resources, and helps us 
+        explore new ideas at scale.
       </p>
     </div>
   </section>
 
   <!-- Workflow -->
   <section id="workflow" class="max-w-6xl mx-auto px-6 py-24">
-    <h3 class="text-4xl font-bold bg-gradient-to-r from-green-600 to-purple-600 bg-clip-text text-transparent mb-12 text-center">
-      Our Workflow
+    <h3 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-green-600 bg-clip-text text-transparent mb-12 text-center">
+      Our Computational Workflow
     </h3>
     <div class="space-y-16">
-      <!-- Design -->
+      <!-- Modeling -->
       <div class="flex flex-col md:flex-row items-center gap-8">
         <div class="flex-1">
-          <img src="https://images.unsplash.com/photo-1578307985189-6f84ae0cf2e0?q=80&w=1126&auto=format&fit=crop" class="rounded-2xl shadow-lg"/>
+          <img src="https://images.unsplash.com/photo-1622630998471-19e46a6f94a6?w=1200&auto=format&fit=crop" class="rounded-2xl shadow-lg"/>
         </div>
         <div class="flex-1">
-          <h4 class="text-2xl font-bold text-green-700">Design</h4>
+          <h4 class="text-2xl font-bold text-purple-700">Modeling</h4>
           <p class="text-gray-600 leading-relaxed">
-            Our design stage begins with computational modeling and literature review. 
-            We map nitrogen pathways, predict circuit behavior, and carefully balance 
-            productivity with biosafety considerations. These blueprints set the foundation 
-            for everything that follows.
+            Using differential equations and graph-based tools, we capture the dynamics 
+            of nitrate reduction pathways. This provides predictive insight into how 
+            engineered microbes behave in complex environments.
           </p>
         </div>
       </div>
-      <!-- Build -->
+      <!-- Simulation -->
       <div class="flex flex-col md:flex-row-reverse items-center gap-8">
         <div class="flex-1">
-          <img src="https://plus.unsplash.com/premium_photo-1664475201591-abd6a76acd5d?q=80&w=1170&auto=format&fit=crop" class="rounded-2xl shadow-lg"/>
+          <img src="https://images.unsplash.com/photo-1635070041078-e363dbe0053c?w=1200&auto=format&fit=crop" class="rounded-2xl shadow-lg"/>
         </div>
         <div class="flex-1">
-          <h4 class="text-2xl font-bold text-purple-700">Build</h4>
+          <h4 class="text-2xl font-bold text-green-700">Simulation</h4>
           <p class="text-gray-600 leading-relaxed">
-            In the lab, design transforms into DNA. We assemble plasmids, culture engineered 
-            strains, and optimize conditions for growth. Each construct is carefully validated 
-            to ensure accuracy before moving to testing.
+            We run computational simulations to test genetic circuit stability, 
+            bioreactor performance, and soil nutrient responses. These predictions 
+            reduce trial-and-error in the wet lab.
           </p>
         </div>
       </div>
-      <!-- Test -->
+      <!-- Machine Learning -->
       <div class="flex flex-col md:flex-row items-center gap-8">
         <div class="flex-1">
-          <img src="https://plus.unsplash.com/premium_photo-1673828332632-17fe468ed31e?q=80&w=764&auto=format&fit=crop" class="rounded-2xl shadow-lg"/>
+          <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?w=1200&auto=format&fit=crop" class="rounded-2xl shadow-lg"/>
         </div>
         <div class="flex-1">
-          <h4 class="text-2xl font-bold text-green-700">Test</h4>
+          <h4 class="text-2xl font-bold text-purple-700">Machine Learning</h4>
           <p class="text-gray-600 leading-relaxed">
-            Validation is critical. Using fluorescence assays, gel electrophoresis, and 
-            growth experiments, we test whether circuits behave as intended. These results 
-            guide iterative improvements.
+            Our ML models predict ammonia production under varying soil conditions, 
+            integrating experimental and environmental data. This helps optimize strain 
+            design and deployment strategies.
           </p>
         </div>
       </div>
-      <!-- Learn -->
+      <!-- Integration -->
       <div class="flex flex-col md:flex-row-reverse items-center gap-8">
         <div class="flex-1">
-          <img src="https://images.unsplash.com/photo-1562156194-215edc144205?w=600&auto=format&fit=crop&q=60" class="rounded-2xl shadow-lg"/>
+          <img src="https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=1200&auto=format&fit=crop" class="rounded-2xl shadow-lg"/>
         </div>
         <div class="flex-1">
-          <h4 class="text-2xl font-bold text-purple-700">Learn</h4>
+          <h4 class="text-2xl font-bold text-green-700">Integration</h4>
           <p class="text-gray-600 leading-relaxed">
-            Data drives refinement. We analyze results, identify bottlenecks, and update 
-            designs. This iterative cycle ensures our circuits become more robust with 
-            each experiment.
+            We integrate modeling and experiments in a design-build-test-learn cycle, 
+            ensuring computational predictions inform wet lab efforts in real time.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Experiments -->
-  <section id="experiments" class="bg-white py-24 px-6">
+  <!-- Tools -->
+  <section id="tools" class="bg-white py-24 px-6">
     <div class="max-w-3xl mx-auto text-center mb-12">
-      <h3 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-green-600 bg-clip-text text-transparent mb-6">Key Experiments</h3>
+      <h3 class="text-4xl font-bold bg-gradient-to-r from-green-600 to-purple-600 bg-clip-text text-transparent mb-6">Key Tools</h3>
       <p class="text-gray-700 leading-relaxed">
-        To validate our constructs, we carried out experiments that tested both the 
-        molecular integrity and functional behavior of engineered strains. From confirming 
-        cloning success to tracking biofilm formation, these experiments built the 
-        evidence base for ARGUS-2440.
+        Our dry lab toolkit blends coding and biology. These tools make modeling, simulation, 
+        and prediction efficient and reproducible.
       </p>
     </div>
     <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
       <div class="group bg-gray-50 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition">
-        <img src="https://plus.unsplash.com/premium_photo-1661371573606-5abfcbf88e91?w=600&auto=format&fit=crop&q=60" class="w-full h-48 object-cover group-hover:scale-105 transition"/>
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=60" class="w-full h-48 object-cover group-hover:scale-105 transition"/>
         <div class="p-6">
-          <h4 class="font-bold text-xl mb-2 text-green-700">Gel Electrophoresis</h4>
-          <p class="text-gray-600">Tracking DNA fragments to confirm cloning and plasmid construction.</p>
+          <h4 class="font-bold text-xl mb-2 text-purple-700">Python Modeling</h4>
+          <p class="text-gray-600">ODE-based models capturing ammonia flux and soil dynamics.</p>
         </div>
       </div>
       <div class="group bg-gray-50 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition">
-        <img src="https://images.unsplash.com/photo-1676285689994-692f0fdafbad?w=600&auto=format&fit=crop&q=60" class="w-full h-48 object-cover group-hover:scale-105 transition"/>
+        <img src="https://images.unsplash.com/photo-1618477247222-acbdb0d58a32?w=600&auto=format&fit=crop&q=60" class="w-full h-48 object-cover group-hover:scale-105 transition"/>
         <div class="p-6">
-          <h4 class="font-bold text-xl mb-2 text-purple-700">Bacterial Growth</h4>
-          <p class="text-gray-600">Monitoring engineered strains under nitrate-rich conditions.</p>
+          <h4 class="font-bold text-xl mb-2 text-green-700">Machine Learning</h4>
+          <p class="text-gray-600">Predictive models for soil conditions and nitrate reduction efficiency.</p>
         </div>
       </div>
       <div class="group bg-gray-50 rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition">
-        <img src="https://images.unsplash.com/photo-1647083701139-3930542304cf?w=600&auto=format&fit=crop&q=60" class="w-full h-48 object-cover group-hover:scale-105 transition"/>
+        <img src="https://images.unsplash.com/photo-1581091012184-5c2af62f0ef0?w=600&auto=format&fit=crop&q=60" class="w-full h-48 object-cover group-hover:scale-105 transition"/>
         <div class="p-6">
-          <h4 class="font-bold text-xl mb-2 text-green-700">Microscopy</h4>
-          <p class="text-gray-600">Visualizing biofilms and cellular adaptations to nitrogen stress.</p>
+          <h4 class="font-bold text-xl mb-2 text-purple-700">Genetic Circuit Design</h4>
+          <p class="text-gray-600">User-friendly tools for designing nitrogen pathway circuits.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Gallery -->
-  <section id="gallery" class="py-24 bg-gradient-to-br from-purple-100 via-white to-green-50">
+  <section id="gallery" class="py-24 bg-gradient-to-br from-green-100 via-white to-purple-50">
     <div class="max-w-3xl mx-auto text-center mb-12">
       <h3 class="text-4xl font-bold bg-gradient-to-r from-green-600 to-purple-600 bg-clip-text text-transparent mb-6">Gallery</h3>
       <p class="text-gray-700 leading-relaxed">
-        Beyond the data, science is about collaboration and creativity. Our gallery 
-        captures everyday moments in the wet lab — from late-night gel runs to team 
-        meetings over microscopes. These snapshots reflect the energy and teamwork 
-        that make ARGUS-2440 possible.
+        Behind every simulation lies teamwork. Our gallery showcases moments from coding 
+        sessions, model debugging, and system testing — where biology meets computation.
       </p>
     </div>
     <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-      <img src="https://images.unsplash.com/photo-1662887295613-4c1f1d797281?w=600&auto=format&fit=crop&q=60" class="rounded-2xl shadow-md hover:scale-105 transition"/>
-      <img src="https://images.unsplash.com/photo-1703500584838-ba17cd6c1b5f?w=600&auto=format&fit=crop&q=60" class="rounded-2xl shadow-md hover:scale-105 transition"/>
-      <img src="https://images.unsplash.com/photo-1631824683860-9a7aa1fe0713?w=600&auto=format&fit=crop&q=60" class="rounded-2xl shadow-md hover:scale-105 transition"/>
+      <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&auto=format&fit=crop&q=60" class="rounded-2xl shadow-md hover:scale-105 transition"/>
+      <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981d?w=600&auto=format&fit=crop&q=60" class="rounded-2xl shadow-md hover:scale-105 transition"/>
+      <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&auto=format&fit=crop&q=60" class="rounded-2xl shadow-md hover:scale-105 transition"/>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gradient-to-r from-green-700 to-purple-700 text-white py-8 text-center">
-    <p>© 2025 iGEM Team ARGUS-2440 | Wet Lab</p>
+  <footer class="bg-gradient-to-r from-purple-700 to-green-700 text-white py-8 text-center">
+    <p>© 2025 iGEM Team ARGUS-2440 | Dry Lab</p>
     <p class="mt-2 text-sm">
       Learn more on our <a href="project.html" class="underline hover:text-gray-200">Project page</a> 
       or contact us at <a href="mailto:team@argus2440.org" class="underline hover:text-gray-200">team@argus2440.org</a>.
     </p>
   </footer>
+
+  <!-- Mobile nav toggle script -->
+  <script>
+    const navToggle = document.getElementById("nav-toggle");
+    const navMenu = document.getElementById("nav-menu");
+    navToggle.addEventListener("click", () => {
+      const expanded = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", !expanded);
+      navMenu.classList.toggle("open");
+    });
+  </script>
+</body>
+</html>
