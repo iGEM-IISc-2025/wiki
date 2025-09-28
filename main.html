@@ -102,44 +102,142 @@
     </div>
   </header>
 
-<!-- 1st stat (normal) -->
-<section class="stat-band">
-  <div class="stat-inner">
-    <div class="stat-text">
-      <h2><span class="counter" data-target="85">0</span>%</h2>
-      <p>of rural households in India depend on <strong>groundwater</strong> for drinking.</p>
-    </div>
-    <div class="stat-diagram">
-      <img src="images/water_icon.svg" alt="Water icon"/>
-    </div>
-  </div>
-</section>
 
-<!-- 2nd stat (REVERSED via class on section) -->
-<section class="stat-band reverse">
-  <div class="stat-inner">
-    <div class="stat-text">
-      <h2><span class="counter" data-target="30">0</span>%</h2>
-      <p>of India’s land suffers from <strong>soil degradation</strong>.</p>
-    </div>
-    <div class="stat-diagram">
-      <img src="images/soil_icon.svg" alt="Soil icon"/>
-    </div>
-  </div>
-</section>
 
-<!-- 3rd stat (normal) -->
-<section class="stat-band">
-  <div class="stat-inner">
-    <div class="stat-text">
-      <h2><span class="counter" data-target="80">0</span>%</h2>
-      <p>of India’s freshwater resources are consumed by <strong>agriculture</strong>.</p>
+  <section class="problem-band" aria-labelledby="problem-heading">
+    <div class="problem-inner">
+      <h2 id="problem-heading">A Hidden Threat in Our Soil: Nitrate Leaching</h2>
+      <p>
+        Nitrogen fertilizers are essential for modern agriculture, but up to 50% is lost as nitrate, washing away from roots and into our water supplies. This contamination threatens ecosystems and human health while wasting a vital resource for farmers.
+      </p>
     </div>
-    <div class="stat-diagram">
-      <img src="images/farm_icon.svg" alt="Farm icon"/>
+  </section>
+
+  <!-- 1st stat (normal) -->
+  <section class="stat-band">
+    <div class="stat-inner">
+      <div class="stat-text">
+        <h2><span class="counter" data-target="85">0</span>%</h2>
+        <p>of rural households in India depend on <strong>groundwater</strong> for drinking.</p>
+      </div>
+      <div class="stat-diagram">
+        <img src="images/water_icon.svg" alt="Water icon"/>
+      </div>
     </div>
+  </section>
+
+  <!-- 2nd stat (REVERSED via class on section) -->
+  <section class="stat-band reverse">
+    <div class="stat-inner">
+      <div class="stat-text">
+        <h2><span class="counter" data-target="30">0</span>%</h2>
+        <p>of India’s land suffers from <strong>soil degradation</strong>.</p>
+      </div>
+      <div class="stat-diagram">
+        <img src="images/soil_icon.svg" alt="Soil icon"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3rd stat (normal) -->
+  <section class="stat-band">
+    <div class="stat-inner">
+      <div class="stat-text">
+        <h2><span class="counter" data-target="80">0</span>%</h2>
+        <p>of India’s freshwater resources are consumed by <strong>agriculture</strong>.</p>
+      </div>
+      <div class="stat-diagram">
+        <img src="images/farm_icon.svg" alt="Farm icon"/>
+      </div>
+    </div>
+  </section>
+      
+  <section id="visual-expl" class="visual-expl" aria-labelledby="solution-heading">
+    <div class="visual-grid">
+      <figure class="visual-left">
+        <img src="images/soil-with-roots.jpg" alt="Diagram showing our microbe preventing nitrate from leaching into groundwater." loading="lazy"/>
+      </figure>
+      <div class="visual-right">
+        <h2 id="solution-heading">Our Solution: A Microbial Guardian</h2>
+        <p>We engineered <em>Pseudomonas putida</em> to act as a living buffer, capturing excess nitrate and holding it in the root zone where plants need it most.</p>
+        <ul class="benefits-list">
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span><strong>Protects Water Quality</strong> by preventing nitrate runoff into groundwater.</span>
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span><strong>Reduces Fertilizer Waste</strong>, saving resources and money for farmers.</span>
+          </li>
+          <li>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <span><strong>Enhances Soil Health</strong> and builds more resilient agricultural systems.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="primary-actions" role="group" aria-label="Primary project actions">
+    <a class="btn btn-primary" href="pond.html">Watch Our Animation</a>
+    <a class="btn btn-secondary" href="drylab.html">Explore the Data</a>
   </div>
-</section>
+
+  <section class="explore" aria-labelledby="explore-heading">
+    <h2 id="explore-heading">Dive Deeper into Our Project</h2>
+    <div class="explore-grid">
+      <a href="spiderweb.html" class="card-link" aria-label="Explore our Human Practices Network">
+        <article>
+          <img src="images/bacteria_legend.png" alt="Stylized icon of a connected network" loading="lazy"/>
+          <h3>HP Network</h3>
+          <p>Interactive exploration of our stakeholder engagement and insights.</p>
+          <span class="card-cta">Explore Human Practices</span>
+        </article>
+      </a>
+      <a href="modeling.html" class="card-link" aria-label="View our project's modeling">
+        <article>
+          <img src="images/bacteria.gif" alt="Animated icon showing data analysis" loading="lazy"/>
+          <h3>Modeling</h3>
+          <p>From metabolic models to growth and nutrient uptake predictions.</p>
+          <span class="card-cta">View Modeling</span>
+        </article>
+      </a>
+      <a href="parts.html" class="card-link" aria-label="Browse our BioBrick parts">
+        <article>
+          <img src="images/igemlogo.png" alt="Icon of a DNA plasmid" loading="lazy"/>
+          <h3>Parts</h3>
+          <p>Our contribution of new and characterized BioBrick parts to the registry.</p>
+          <span class="card-cta">Browse Parts</span>
+        </article>
+      </a>
+      <a href="safety.html" class="card-link" aria-label="Read about our project safety">
+        <article>
+          <img src="images/igemlogo.png" alt="Icon of a shield representing safety" loading="lazy"/>
+          <h3>Safety</h3>
+          <p>A comprehensive overview of our risk assessment and mitigation strategies.</p>
+          <span class="card-cta">Read Safety</span>
+        </article>
+      </a>
+      <a href="team.html" class="card-link" aria-label="Meet the team">
+        <article>
+          <img src="images/igemlogo.png" alt="Icon representing a group of people" loading="lazy"/>
+          <h3>Team</h3>
+          <p>Meet the dedicated students and mentors who made this project possible.</p>
+          <span class="card-cta">Meet the Team</span>
+        </article>
+      </a>
+      <a href="sponsors.html" class="card-link" aria-label="See our sponsors">
+        <article>
+          <img src="images/igemlogo.png" alt="Icon of hands shaking, representing partnership" loading="lazy"/>
+          <h3>Sponsors</h3>
+          <p>The generous supporters who make our research and outreach possible.</p>
+          <span class="card-cta">See Sponsors</span>
+        </article>
+      </a>
+    </div>
+  </section>
+
+  <a href="wetlab.html" class="floating-cta" aria-label="Open Wet Lab page">Wet Lab</a>
 
 
   <iframe src="pond.html" 

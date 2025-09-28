@@ -478,6 +478,33 @@ body {
 .hero-text .letter { display:inline-block; transition: transform .15s ease; }
 
 
+/* Problem Section */
+
+.problem-band {
+    padding: 4rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.problem-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.problem-inner h2 {
+    font-size: 2.25rem; /* 36px */
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.problem-inner p {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.8;
+    color: #475569;
+}
+
+
 /* Stats Section */
 .stat-band {
   padding: 60px 40px;
@@ -591,3 +618,211 @@ body {
 /* Force reverse layout for second stat */
 .stat-band.reverse .stat-text { order: 2 !important; }
 .stat-band.reverse .stat-diagram { order: 1 !important; }
+
+
+/* Visual Explaination Section */
+
+.visual-expl {
+    padding: 5rem 1.5rem;
+}
+
+.visual-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+/* Two columns on medium screens and up */
+@media (min-width: 768px) {
+    .visual-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.visual-left img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.visual-right h2 {
+    font-size: 1.875rem; /* 30px */
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.visual-right p {
+    font-size: 1.125rem;
+    color: #475569;
+    margin-bottom: 2rem;
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.benefits-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    font-size: 1rem;
+    color: #334155;
+    line-height: 1.6;
+}
+
+.benefits-list svg {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    color: #4338ca; /* Accent color */
+    margin-top: 2px;
+}
+
+/* Buttons */
+
+.primary-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem 1.5rem 5rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 9999px; /* Pill shape */
+    transition: all 0.2s ease-in-out;
+    border: 2px solid transparent;
+}
+
+.btn-primary {
+    background-color: #4338ca;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #3730a3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #4338ca;
+    border-color: #a5b4fc;
+}
+
+.btn-secondary:hover {
+    background-color: #eef2ff;
+    border-color: #4338ca;
+    transform: translateY(-2px);
+}
+
+/* Explore More */
+
+.explore {
+    padding: 5rem 1.5rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.explore h2 {
+    text-align: center;
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 3rem;
+}
+
+.explore-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-link article {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease-in-out;
+}
+
+.card-link:hover article {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-color: #c7d2fe;
+}
+
+.card-link img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    object-fit: contain;
+}
+
+.card-link h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #1e293b;
+}
+
+.card-link p {
+    font-size: 1rem;
+    color: #64748b;
+    line-height: 1.6;
+    flex-grow: 1; /* Pushes the CTA to the bottom */
+}
+
+.card-cta {
+    display: inline-block;
+    margin-top: 1rem;
+    font-weight: 600;
+    color: #4338ca;
+}
+
+/* Floating CTA Button */
+.floating-cta {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 999;
+    background-color: #4338ca;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+.floating-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    background-color: #3730a3;
+}

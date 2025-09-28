@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Human Practices | ARGUS-2440</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <base href="/"/>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+
+<!-- Navbar placeholder -->
+  <style>
+    .navbar-1 {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .navbar-1 .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    /* Main Navigation */
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-menu > li { position: relative; }
+    .nav-menu > li > a {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      color: #1c1f28;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+    .nav-menu > li > a:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: #ca74ec;
+    }
+    /* macOS-style Dropdown */
+    .navbar-2 {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: saturate(180%) blur(20px);
+      border: 0.5px solid rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) translateY(-8px) scale(0.95);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      min-width: 180px;
+      padding: 8px;
+    }
+    .navbar-2::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 4px solid rgba(255, 255, 255, 0.95);
+    }
+    .nav-menu > li:hover .navbar-2 {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+    .nav-menu_hovered { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+    .nav-menu_hovered a {
+      display: block; padding: 8px 12px; color: #1c1f28;
+      font-size: 0.9rem; border-radius: 6px; transition: all 0.15s ease;
+    }
+    .nav-menu_hovered a:hover { background: #ca74ec; color: white; transform: translateX(2px); }
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .navbar-1 .container { height: 60px; padding: 0 1rem; justify-content: space-between; }
+      .nav-menu {
+        max-height: 0; overflow: hidden; position: absolute; top: 100%; left: 0; right: 0;
+        background: rgba(255, 255, 255, 0.95); border-radius: 0 0 16px 16px;
+        flex-direction: column; transition: max-height 0.4s ease;
+      }
+      .nav-menu.open { max-height: 600px; padding: 1rem; }
+      .navbar-2 { position: static; opacity: 1; visibility: visible; background: #f8f9fa; border: none; }
+    }
+    .nav-toggle { display: none; background: transparent; cursor: pointer; }
+    @media (max-width: 768px) { .nav-toggle { display: flex; } }
+    .nav-toggle-icon {
+      position: relative; width: 28px; height: 3px; background-color: #333;
+    }
+    .nav-toggle-icon::before, .nav-toggle-icon::after {
+      content: ''; position: absolute; width: 28px; height: 3px; background-color: #333;
+    }
+    .nav-toggle-icon::before { top: -8px; }
+    .nav-toggle-icon::after { top: 8px; }
+    .nav-toggle[aria-expanded="true"] .nav-toggle-icon { background-color: transparent; }
+    .nav-toggle[aria-expanded="true"] .nav-toggle-icon::before { transform: rotate(45deg); top: 0; }
+    .nav-toggle[aria-expanded="true"] .nav-toggle-icon::after { transform: rotate(-45deg); top: 0; }
+    .navbar-brand img { height: 200px; width: auto; }
+    .navbar-brand a {display: inline-block;}
+  </style>
+
+
+  <style>
+  /* Premium Navbar */
+  .navbar-1 {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .navbar-1 .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  }
+
+
+  /* Main Navigation */
+  .nav-menu {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  gap: 8px;
+  }
+
+  .nav-menu > li {
+  position: relative;
+  }
+
+  .nav-menu > li > a {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  color: #1c1f28;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+  font-weight: bold;
+  }
+
+  .nav-menu > li > a:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #ca74ec;
+  }
+
+  /* macOS-style Dropdown */
+  .navbar-2 {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: saturate(180%) blur(20px);
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      0 2px 8px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-8px) scale(0.95);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 180px;
+  padding: 8px;
+  }
+
+  .navbar-2::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 4px solid rgba(255, 255, 255, 0.95);
+  filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.1));
+  }
+
+  .nav-menu > li:hover .navbar-2 {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  .navbar-2 .container {
+  padding: 0;
+  height: auto;
+  display: block;
+  }
+
+  .nav-menu_hovered {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  }
+
+  .nav-menu_hovered a {
+  display: block;
+  padding: 8px 12px;
+  color: #1c1f28;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+  position: relative;
+  }
+
+  .nav-menu_hovered a:hover {
+  background: #ca74ec;
+  color: white;
+  transform: translateX(2px);
+  }
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+  .navbar-1 .container {
+      height: 60px;
+      padding: 0 1rem;
+      justify-content: space-between; /* logo left, toggle right */
+  }
+
+  .nav-menu {
+      max-height: 0;                 /* hidden by default */
+      overflow: hidden;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: saturate(180%) blur(20px);
+      border: 0.5px solid rgba(0, 0, 0, 0.1);
+      border-radius: 0 0 16px 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      padding: 0 1rem;
+      flex-direction: column;
+      gap: 0;
+      z-index: 999;
+      transition: max-height 0.4s ease; /* smooth slide */
+  }
+
+  .nav-menu.open {
+      max-height: 600px; /* enough space for all links */
+      padding: 1rem;
+  }
+
+  .nav-menu > li {
+      width: 100%;
+  }
+
+  .nav-menu > li > a {
+      padding: 12px 16px;
+      border-radius: 8px;
+      justify-content: space-between;
+  }
+
+  .navbar-2 {
+      position: static;
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+      background: rgba(248, 249, 250, 0.8);
+      backdrop-filter: none;
+      border: none;
+      border-radius: 8px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-top: 8px;
+      padding: 8px;
+  }
+
+  .navbar-2::before {
+      display: none;
+  }
+
+  .hero-title {
+      font-size: 2rem;
+  }
+
+  .hero-text {
+      padding: 2rem 1.5rem;
+  }
+  }
+
+  /* Default (desktop) — hidden */
+  .nav-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  }
+
+  /* Show only on mobile */
+  @media (max-width: 768px) {
+  .nav-toggle {
+      display: flex;
+  }
+  }
+
+  /* Hamburger icon (3 bars) */
+  .nav-toggle-icon {
+  position: relative;
+  width: 28px;
+  height: 3px;
+  background-color: #333;
+  display: block;
+  transition: background-color 0.2s ease-in-out;
+  }
+
+  .nav-toggle-icon::before,
+  .nav-toggle-icon::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 3px;
+  background-color: #333;
+  transition: transform 0.2s ease-in-out, top 0.2s ease-in-out;
+  }
+
+  .nav-toggle-icon::before {
+  top: -8px;
+  }
+
+  .nav-toggle-icon::after {
+  top: 8px;
+  }
+
+  /* Expanded (turn into X) */
+  .nav-toggle[aria-expanded="true"] .nav-toggle-icon {
+  background-color: transparent;
+  }
+
+  .nav-toggle[aria-expanded="true"] .nav-toggle-icon::before {
+  transform: rotate(45deg);
+  top: 0;
+  }
+
+  .nav-toggle[aria-expanded="true"] .nav-toggle-icon::after {
+  transform: rotate(-45deg);
+  top: 0;
+  }
+
+
+  /* Logo */
+  .navbar-brand {
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  top: 60px;
+}
+
+.navbar-brand img {
+  height: 60px;
+  width: auto;
+  transition: transform 0.2s ease;
+}
+
+  .navbar-brand:hover img {
+  transform: scale(1.05);
+  }
+  </style>
+
+  <nav class="navbar-1">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand" href="/main.html">
+        <img src="/images/igemlogo.png" alt="Site Logo"/>
+      </a>
+
+      <!-- Mobile toggle -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-icon"></span>
+      </button>
+
+      <!-- Main Nav -->
+      <ul class="nav-menu" id="nav-menu">
+        <li>
+          <a href="project.html">Project</a>
+        </li>
+        <li>
+          <a href="wetlab.html">Wet Lab</a>
+        </li>
+        <li>
+          <a href="drylab.html">Dry Lab</a>
+        </li>
+        <li>
+          <a href="hp.html" class="text-purple-600">Human Practices</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+    <div class="relative text-center px-6">
+      <h2 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg">Human Practices</h2>
+      <p class="mt-4 text-lg text-gray-200 max-w-2xl mx-auto">
+        Understanding the broader impact of ARGUS-2440: ethics, sustainability, and collaboration with society.
+      </p>
+    </div>
+  </section>
+
+  <!-- Our Approach -->
+  <section class="max-w-6xl mx-auto px-6 py-24">
+    <h3 class="text-4xl font-bold bg-gradient-to-r from-green-600 to-purple-600 bg-clip-text text-transparent mb-12 text-center">
+      Our Approach
+    </h3>
+  <section id="intro" class="relative h-[70vh] flex items-center justify-center">
+    <div class="absolute inset-0">
+        <img src="https://images.unsplash.com/photo-1581090700227-ecf929b55e7b?q=80&w=1170&auto=format&fit=crop" class="w-full h-full object-cover"/>
+      <div class="absolute inset-0 bg-gradient-to-br from-purple-800/70 via-green-900/60 to-black/60"></div>
+    </div>
+    <div class="space-y-16">
+      <!-- Integrated HP -->
+      <div class="flex flex-col md:flex-row items-center gap-8">
+        <div class="flex-1">
+          <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?q=80&w=1170&auto=format&fit=crop" class="rounded-2xl shadow-lg"/>
+        </div>
+        <div class="flex-1">
+          <h4 class="text-2xl font-bold text-green-700">Integrated Practices</h4>
+          <p class="text-gray-600 leading-relaxed">
+            We continuously adapt our project through stakeholder engagement. Farmers, policy experts, and industry voices help refine our designs to ensure they solve real-world challenges.
+          </p>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="flex flex-col md:flex-row-reverse items-center gap-8">
+        <div class="flex-1">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1170&auto=format&fit=crop" class="rounded-2xl shadow-lg"/>
+        </div>
+        <div class="flex-1">
+          <h4 class="text-2xl font-bold text-purple-700">Education</h4>
+          <p class="text-gray-600 leading-relaxed">
+            Outreach and education are core to our work. From interactive workshops with students to public talks on synthetic biology, we strive to make science accessible and engaging.
+          </p>
+        </div>
+      </div>
+
+      <!-- Ethics & Safety -->
+      <div class="flex flex-col md:flex-row items-center gap-8">
+        <div class="flex-1">
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1170&auto=format&fit=crop" class="rounded-2xl shadow-lg"/>
+        </div>
+        <div class="flex-1">
+          <h4 class="text-2xl font-bold text-green-700">Ethics & Safety</h4>
+          <p class="text-gray-600 leading-relaxed">
+            Responsible research means prioritizing safety and ethical considerations. We evaluate risks, ensure biosafety standards, and discuss the societal implications of our designs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="py-24 bg-gradient-to-br from-purple-100 via-white to-green-50">
+    <div class="max-w-3xl mx-auto text-center mb-12">
+      <h3 class="text-4xl font-bold bg-gradient-to-r from-green-600 to-purple-600 bg-clip-text text-transparent mb-6">Community Moments</h3>
+      <p class="text-gray-700 leading-relaxed">
+        Human Practices is about dialogue and collaboration. Our gallery captures our interactions with diverse groups: from farmers in the field to policymakers and students in classrooms.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&auto=format&fit=crop&q=60" class="rounded-2xl shadow-md hover:scale-105 transition"/>
+      <img src="https://images.unsplash.com/photo-1497493292307-31c376b6e479?w=600&auto=format&fit=crop&q=60" class="rounded-2xl shadow-md hover:scale-105 transition"/>
+      <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&auto=format&fit=crop&q=60" class="rounded-2xl shadow-md hover:scale-105 transition"/>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-green-700 to-purple-700 text-white py-8 text-center">
+    <p>© 2025 iGEM Team ARGUS-2440 | Human Practices</p>
+    <p class="mt-2 text-sm">
+      Learn more on our <a href="project.html" class="underline hover:text-gray-200">Project page</a> 
+      or contact us at <a href="mailto:team@argus2440.org" class="underline hover:text-gray-200">team@argus2440.org</a>.
+    </p>
+  </footer>
+
+  <!-- Script for Navbar toggle -->
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    navToggle.addEventListener('click', () => {
+      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', !expanded);
+      navMenu.classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
