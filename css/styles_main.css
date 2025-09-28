@@ -280,7 +280,7 @@ body {
 
 /* Logo */
 .navbar-brand {
-  margin-top: 50px;
+  margin-top: 1px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -291,7 +291,7 @@ body {
 }
 
 .navbar-brand img {
-  height: 200px;
+  height: 60px;
   width: auto;
   transition: transform 0.2s ease;
 }
