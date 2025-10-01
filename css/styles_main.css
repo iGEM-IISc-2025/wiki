@@ -552,7 +552,7 @@ body {
 .stat-card h3 {
     font-size: 3.5rem;
     font-weight: 800;
-    color: #4f46e5;
+    color: rgb(164, 43, 175);
     margin: 0;
 }
 
@@ -601,8 +601,6 @@ body {
 }
 
 
-/* TESTING */
-
 /* --- Add these styles for the fill effect --- */
 
 /* Make the card a positioning container for the fill layer */
@@ -619,7 +617,7 @@ body {
     left: 0;
     width: 100%;
     height: 0; /* Starts at 0 height */
-    background-color: rgba(79, 70, 229, 0.1); /* A light, semi-transparent purple */
+    background-color: rgba(174, 42, 42, 0.208); /* A light, semi-transparent red */
     z-index: 0; /* Sits behind the content */
     transition: height 1.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth animation */
 }
@@ -634,8 +632,6 @@ body {
     position: relative;
     z-index: 1;
 }
-
-/* TESTING */
 
 
 /* Visual Explaination Section */

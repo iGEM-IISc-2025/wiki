@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery | Team ARGUS-2440</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/styles_main.css"/>
+  <style>
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9fafb;
+  margin: 0;
+  padding: 0;
+}
+
+.section-title h2 {
+  font-size: 2rem;
+  text-align: center;
+  margin: 2rem 0;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.section-title span {
+  background: linear-gradient(135deg, #00ab6b, #6a00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Masonry Gallery */
+.masonry {
+  column-count: 3;   /* number of columns (adjust for 3 or 4) */
+  column-gap: 1rem;
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem;
+}
+
+.masonry-item {
+  margin-bottom: 1rem;
+  break-inside: avoid;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.masonry-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.masonry-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Responsive columns */
+@media (max-width: 1024px) {
+  .masonry { column-count: 2; }
+}
+@media (max-width: 640px) {
+  .masonry { column-count: 1; }
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.modal-content-container {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 800px;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+.modal img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.modal-description {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+  </style>
+</head>
+<body>
+
+  <div id="progress-bar"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar-1">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand" href="/main.html">
+        <img src="../images/igemlogo.png" alt="Site Logo"/>
+      </a>
+
+      <!-- Mobile toggle -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-icon"></span>
+      </button>
+
+      <!-- Main Nav -->
+      <ul class="nav-menu" id="nav-menu">
+        <li>
+          <a href="project.html">Project</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Ideation</a></li>
+                <li><a href="#">Overview</a></li>
+                <li><a href="#">Team</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="wetlab.html">Wet Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="wetlab/engineering.html">Engineering</a></li>
+                <li><a href="#">Experimentation</a></li>
+                <li><a href="#">Results and Parts</a></li>
+                <li><a href="#">Delivery Mechanisms</a></li>
+                <li><a href="#">Parts</a></li>
+                <li><a href="#">Biosafety</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="drylab.html">Dry Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="hp/spiderweb.html">Legal</a></li>
+                <li><a href="#">Sponsorship</a></li>
+                <li><a href="#">Stuff</a></li>
+                <li><a href="#">Other</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="#">Human Practices</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Integrated Human Practices</a></li>
+                <li><a href="#">Education</a></li>
+                <li><a href="#">Safety</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="team.html">Team</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Atttributions</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">AIIM</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+<section>
+  <div class="section-title">
+    <h2><span>Gallery</span></h2>
+  </div>
+
+  <div class="masonry">
+
+    <div class="masonry-item" onclick="openModal('images/Ammonium_Legend.jpg','Ammonium Legend')">
+      <img src="../images/img-1.jpg" alt="Ammonium Legend">
+    </div>
+
+    <div class="masonry-item" onclick="openModal('images/bacteria_Legend.png','Bacteria Legend')">
+      <img src="../images/img-2.jpg" alt="Bacteria Legend">
+    </div>
+
+    <div class="masonry-item" onclick="openModal('images/Nitrate_Legend.jpg','Nitrate Legend')">
+      <img src="../images/img-3.jpg" alt="Nitrate Legend">
+    </div>
+
+    <div class="masonry-item" onclick="openModal('images/Putida.png','Putida Strain')">
+      <img src="../images/img-4.jpg" alt="Putida Strain">
+    </div>
+
+    <div class="masonry-item" onclick="openModal('images/soil-with-roots.jpg','Soil with Roots')">
+      <img src="../images/img-5.jpg" alt="Soil with Roots">
+    </div>
+
+    <div class="masonry-item" onclick="openModal('images/soil-with-roots.jpg','Soil with Roots')">
+      <img src="../images/img-6.jpg" alt="Soil with Roots">
+    </div>
+
+    <div class="masonry-item" onclick="openModal('images/soil-with-roots.jpg','Soil with Roots')">
+      <img src="../images/img-7.jpg" alt="Soil with Roots">
+    </div>
+
+    <div class="masonry-item" onclick="openModal('images/soil-with-roots.jpg','Soil with Roots')">
+      <img src="../images/img-8.jpg" alt="Soil with Roots">
+    </div>
+
+    <div class="masonry-item" onclick="openModal('images/soil-with-roots.jpg','Soil with Roots')">
+      <img src="../images/img-9.jpg" alt="Soil with Roots">
+    </div>    
+
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="photoModal" class="modal">
+  <span class="close" onclick="closeModal()">&times;</span>
+  <div class="modal-content-container">
+    <img id="modalImg" />
+    <div class="modal-description" id="modalCaption"></div>
+  </div>
+</div>
+
+<script>
+function openModal(src, caption) {
+  const modal = document.getElementById("photoModal");
+  const modalImg = document.getElementById("modalImg");
+  const modalCaption = document.getElementById("modalCaption");
+
+  modal.style.display = "flex";
+  modalImg.src = src;
+  modalCaption.textContent = caption;
+}
+
+function closeModal() {
+  document.getElementById("photoModal").style.display = "none";
+}
+
+// Scroll progress bar
+  window.addEventListener("scroll", () => {
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / docHeight) * 100;
+    document.getElementById("progress-bar").style.width = scrolled + "%";
+  });
+  
+</script>
+
+</body>
+</html>
