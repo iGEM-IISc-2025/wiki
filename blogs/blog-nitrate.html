@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Understanding Nitrate Reduction in Soil | iGEM ARGUS-2440</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="../css/styles_main.css"/>
+<style>
+/* Blog Header */
+.blog-header {
+    background: linear-gradient(135deg, #00ab6b, #6a00ff);
+    color: #fff;
+    text-align: center;
+    padding: 80px 20px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.blog-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.blog-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Blog content container */
+.blog-content-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    line-height: 1.7;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Blog image */
+.blog-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Blog meta */
+.blog-meta {
+    color: rgba(0,0,0,0.6);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+/* Back button */
+.back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 15px;
+    background-color: #00ab6b;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.back-btn:hover {
+    background-color: #008f57;
+}
+</style>
+</head>
+<body>
+  
+ <div id="progress-bar"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar-1">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand" href="/main.html">
+        <img src="../images/igemlogo.png" alt="Site Logo"/>
+      </a>
+
+      <!-- Mobile toggle -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-icon"></span>
+      </button>
+
+      <!-- Main Nav -->
+
+      <ul class="nav-menu" id="nav-menu">
+        <li>
+          <a href="project.html">Project</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Ideation</a></li>
+                <li><a href="#">Overview</a></li>
+                <li><a href="#">Team</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="wetlab.html">Wet Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="wetlab/engineering.html">Engineering</a></li>
+                <li><a href="#">Experimentation</a></li>
+                <li><a href="#">Results and Parts</a></li>
+                <li><a href="#">Delivery Mechanisms</a></li>
+                <li><a href="#">Parts</a></li>
+                <li><a href="#">Biosafety</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="drylab.html">Dry Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="hp/spiderweb.html">Legal</a></li>
+                <li><a href="#">Sponsorship</a></li>
+                <li><a href="#">Stuff</a></li>
+                <li><a href="#">Other</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="#">Human Practices</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Integrated Human Practices</a></li>
+                <li><a href="#">Education</a></li>
+                <li><a href="#">Safety</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="team.html">Team</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Atttributions</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">AIIM</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+<!-- Blog Header -->
+<header class="blog-header">
+    <h1>Understanding Nitrate Reduction in Soil</h1>
+    <p>Explore how ARGUS-2440 tackles nitrate leaching and maximizes ammonia production with biofilm modeling.</p>
+</header>
+
+<!-- Blog Content -->
+<div class="blog-content-container max-w-4xl mx-auto px-6 py-10 space-y-10">
+
+    <!-- Back button -->
+    <a href="blogs.html" class="back-btn inline-block mb-6 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition duration-300">
+        &larr; Back to Blogs
+    </a>
+
+    <!-- Featured image -->
+    <div class="relative">
+        <img src="https://via.placeholder.com/900x400" alt="Nitrate Reduction" class="blog-image w-full rounded-xl shadow-lg hover:scale-105 transition-transform duration-300">
+        <div class="absolute bottom-4 left-6 bg-green-700 text-white px-3 py-1 rounded font-semibold text-sm">Sep 2025</div>
+    </div>
+
+    <!-- Meta info -->
+    <div class="blog-meta text-gray-600 italic mt-2">By Team ARGUS</div>
+
+    <!-- Introduction -->
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-green-600 pl-4 py-1">Introduction</h2>
+        <p class="text-gray-700 leading-relaxed text-lg">
+            Nitrate leaching is a critical environmental problem affecting soil and water quality. Our project, <strong>ARGUS-2440</strong>, aims to address this by maximizing ammonia production in soil without triggering unwanted chemical conversions. Understanding the nitrate reduction process is key to designing effective interventions.
+        </p>
+    </section>
+
+    <!-- Biofilm Approach -->
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-green-600 pl-4 py-1">Biofilm-Based Approach</h2>
+        <p class="text-gray-700 leading-relaxed text-lg">
+            We employ biofilm modeling to simulate microbial interactions in soil. Biofilms help stabilize ammonia production and reduce nitrate leaching. By optimizing parameters like <em>pH, nutrient availability, and microbial density</em>, we can predict the system’s efficiency before wet lab experiments.
+        </p>
+    </section>
+
+    <!-- Results -->
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-green-600 pl-4 py-1">Results & Insights</h2>
+        <p class="text-gray-700 leading-relaxed text-lg">
+            Our simulations show that carefully controlled ammonia concentrations maintain soil health while preventing excess nitrate conversion. These findings inform our wet lab experiments and guide the design of genetic circuits for nitrogen pathways.
+        </p>
+        <blockquote class="border-l-4 border-green-600 pl-4 italic text-gray-600">
+            "Careful balancing of ammonia levels ensures both soil health and environmental safety."
+        </blockquote>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-green-600 pl-4 py-1">Conclusion</h2>
+        <p class="text-gray-700 leading-relaxed text-lg">
+            Integrating ML predictions with biofilm modeling provides a robust strategy to manage nitrate reduction in soil. <strong>ARGUS-2440’s approach</strong> demonstrates how computational tools can enhance synthetic biology solutions for environmental challenges.
+        </p>
+    </section>
+</div>
+
+<!-- Footer -->
+<footer class="bg-gradient-to-r from-green-700 to-purple-700 text-white py-8 text-center">
+    <p>© 2025 iGEM Team ARGUS-2440 | Wet Lab</p>
+    <p class="mt-2 text-sm">
+      Learn more on our <a href="project.html" class="underline hover:text-gray-200">Project page</a> 
+      or contact us at <a href="mailto:team@argus2440.org" class="underline hover:text-gray-200">team@argus2440.org</a>.
+    </p>
+</footer>
+
+</body>
+</html>

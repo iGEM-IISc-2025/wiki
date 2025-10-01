@@ -506,124 +506,80 @@ body {
 
 
 /* Stats Section */
-/* === FINAL CONSOLIDATED STATS CSS (FOR SCROLL-DRIVEN ANIMATION) === */
 
-/* The @property rule for smooth number animation. */
-@property --num {
-  syntax: '<integer>';
-  initial-value: 0;
-  inherits: false;
+.stats-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
 }
 
-/* --- Main Layout & Spacing --- */
-
-.stat-band {
-  /* Padding is now the only property needed here. */
-  /* The opacity and transform are controlled by JavaScript. */
-  padding: 4rem 2rem;
+.stats-section h2 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 3rem;
 }
 
-.stat-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1100px;
-  margin: 0 auto;
-  gap: 4rem;
-  /* The transform property is now controlled by JavaScript. */
+/* --- Grid for the Cards --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
 }
 
-/* --- Zig-zag Layout --- */
-/* This is the primary rule for the zig-zag effect */
-.stat-inner.reverse {
-  flex-direction: row-reverse;
+/* --- Individual Stat Card Styling --- */
+.stat-card {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: left;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-/* This was in your original code. While row-reverse handles this,
-   we'll keep it to ensure we're not skipping your original intent. */
-.stat-band.reverse .stat-text { 
-  order: 2 !important; 
-}
-.stat-band.reverse .stat-diagram { 
-  order: 1 !important; 
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
 
-/* --- Text Styling --- */
-
-.stat-text p {
-  font-size: 1.3rem;
-  line-height: 1.6;
-  color: #334155;
-  max-width: 450px;
+.stat-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
 }
 
-/* --- Dial Styling --- */
-/* This includes all the final size adjustments */
-
-.dial-container {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  margin: 0 auto;
+.stat-card h3 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #4f46e5;
+    margin: 0;
 }
 
-.dial-svg {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
+.stat-card .icon {
+    width: 48px;
+    height: 48px;
+    color: #2ecc71; /* A nice green for the icons */
 }
 
-.dial-svg path {
-  fill: none;
-  stroke-width: 5;
-  stroke-linecap: round;
+.stat-card p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0;
 }
 
-.dial-track {
-  stroke: #e2e8f0;
-}
-
-.dial-progress {
-  stroke: #2ecc71;
-  stroke-dashoffset: 100;
-  /* NO transition here. This is crucial. */
-}
-
-.dial-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #1e293b;
-}
-
-.dial-text h2 {
-  font-size: 2.75rem;
-  font-weight: 700;
-  margin: 0;
-  display: flex;
-  align-items: center;
-}
-
-.counter {
-  counter-reset: num var(--num);
-  /* This ensures the number font is rendered smoothly */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* NO transition here. This is crucial. */
-}
-
-.counter::after {
-  content: counter(num);
+.stat-card strong {
+    color: #1e293b;
 }
 
 /* --- Responsive Adjustments --- */
-/* This is your complete media query block, preserved. */
+@media (max-width: 900px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
+/* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
   .stat-inner,
   .stat-inner.reverse {
@@ -632,17 +588,55 @@ body {
     gap: 2.5rem;
   }
   .dial-container {
-    width: 140px;
-    height: 140px;
+    width: 120px;
+    height: 120px;
   }
   .dial-text h2 {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 }
 
 .dial-svg {
     overflow: visible !important;
 }
+
+
+/* TESTING */
+
+/* --- Add these styles for the fill effect --- */
+
+/* Make the card a positioning container for the fill layer */
+.stat-card {
+    position: relative;
+    overflow: hidden; /* Keeps the fill inside the rounded corners */
+}
+
+/* The "water" fill layer */
+.stat-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0; /* Starts at 0 height */
+    background-color: rgba(79, 70, 229, 0.1); /* A light, semi-transparent purple */
+    z-index: 0; /* Sits behind the content */
+    transition: height 1.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth animation */
+}
+
+/* When the card is visible, the ::before element gets a height */
+.stat-card.is-visible.fill-85::before { height: 85%; }
+.stat-card.is-visible.fill-30::before { height: 30%; }
+.stat-card.is-visible.fill-70::before { height: 70%; }
+
+/* Ensure the card content sits on top of the fill layer */
+.stat-card-header, .stat-card p {
+    position: relative;
+    z-index: 1;
+}
+
+/* TESTING */
+
 
 /* Visual Explaination Section */
 
