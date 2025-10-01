@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/styles_main.css"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<title>iGEM Wiki Blogs</title>
+<style>
+/* Container */
+.blogs-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 60px;
+}
+
+/* Individual blog card */
+.blog-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    flex: 1 1 calc(30% - 20px);
+    max-width: calc(30% - 20px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+/* Hover effect */
+.blog-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* Blog image */
+.blog-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.blog-card img:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+/* Post tag on hover */
+.blog-card .post-tag {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 171, 107, 0.9);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.blog-card:hover .post-tag {
+    display: inline-block;
+}
+
+/* Card content */
+.blog-content {
+    padding: 15px;
+}
+
+.blog-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.blog-excerpt {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.blog-meta {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.6);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .blog-card { flex: 1 1 calc(45% - 20px); max-width: calc(45% - 20px); }
+}
+@media (max-width: 800px) {
+    .blog-card { flex: 1 1 calc(100% - 20px); max-width: calc(100% - 20px); }
+}
+</style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar-1">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand" href="/main.html">
+        <img src="images/igemlogo.png" alt="Site Logo"/>
+      </a>
+
+      <!-- Mobile toggle -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-icon"></span>
+      </button>
+
+      <!-- Main Nav -->
+      <ul class="nav-menu" id="nav-menu">
+        <li>
+          <a href="project.html">Project</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Ideation</a></li>
+                <li><a href="#">Overview</a></li>
+                <li><a href="#">Team</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="wetlab.html">Wet Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="wetlab/engineering.html">Engineering</a></li>
+                <li><a href="#">Experimentation</a></li>
+                <li><a href="#">Results and Parts</a></li>
+                <li><a href="#">Delivery Mechanisms</a></li>
+                <li><a href="#">Parts</a></li>
+                <li><a href="#">Biosafety</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="drylab.html">Dry Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="hp/spiderweb.html">Legal</a></li>
+                <li><a href="#">Sponsorship</a></li>
+                <li><a href="#">Stuff</a></li>
+                <li><a href="#">Other</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="#">Human Practices</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Integrated Human Practices</a></li>
+                <li><a href="#">Education</a></li>
+                <li><a href="#">Safety</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="team.html">Team</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="#">Atttributions</a></li>
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">AIIM</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+<!-- Page Header -->
+<header style="
+    text-align: center; 
+    padding: 60px 20px; 
+    /* background: linear-gradient(135deg, #00ab6b, #6a00ff); 
+    color: #fff;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 40px; */
+">
+    <h1 style="font-size: 3rem; margin: 0; font-family: 'Segoe UI', sans-serif; letter-spacing: 1px;">Blogs</h1>
+    <p style="margin-top: 10px; font-size: 1.2rem; opacity: 0.9;">
+        Explore our latest insights, research updates, and team stories
+    </p>
+</header>
+
+<div class="blogs-container">
+    <!-- Example blog card -->
+    <div class="blog-card">
+        <img src="https://via.placeholder.com/400x200" alt="Blog Image">
+        <div class="post-tag">Synthetic Biology</div>
+        <div class="blog-content">
+            <div class="blog-title">Understanding Nitrate Reduction in Soil</div>
+            <div class="blog-excerpt">Explore how ARGUS-2440 tackles nitrate leaching and maximizes ammonia production with biofilm modeling.</div>
+            <div class="blog-meta">By Team ARGUS | Sep 2025</div>
+        </div>
+    </div>
+
+    <div class="blog-card">
+        <img src="https://via.placeholder.com/400x200" alt="Blog Image">
+        <div class="post-tag">Genetic Circuits</div>
+        <div class="blog-content">
+            <div class="blog-title">Designing Nitrogen Pathway Circuits</div>
+            <div class="blog-excerpt">Our approach to synthetic circuit design for nitrogen pathways in wet lab experiments and predictive modeling.</div>
+            <div class="blog-meta">By Team ARGUS | Aug 2025</div>
+        </div>
+    </div>
+
+    <div class="blog-card">
+        <img src="https://via.placeholder.com/400x200" alt="Blog Image">
+        <div class="post-tag">ML Modeling</div>
+        <div class="blog-content">
+            <div class="blog-title">Predicting Ammonia Production Using ML</div>
+            <div class="blog-excerpt">Machine learning models to optimize ammonia levels without triggering unwanted chemical conversions in soil.</div>
+            <div class="blog-meta">By Team ARGUS | Jul 2025</div>
+        </div>
+    </div>
+</div>
+
+<footer class="bg-gradient-to-r from-green-700 to-purple-700 text-white py-8 text-center">
+    <p>© 2025 iGEM Team ARGUS-2440 | Wet Lab</p>
+    <p class="mt-2 text-sm">
+      Learn more on our <a href="project.html" class="underline hover:text-gray-200">Project page</a> 
+      or contact us at <a href="mailto:team@argus2440.org" class="underline hover:text-gray-200">team@argus2440.org</a>.
+    </p>
+</footer>
+
+</body>
+</html>
