@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dry Lab | ARGUS-2440</title>
+  <link rel="stylesheet" href="css/styles_tab.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <base href="/">
 </head>
@@ -403,6 +404,8 @@
   }
   </style>
 
+  <div id="progress-bar"></div>
+
   <nav class="navbar-1">
     <div class="container">
       <!-- Logo -->
@@ -628,6 +631,14 @@
       navToggle.setAttribute("aria-expanded", !expanded);
       navMenu.classList.toggle("open");
     });
+
+  // Scroll progress bar
+  window.addEventListener("scroll", () => {
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / docHeight) * 100;
+    document.getElementById("progress-bar").style.width = scrolled + "%";
+  });
+
   </script>
 </body>
 </html>
