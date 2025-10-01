@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Attributions | ARGUS-2440</title>
+  <link rel="stylesheet" href="css/styles_main.css"/>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+:root {
+  --card-height: 400px;     /* overall card height */
+  --card-top-height: 140px; /* avatar + header area */
+}
+
+/* Grid fixed to 2 columns */
+.attributions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Base card */
+.attribution-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: var(--card-height);
+  overflow: hidden;
+  transition: transform .18s ease;
+}
+.attribution-card:hover { transform: translateY(-6px); }
+
+/* Top (avatar + header) */
+.card-top {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex: 0 0 var(--card-top-height);
+}
+.avatar {
+  width: 100px; height: 100px;
+  border-radius: 9999px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #e9ecef;
+}
+.header { flex:1; display:flex; flex-direction:column; justify-content:center; gap:.25rem }
+.header-row { display:flex; align-items:center; justify-content:space-between; gap:1rem }
+.header-row .name { font-weight:700; font-size:1.05rem; color:#111827 }
+.tag { font-weight:700; font-size:.72rem; color:#fff; padding:.22rem .5rem; border-radius:.375rem }
+.tag.lead { background:#d14b7a }
+.tag.wetlab { background:#6f7ad8 }
+.tag.drylab { background:#71daae }
+.role-tag {
+  display: inline-block;      /* ensure it only takes up as much as needed */
+  font-weight: 600;
+  font-size: .72rem;
+  color: #fff;
+  padding: .2rem .5rem;
+  border-radius: .375rem;
+  white-space: nowrap;        /* prevent wrapping */
+  width: auto;                /* auto width */
+}
+
+/* Role colors */
+.role-tag.Student { background:#4b1fbf }
+.role-tag.PI { background:#7a40d1 }
+.role-tag.Advisor { background:#6c63ff }
+.role,
+.tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  white-space: nowrap; /* Fix width issue */
+  width: auto;         /* Auto-fit content */
+}
+
+
+/* Bottom flippable */
+.card-bottom { position:relative; flex:1; height:calc(var(--card-height) - var(--card-top-height)); margin-top:.5rem; perspective:1200px; cursor:pointer; }
+.flip-inner { position:relative; width:100%; height:100%; transition:transform .6s cubic-bezier(.2,.8,.2,1); transform-style:preserve-3d; }
+.attribution-card.flipped .flip-inner { transform:rotateY(180deg); }
+.flip-face {
+  position:absolute; inset:0;
+  backface-visibility:hidden;
+  display:flex; flex-direction:column;
+  padding:.75rem 1rem; box-sizing:border-box;
+  border-radius:8px;
+  overflow:auto;
+  scrollbar-width:none; /* Firefox */
+}
+.flip-face::-webkit-scrollbar { display:none; } /* Chrome/Safari */
+.flip-face.front { background:#fff }
+.flip-face.back { background:#fbfbff; transform:rotateY(180deg); }
+
+/* Align "Key Contributions" flush left */
+.contributions-title { font-weight:700; margin-bottom:.5rem; color:#374151; }
+.front ul, .back ul { margin:0; padding-left:1rem; color:#4b5563; font-size:.95rem }
+.front li, .back li { margin-bottom:.35rem }
+
+/* Hero improvements */
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, rgba(122,64,209,0.9), rgba(75,31,191,0.85)), url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  padding: 6rem 1.5rem;
+  text-align: center;
+}
+.hero h1 { font-weight:900; font-size:2.8rem; margin-bottom:.5rem }
+.hero p { opacity:.95; max-width:720px; margin:0 auto; font-size:1.1rem }
+
+/* Card container */
+.attributions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two per row */
+  gap: 0rem; /* Margin between cards */
+  padding: 1.5rem;
+}
+
+/* Attribution Card */
+.attribution-card {
+  width: 85%;  /* Reduce width so margins appear */
+  margin: auto;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  min-height: 450px; /* Fixed height, adjust as needed */
+  text-align: left;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  overflow: hidden; /* Hide scrollbars */
+}
+
+/* Flipped state */
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Front & Back */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  overflow-y: auto; /* Enable scrolling if needed */
+  scrollbar-width: none; /* Hide Firefox scrollbar */
+}
+
+.flip-card-front::-webkit-scrollbar,
+.flip-card-back::-webkit-scrollbar {
+  display: none; /* Hide Chrome scrollbar */
+}
+
+/* Back side */
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Avatar */
+.avatar {
+  display: block;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Role tag fix */
+.role,
+.tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  white-space: nowrap; /* Fix width issue */
+  width: auto;         /* Auto-fit content */
+}
+
+/* Contributions alignment */
+.tasks-title {
+  margin-top: 1rem;
+  margin-left: 0.25rem; /* Align with bullets */
+}
+
+/* Make header stop stretching children horizontally */
+.header {
+  display: flex;            /* already set, but safe to keep */
+  flex-direction: column;   /* keep vertical stacking */
+  justify-content: center;
+  gap: .25rem;
+  align-items: flex-start;  /* ← prevents children (tags) stretching to full width */
+}
+
+/* Ensure the role-tag is compact and doesn't stretch as a flex item */
+.role-tag {
+  display: inline-block;    /* shrink to content */
+  align-self: flex-start;   /* defensive: ensures it won't stretch even if header changes */
+  white-space: nowrap;
+  width: auto;
+  padding: .2rem .5rem;
+  font-weight: 600;
+  font-size: .72rem;
+  border-radius: .375rem;
+  color: #fff;
+}
+
+/* tags */
+
+
+.tags {
+  display: flex;
+  gap: 0.05rem; /* spacing between multiple tags */
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.35rem;
+  margin-left: 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tags {
+  display: flex;
+  gap: 0.25rem;       /* very small spacing between tags */
+  margin-top: 0.25rem; /* optional vertical spacing below name */
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+  margin: 0;           /* remove extra margin-left that was forcing spacing */
+}
+
+/* Keep role-tag compact */
+.role-tag {
+  margin-top: 0.25rem; /* small space below tags */
+  display: inline-block;
+}
+
+</style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar-1">
+        <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="/main.html">
+            <img src="images/igemlogo.png" alt="Site Logo"/>
+        </a>
+
+        <!-- Mobile toggle -->
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span class="nav-toggle-icon"></span>
+        </button>
+
+        <!-- Main Nav -->
+        <ul class="nav-menu" id="nav-menu">
+            <li>
+            <a href="project.html">Project</a>
+            <nav class="navbar-2">
+                <div class="container">
+                <ul class="nav-menu_hovered">
+                    <li><a href="#">Ideation</a></li>
+                    <li><a href="#">Overview</a></li>
+                    <li><a href="#">Team</a></li>
+                </ul>
+                </div>
+            </nav>
+            </li>
+
+            <li>
+            <a href="wetlab.html">Wet Lab</a>
+            <nav class="navbar-2">
+                <div class="container">
+                <ul class="nav-menu_hovered">
+                    <li><a href="wetlab/engineering.html">Engineering</a></li>
+                    <li><a href="#">Experimentation</a></li>
+                    <li><a href="#">Results and Parts</a></li>
+                    <li><a href="#">Delivery Mechanisms</a></li>
+                    <li><a href="#">Parts</a></li>
+                    <li><a href="#">Biosafety</a></li>
+                </ul>
+                </div>
+            </nav>
+            </li>
+
+            <li>
+            <a href="drylab.html">Dry Lab</a>
+            <nav class="navbar-2">
+                <div class="container">
+                <ul class="nav-menu_hovered">
+                    <li><a href="hp/spiderweb.html">Legal</a></li>
+                    <li><a href="#">Sponsorship</a></li>
+                    <li><a href="#">Stuff</a></li>
+                    <li><a href="#">Other</a></li>
+                </ul>
+                </div>
+            </nav>
+            </li>
+
+            <li>
+            <a href="#">Human Practices</a>
+            <nav class="navbar-2">
+                <div class="container">
+                <ul class="nav-menu_hovered">
+                    <li><a href="#">Integrated Human Practices</a></li>
+                    <li><a href="#">Education</a></li>
+                    <li><a href="#">Safety</a></li>
+                </ul>
+                </div>
+            </nav>
+            </li>
+
+            <li>
+            <a href="team.html">Team</a>
+            <nav class="navbar-2">
+                <div class="container">
+                <ul class="nav-menu_hovered">
+                    <li><a href="#">Atttributions</a></li>
+                    <li><a href="#">Gallery</a></li>
+                    <li><a href="#">AIIM</a></li>
+                </ul>
+                </div>
+            </nav>
+            </li>
+
+        </ul>
+        </div>
+    </nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container mx-auto">
+    <h1>Attributions</h1>
+    <p>The ARGUS-2440 project was built by an interdisciplinary team of passionate researchers and students. Each member made unique contributions that brought this vision to life.</p>
+  </div>
+</section>
+
+<main class="container mx-auto py-10">
+  <h2 class="text-2xl font-semibold text-[#4b1fbf] text-center mb-8">Team Contributions</h2>
+
+  <div class="attributions-grid">
+
+    <!-- Aarav -->
+    <article class="attribution-card">
+      <div class="card-top">
+        <img class="avatar" src="https://via.placeholder.com/150" alt="Aarav Ghate">
+        <div class="header">
+          <div class="header-row">
+            <div class="name"><a href="#">Aarav Ghate</a></div>
+          </div>
+          <div class="tags">
+            <span class="tag lead">Lead</span>
+            <span class="tag drylab">Dry Lab</span>
+          </div>
+          <span class="role-tag Student">Student</span>
+        </div>
+      </div>
+      <div class="card-bottom">
+        <div class="flip-inner">
+          <div class="flip-face front">
+            <div class="contributions-title">Key Contributions</div>
+            <ul>
+              <li>Led ML model development for ammonia prediction.</li>
+              <li>Created data cleaning & integration pipelines.</li>
+              <li>Coordinated dry-lab sub-team tasks.</li>
+              <li>Designed visualizations for outputs.</li>
+            </ul>
+          </div>
+          <div class="flip-face back">
+            <div class="contributions-title">Fun Facts</div>
+            <ul>
+              <li>Plays football every weekend.</li>
+              <li>Codes Python at 2AM with coffee.</li>
+              <li>Loves sci-fi novels.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Creetika -->
+    <article class="attribution-card">
+      <div class="card-top">
+        <img class="avatar" src="https://via.placeholder.com/150" alt="Aarav Ghate">
+        <div class="header">
+          <div class="header-row">
+            <div class="name"><a href="#">Creetika Dahl</a></div>
+          </div>
+          <div class="tags">
+            <span class="tag lead">Lead</span>
+            <span class="tag wetlab">Wet Lab</span>
+          </div>
+          <span class="role-tag Student">Student</span>
+        </div>
+      </div>
+      <div class="card-bottom">
+        <div class="flip-inner">
+          <div class="flip-face front">
+            <div class="contributions-title">Key Contributions</div>
+            <ul>
+              <li>Led ML model development for ammonia prediction.</li>
+              <li>Created data cleaning & integration pipelines.</li>
+              <li>Coordinated dry-lab sub-team tasks.</li>
+              <li>Designed visualizations for outputs.</li>
+            </ul>
+          </div>
+          <div class="flip-face back">
+            <div class="contributions-title">Fun Facts</div>
+            <ul>
+              <li>Plays football every weekend.</li>
+              <li>Codes Python at 2AM with coffee.</li>
+              <li>Loves sci-fi novels.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+  <footer class="bg-gradient-to-r from-green-700 to-purple-700 text-white py-8 text-center">
+    <p>© 2025 iGEM Team ARGUS-2440 | Wet Lab</p>
+    <p class="mt-2 text-sm">
+      Learn more on our <a href="project.html" class="underline hover:text-gray-200">Project page</a> 
+      or contact us at <a href="mailto:team@argus2440.org" class="underline hover:text-gray-200">team@argus2440.org</a>.
+    </p>
+  </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const cards = document.querySelectorAll('.attribution-card');
+
+  cards.forEach(card => {
+    const bottom = card.querySelector('.card-bottom') || card;
+    bottom.addEventListener('click', (e) => {
+      e.stopPropagation();
+      card.classList.toggle('flipped'); // toggle only this card
+    });
+  });
+
+  // Escape closes all
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      cards.forEach(c => c.classList.remove('flipped'));
+    }
+  });
+});
+
+</script>
+</body>
+</html>
