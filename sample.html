@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Overview | ARGUS-2440</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #22c55e;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --border-color: #e2e8f0;
+        }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* --- Hero Header --- */
+        .hero-header {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 6rem 1.5rem;
+            text-align: center;
+        }
+        .hero-header h1 {
+            font-size: 3.5rem; font-weight: 800; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .hero-header p {
+            font-size: 1.25rem; max-width: 700px; margin: 1rem auto 0; color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* --- General Section Styling --- */
+        .content-section {
+            padding: 5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .content-section h2 {
+            font-size: 2.5rem; font-weight: 700; color: var(--primary-color); text-align: center; margin: 0 0 2rem 0;
+        }
+        /* Generic animation class */
+        .animate-on-scroll {
+            opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1; transform: translateY(0);
+        }
+
+        /* --- Style 1: Animated Stat Cards --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .stat-card { background-color: var(--bg-white); border-radius: 1rem; padding: 1.5rem; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .stat-card h3 { font-size: 3rem; font-weight: 800; color: var(--primary-color); margin: 0; }
+        .stat-card p { font-size: 1rem; color: var(--text-light); margin-top: 0.5rem; }
+
+        /* --- Style 2: Scroll-Reveal Two-Column --- */
+        .two-column-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .two-column-grid img { width: 100%; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .text-content h3 { font-size: 1.75rem; color: var(--text-dark); margin: 0 0 1rem 0; }
+        .text-content p { font-size: 1.1rem; color: var(--text-light); margin: 0; }
+
+        /* --- Style 3: Interactive Tabs --- */
+        .tabs-container { background: var(--bg-white); border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); overflow: hidden; }
+        .tab-buttons { display: flex; background: #eef2ff; }
+        .tab-button { flex: 1; padding: 1rem; border: none; background: transparent; font-size: 1rem; font-weight: 600; cursor: pointer; color: var(--text-light); transition: background-color 0.3s, color 0.3s; }
+        .tab-button.active { background: var(--bg-white); color: var(--primary-color); }
+        .tab-content { display: none; padding: 2rem; }
+        .tab-content.active { display: block; }
+        .tab-content h3 { margin: 0 0 1rem 0; }
+
+        /* --- Style 4: Accordion / Expandable List --- */
+        .accordion-item { background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 0.5rem; margin-bottom: 0.5rem; }
+        .accordion-header { width: 100%; text-align: left; background: transparent; border: none; padding: 1rem 1.5rem; font-size: 1.1rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .accordion-content p { padding: 0 1.5rem 1.5rem; margin: 0; color: var(--text-light); }
+        .accordion-item.active .accordion-content { max-height: 200px; } /* Adjust height as needed */
+
+        /* --- Style 5: Hotspot Image --- */
+        .hotspot-container { position: relative; max-width: 600px; margin: 0 auto; }
+        .hotspot-container img { width: 100%; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .hotspot { position: absolute; width: 24px; height: 24px; background: var(--primary-color); border-radius: 50%; cursor: pointer; border: 3px solid white; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.5); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); } 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); } }
+        .hotspot-tooltip { position: absolute; background: var(--text-dark); color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; bottom: 120%; left: 50%; transform: translateX(-50%); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; pointer-events: none; width: 200px; }
+        .hotspot:hover .hotspot-tooltip { opacity: 1; visibility: visible; }
+
+        /* --- Style 6: Cinematic Word Reveal --- */
+        .cinematic-text { font-size: 2.5rem; font-weight: 700; line-height: 1.4; text-align: center; }
+        .cinematic-text .word { opacity: 0.1; transition: opacity 0.5s ease; }
+
+        /* Style 7: Optimized Iframe */
+        .simulation-instructions { background-color: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem; }
+        .simulation-instructions h3 { margin: 0 0 0.5rem 0; color: #4338ca; }
+        .simulation-container { position: relative; width: 100%; height: 600px; background-color: var(--border-color); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; } /* Height increased */
+        .simulation-container iframe { width: 100%; height: 100%; border: none; border-radius: 0.75rem; }
+        .reload-button { padding: 1rem 2rem; font-size: 1rem; font-weight: 600; color: white; background-color: var(--primary-color); border: none; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.2s; }
+        .reload-button:hover { background-color: #4338ca; }
+        
+        /* Style 8: Before & After Slider */
+        .comparison-slider { position: relative; max-width: 700px; margin: 0 auto; overflow: hidden; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); user-select: none; }
+        .comparison-slider img { display: block; width: 100%; height: auto; pointer-events: none; }
+        .comparison-slider .image-after { position: absolute; top: 0; left: 0; height: 100%; width: 100%; object-fit: cover; clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); }
+        .comparison-slider .slider-handle { position: absolute; top: 0; left: 50%; width: 4px; height: 100%; background: white; cursor: ew-resize; transform: translateX(-50%); }
+        .comparison-slider .slider-handle::after { content: 'leftrightarrows'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--primary-color); background: white; padding: 5px; border-radius: 50%; font-size: 1.5rem; }
+
+        /* Style 9: Vertical Timeline */
+        .timeline { 
+            position: relative; 
+            max-width: 600px; 
+            margin: 0 auto;
+        }
+        .timeline::after { 
+            content: ''; 
+            position: absolute; 
+            width: 4px; 
+            background-color: var(--border-color); 
+            top: 0; 
+            bottom: 0; 
+            left: 15px;
+            z-index: 0;
+        }
+        .timeline-item { 
+            padding: 1rem 0 2rem 50px;
+            position: relative; 
+        }
+        .timeline-item .icon { 
+            position: absolute; 
+            width: 34px; 
+            height: 34px; 
+            left: 17px; 
+            transform: translateX(-50%);
+            background-color: var(--bg-light); 
+            border: 4px solid var(--border-color); 
+            top: 24px; 
+            border-radius: 50%; 
+            z-index: 1; 
+            transition: background-color 0.3s, border-color 0.3s; 
+        }
+        .timeline-item.is-visible .icon { 
+            background-color: var(--secondary-color); 
+            border-color: var(--secondary-color); 
+        }
+        .timeline-content { 
+            padding: 1.5rem; 
+            background-color: var(--bg-white); 
+            border-radius: 0.5rem; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
+        }
+        .timeline-content h3 { font-size: 1.25rem; margin: 0 0 0.5rem 0; }
+        
+        /* Style 10: Card Carousel */
+        .carousel-container { position: relative; max-width: 800px; margin: 0 auto; }
+        .carousel-wrapper { overflow: hidden; }
+        .carousel-track { display: flex; transition: transform 0.5s ease; }
+        .carousel-card { flex: 0 0 33.33%; box-sizing: border-box; padding: 1rem; }
+        .carousel-card .inner-card { background: var(--bg-white); border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 1.5rem; text-align: center; }
+        .carousel-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem; }
+        .carousel-button { position: absolute; top: 50%; transform: translateY(-50%); background: white; border: 1px solid var(--border-color); border-radius: 50%; width: 40px; height: 40px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .carousel-button.prev { left: -20px; }
+        .carousel-button.next { right: -20px; }
+
+        /* Style 11: Interactive SVG Path */
+        .svg-path-container { display: flex; align-items: center; gap: 2rem; max-width: 700px; margin: 0 auto; }
+        .svg-path-container svg { flex: 1; width: 100%; height: auto; }
+        .svg-path-container .path-text { flex: 1; opacity: 0; transition: opacity 0.8s ease 0.5s; }
+        .svg-path-container.is-visible .path-text { opacity: 1; }
+        
+        #animated-path { 
+            stroke-dasharray: 1000; 
+            stroke-dashoffset: 1000; 
+            transition: stroke-dashoffset 2s ease-in-out; 
+        }
+        .svg-path-container.is-visible #animated-path { stroke-dashoffset: 0; }
+
+        /* --- Style 12: DNA Double Helix (Redesigned) --- */
+        .dna-container { display: flex; flex-direction: column; align-items: center; gap: 1rem; max-width: 300px; margin: 0 auto; }
+        .dna-container svg { width: 100%; height: 400px; }
+        .dna-container .dna-path {
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            transition: stroke-dashoffset 3s ease-out;
+        }
+        .dna-container.is-visible .dna-path { stroke-dashoffset: 0; }
+        .dna-container .dna-rung { opacity: 0; transition: opacity 0.5s ease-in; }
+        .dna-container.is-visible .dna-rung { opacity: 1; }
+        .dna-container .dna-description { text-align: center; color: var(--text-light); }
+
+        /* --- Style 13: Plasmid Map (Redesigned) --- */
+        .plasmid-container { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; max-width: 500px; margin: 0 auto; }
+        .plasmid-container svg { width: 100%; height: 350px; }
+        .plasmid-backbone { stroke: #adb5bd; stroke-width: 8; fill: none; stroke-dasharray: 1000; stroke-dashoffset: 1000; transition: stroke-dashoffset 2s ease-out; }
+        .plasmid-feature, .plasmid-label { opacity: 0; transition: opacity 0.8s ease-in; }
+        .plasmid-container.is-visible .plasmid-backbone { stroke-dashoffset: 0; }
+        .plasmid-container.is-visible .plasmid-feature { transition-delay: 1.5s; opacity: 1; }
+        .plasmid-container.is-visible .plasmid-label { transition-delay: 2s; opacity: 1; }
+        .plasmid-description { text-align: center; color: var(--text-light); }
+
+        
+        /* Go to Top Button */
+        #to-top-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background-color: var(--primary-color); color: white; border: none; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 100; }
+        #to-top-btn.visible { display: flex; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .two-column-grid { grid-template-columns: 1fr; }
+            .two-column-grid img { order: -1; margin-bottom: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero-header">
+        <h1>Project Overview</h1>
+        <p>A summary of the challenge we're tackling, our proposed solution, and the core components of the ARGUS-2440 system.</p>
+    </header>
+
+    <section class="content-section">
+        <div class="container">
+            <h2>Style 1: Animated Stat Cards</h2>
+            <div class="stats-grid">
+                <div class="stat-card animate-on-scroll">
+                    <h3><span class="counter" data-target="85">0</span>%</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <div class="stat-card animate-on-scroll">
+                    <h3><span class="counter" data-target="30">0</span>%</h3>
+                    <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+                <div class="stat-card animate-on-scroll">
+                    <h3><span class="counter" data-target="70">0</span>%</h3>
+                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <h2>Style 2: Scroll-Reveal Two-Column</h2>
+            <div class="two-column-grid">
+                <div class="text-content animate-on-scroll">
+                    <h3>A Modular Approach</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+                <div class="image-content animate-on-scroll">
+                    <img src="images/img-1.jpg" alt="Lab research">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container animate-on-scroll">
+            <h2>Style 3: Interactive Tabs</h2>
+            <div class="tabs-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="1">Sensing</button>
+                    <button class="tab-button" data-tab="2">Regulation</button>
+                    <button class="tab-button" data-tab="3">Action</button>
+                </div>
+                <div class="tab-content active" id="tab-1">
+                    <h3>Sensing Module</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Our system uses a two-component sensor to detect ambient nitrate levels.</p>
+                </div>
+                <div class="tab-content" id="tab-2">
+                    <h3>Regulation Module</h3>
+                    <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. The signal is processed by a genetic switch that represses downstream production.</p>
+                </div>
+                <div class="tab-content" id="tab-3">
+                    <h3>Action Module</h3>
+                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco. In low-nitrate conditions, the production module is active to generate ammonia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container animate-on-scroll">
+            <h2>Style 4: Accordion List</h2>
+            <div class="accordion-container">
+                <div class="accordion-item">
+                    <button class="accordion-header"><span>Design Principle #1</span><span>+</span></button>
+                    <div class="accordion-content"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header"><span>Design Principle #2</span><span>+</span></button>
+                    <div class="accordion-content"><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container animate-on-scroll">
+            <h2>Style 5: Hotspot Image</h2>
+            <div class="hotspot-container">
+                <img src="images/img-2.jpg" alt="Project diagram">
+                <div class="hotspot" style="top: 30%; left: 50%;">
+                    <div class="hotspot-tooltip">This component senses nitrate levels.</div>
+                </div>
+                <div class="hotspot" style="top: 65%; left: 25%;">
+                    <div class="hotspot-tooltip">This module regulates gene expression.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <h2>Style 6: Cinematic Word Reveal</h2>
+            <p class="cinematic-text" id="cinematicText"></p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container animate-on-scroll">
+            <h2>Style 7: Optimized Iframe</h2>
+            <div class="simulation-instructions">
+            <h3>How It Works</h3>
+            <p>This simulation is lazy-loaded to improve page performance. It will unload when you scroll away. Click the button to reload it.</p>
+            </div>
+            <div class="simulation-container" id="simulation-wrapper" data-src="../pond.html"></div>
+        </div>
+        </section>
+
+        <section class="content-section">
+        <div class="container animate-on-scroll">
+            <h2>Style 8: 'Before & After' Image Slider</h2>
+            <div class="comparison-slider" id="comparison-slider">
+            <img src="/images/img-3.jpg" alt="Before" class="image-before">
+            <img src="/images/img-4.jpg" alt="After" class="image-after">
+            <div class="slider-handle"></div>
+            </div>
+        </div>
+        </section>
+
+        <section class="content-section">
+        <div class="container">
+            <h2>Style 9: Vertical Timeline</h2>
+            <div class="timeline" id="timeline">
+            <div class="timeline-item">
+                <div class="icon"></div>
+                <div class="timeline-content">
+                <h3>Phase 1: Research</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="icon"></div>
+                <div class="timeline-content">
+                <h3>Phase 2: Design</h3>
+                <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="icon"></div>
+                <div class="timeline-content">
+                <h3>Phase 3: Build & Test</h3>
+                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+                </div>
+            </div>
+            </div>
+        </div>
+        </section>
+
+        <section class="content-section">
+        <div class="container animate-on-scroll">
+            <h2>Style 10: Card Carousel</h2>
+            <div class="carousel-container">
+            <div class="carousel-wrapper">
+                <div class="carousel-track" id="carousel-track">
+                <div class="carousel-card">
+                    <div class="inner-card">
+                    <img src="/images/img-5.jpg" alt="Experiment 1">
+                    <h3>Experiment 1</h3>
+                    <p>Lorem ipsum dolor sit amet.</p>
+                    </div>
+                </div>
+                <div class="carousel-card">
+                    <div class="inner-card">
+                    <img src="/images/img-6.jpg" alt="Experiment 2">
+                    <h3>Experiment 2</h3>
+                    <p>Consectetur adipiscing elit.</p>
+                    </div>
+                </div>
+                <div class="carousel-card">
+                    <div class="inner-card">
+                    <img src="/images/img-7.jpg" alt="Experiment 3">
+                    <h3>Experiment 3</h3>
+                    <p>Sed do eiusmod tempor.</p>
+                    </div>
+                </div>
+                <div class="carousel-card">
+                    <div class="inner-card">
+                    <img src="/images/img-8.jpg" alt="Experiment 4">
+                    <h3>Experiment 4</h3>
+                    <p>Incididunt ut labore.</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <button class="carousel-button prev" id="carousel-prev">❮</button>
+            <button class="carousel-button next" id="carousel-next">❯</button>
+            </div>
+        </div>
+        </section>
+
+        <section class="content-section">
+        <div class="container">
+            <h2 class="animate-on-scroll">Style 11: Interactive SVG Path</h2>
+            <div class="svg-path-container" id="svg-path-container">
+            <svg viewBox="0 0 100 100">
+                <path id="animated-path" d="M 10 10 C 40 20, 60 80, 90 90" stroke="var(--primary-color)" stroke-width="3" fill="none"/>
+            </svg>
+            <div class="path-text animate-on-scroll">
+                <h3>Our Workflow</h3>
+                <p>This animated path represents our project's journey from initial concept to final validation, highlighting the iterative nature of our design process.</p>
+            </div>
+            </div>
+        </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <h2>Style 12: Animated DNA Double Helix</h2>
+                <div class="dna-container animate-on-scroll" id="dna-helix-container">
+                    <svg viewBox="0 0 100 400">
+                        <defs>
+                            <mask id="dna-mask">
+                                <rect width="100%" height="100%" fill="white"/>
+                                <path d="M 15,25 C 25,75 75,75 85,125" stroke="black" stroke-width="12" fill="none"/>
+                                <path d="M 15,175 C 25,225 75,225 85,275" stroke="black" stroke-width="12" fill="none"/>
+                                <path d="M 15,325 C 25,375 75,375 85,400" stroke="black" stroke-width="12" fill="none"/>
+                            </mask>
+                        </defs>
+                        
+                        <path class="dna-path" d="M 85,0 C 75,50 25,50 15,100 C 5,150 25,175 50,200 C 75,225 95,250 85,300 C 75,350 25,350 15,400" stroke="#4dabf7" stroke-width="8" fill="none" mask="url(#dna-mask)"/>
+
+                        <g class="dna-rungs">
+                            <line x1="16" y1="25"  x2="84" y2="0"   stroke="#ced4da" stroke-width="3" class="dna-rung" style="transition-delay: 0.8s;"/>
+                            <line x1="15" y1="75"  x2="85" y2="50"  stroke="#ced4da" stroke-width="3" class="dna-rung" style="transition-delay: 1.0s;"/>
+                            <line x1="18" y1="125" x2="82" y2="150" stroke="#ced4da" stroke-width="3" class="dna-rung" style="transition-delay: 1.2s;"/>
+                            <line x1="30" y1="175" x2="70" y2="225" stroke="#ced4da" stroke-width="3" class="dna-rung" style="transition-delay: 1.4s;"/>
+                            <line x1="18" y1="275" x2="82" y2="250" stroke="#ced4da" stroke-width="3" class="dna-rung" style="transition-delay: 1.6s;"/>
+                            <line x1="15" y1="325" x2="85" y2="350" stroke="#ced4da" stroke-width="3" class="dna-rung" style="transition-delay: 1.8s;"/>
+                        </g>
+
+                        <path class="dna-path" d="M 15,0 C 25,50 75,50 85,100 C 95,150 75,175 50,200 C 25,225 5,250 15,300 C 25,350 75,350 85,400" stroke="#748ffc" stroke-width="8" fill="none"/>
+                    </svg>
+                    <p class="dna-description animate-on-scroll">The fundamental building block of life, dynamically visualizing genetic information.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="container">
+                <h2 class="animate-on-scroll">Style 13: Animated Plasmid Map</h2>
+                <div class="plasmid-container animate-on-scroll" id="plasmid-container">
+                    <svg viewBox="0 0 200 200">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" />
+                            </marker>
+                        </defs>
+                        
+                        <circle cx="100" cy="100" r="80" class="plasmid-backbone" />
+
+                        <path id="ampR" class="plasmid-feature" d="M 34.5,152.5 A 70 70 0 0 1 152.5,34.5" stroke="#f76707" stroke-width="12" fill="none" marker-end="url(#arrowhead)" />
+                        <text class="plasmid-label"><textPath href="#ampR" startOffset="50%" text-anchor="middle">AmpR</textPath></text>
+
+                        <rect x="92" y="10" width="16" height="12" rx="3" fill="#3b5bdb" class="plasmid-feature" />
+                        <text x="100" y="8" text-anchor="middle" class="plasmid-label">ORI</text>
+
+                        <g class="plasmid-feature">
+                            <line x1="98" y1="180" x2="98" y2="190" stroke="#7950f2" stroke-width="1.5"/>
+                            <line x1="102" y1="180" x2="102" y2="190" stroke="#7950f2" stroke-width="1.5"/>
+                            <text x="100" y="198" text-anchor="middle" class="plasmid-label">MCS</text>
+                        </g>
+                    </svg>
+                    <p class="plasmid-description animate-on-scroll">A common tool in synthetic biology, showing key genetic components for molecular cloning.</p>
+                </div>
+            </div>
+        </section>
+
+        <button id="to-top-btn" aria-label="Go to top">↑</button>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- Generic Scroll Animation Observer ---
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    
+                    entry.target.classList.add('is-visible');
+
+                    // If the element is an SVG container that hasn't been set up, run the setup function.
+                    if ((entry.target.matches('.dna-container') || entry.target.matches('.plasmid-container')) && !entry.target.dataset.setup) {
+                        setupSvgAnimation(entry.target);
+                        entry.target.dataset.setup = 'true'; // Mark it as set up
+                    }
+                    
+
+                    scrollObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 }); // Trigger when 20% of the element is visible
+        
+        // Tell the observer to watch all elements that need animation
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            scrollObserver.observe(el);
+        });
+
+        // --- Style 1: Counter Animation ---
+        const counterObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-target');
+                    let current = 0;
+                    const increment = target / 100;
+                    const interval = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(interval);
+                        }
+                        counter.textContent = Math.round(current);
+                    }, 20);
+                    counterObserver.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.counter').forEach(c => counterObserver.observe(c));
+        
+        // --- Style 3: Interactive Tabs ---
+        const tabContainer = document.querySelector('.tabs-container');
+        if(tabContainer){
+            const tabButtons = tabContainer.querySelectorAll('.tab-button');
+            const tabContents = tabContainer.querySelectorAll('.tab-content');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    button.classList.add('active');
+                    tabContainer.querySelector(`#tab-${tabId}`).classList.add('active');
+                });
+            });
+        }
+
+        // --- Style 4: Accordion Logic ---
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            header.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                accordionItems.forEach(i => i.classList.remove('active')); // Optional: close others
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // --- Style 6: Cinematic Word Reveal ---
+        const cinematicText = document.getElementById('cinematicText');
+        if(cinematicText){
+            const text = "A self-regulating system to ensure agricultural sustainability for the future.";
+            text.split(' ').forEach(word => {
+                const span = document.createElement('span');
+                span.className = 'word';
+                span.textContent = word + ' ';
+                cinematicText.appendChild(span);
+            });
+            const words = cinematicText.querySelectorAll('.word');
+            const cinematicObserver = new IntersectionObserver(entries => {
+                if(entries[0].isIntersecting){
+                    words.forEach((word, index) => {
+                        setTimeout(() => {
+                            word.style.opacity = '1';
+                        }, index * 100);
+                    });
+                    cinematicObserver.unobserve(cinematicText);
+                }
+            }, { threshold: 0.5 });
+            cinematicObserver.observe(cinematicText);
+        }
+
+        function initOptimizedIframe() {
+            const simWrapper = document.getElementById('simulation-wrapper');
+            if (!simWrapper) return;
+            const simURL = simWrapper.dataset.src;
+            let isLoaded = false;
+            
+            const createIframe = () => {
+                const iframe = document.createElement('iframe');
+                iframe.setAttribute('src', simURL);
+                iframe.setAttribute('title', 'Simulation');
+                simWrapper.innerHTML = '';
+                simWrapper.appendChild(iframe);
+                isLoaded = true;
+            };
+            const createReloadButton = () => {
+                const button = document.createElement('button');
+                button.textContent = 'Load Simulation';
+                button.className = 'reload-button';
+                button.onclick = createIframe;
+                simWrapper.innerHTML = '';
+                simWrapper.appendChild(button);
+            };
+
+            createReloadButton(); // Start with the button
+
+            new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting && isLoaded) {
+                        createReloadButton();
+                        isLoaded = false;
+                    }
+                });
+            }, { threshold: 0.1 }).observe(simWrapper);
+        }
+
+        function initComparisonSlider() {
+            const slider = document.getElementById('comparison-slider');
+            if (!slider) return;
+            const handle = slider.querySelector('.slider-handle');
+            const imageAfter = slider.querySelector('.image-after');
+            let isDragging = false;
+            
+            const moveSlider = (x) => {
+                const rect = slider.getBoundingClientRect();
+                let newX = x - rect.left;
+                if (newX < 0) newX = 0;
+                if (newX > rect.width) newX = rect.width;
+                const percentage = (newX / rect.width) * 100;
+                handle.style.left = `${percentage}%`;
+                imageAfter.style.clipPath = `polygon(${percentage}% 0, 100% 0, 100% 100%, ${percentage}% 100%)`;
+            };
+
+            slider.addEventListener('mousedown', () => isDragging = true);
+            slider.addEventListener('touchstart', () => isDragging = true);
+            document.addEventListener('mouseup', () => isDragging = false);
+            document.addEventListener('touchend', () => isDragging = false);
+            document.addEventListener('mousemove', (e) => { if (isDragging) moveSlider(e.clientX); });
+            document.addEventListener('touchmove', (e) => { if (isDragging) moveSlider(e.touches[0].clientX); });
+        }
+        
+        function initCarousel() {
+            const track = document.getElementById('carousel-track');
+            if (!track) return;
+            const prevBtn = document.getElementById('carousel-prev');
+            const nextBtn = document.getElementById('carousel-next');
+            let currentIndex = 0;
+            const items = track.querySelectorAll('.carousel-card');
+            const totalItems = items.length;
+            const itemsVisible = 3;
+
+            function updateCarousel() {
+                const newTransform = -currentIndex * (100 / itemsVisible);
+                track.style.transform = `translateX(${newTransform}%)`;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < totalItems - itemsVisible) {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            });
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
+        }
+
+        function initSvgPathAnimation() {
+            const svgPathContainer = document.getElementById('svg-path-container');
+            if (!svgPathContainer) return;
+            new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting){
+                    svgPathContainer.classList.add('is-visible');
+                }
+            }, { threshold: 0.5 }).observe(svgPathContainer);
+        }
+
+        function initGoToTopButton() {
+            const btn = document.getElementById('to-top-btn');
+            if (!btn) return;
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+            });
+            btn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        function setupSvgAnimation(container) {
+            const paths = container.querySelectorAll('.dna-path, .plasmid-backbone, .dna-strand'); // Added .dna-strand
+            paths.forEach(path => {
+                const length = path.getTotalLength();
+                if (length > 0) { // Check to ensure length is valid
+                    path.style.strokeDasharray = length;
+                    path.style.strokeDashoffset = length;
+                }
+            });
+        }
+
+        initOptimizedIframe();
+        initComparisonSlider();
+        initCarousel();
+        initSvgPathAnimation();
+        setupSvgPathAnimations();
+        initGoToTopButton();
+        document.querySelectorAll('.animate-on-scroll, .dna-container, .plasmid-container').forEach(el => {
+            scrollObserver.observe(el);
+        });
+
+    });
+    </script>
+</body>
+</html>
