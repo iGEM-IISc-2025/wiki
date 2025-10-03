@@ -4,65 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Human Practices | ARGUS-2440</title>
-  <link rel="stylesheet" href="css/styles_tab.css" />
+  <link rel="stylesheet" href="css/styles_main.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <base href="/"/>
-  
-  <style>
-    /* Navbar (cleaned, merged once) */
-    .navbar-1 {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-    }
-    .navbar-1 .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-    }
-    .nav-menu {
-      display: flex;
-      list-style: none;
-      align-items: center;
-      gap: 8px;
-    }
-    .nav-menu > li > a {
-      display: flex;
-      align-items: center;
-      padding: 8px 16px;
-      color: #1c1f28;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 0.95rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-    }
-    .nav-menu > li > a:hover {
-      background: rgba(0, 0, 0, 0.05);
-      color: #ca74ec;
-    }
-    .nav-toggle { display: none; }
-    @media (max-width: 768px) {
-      .nav-toggle { display: block; }
-      .nav-menu {
-        max-height: 0;
-        overflow: hidden;
-        flex-direction: column;
-        position: absolute;
-        top: 100%; left: 0; right: 0;
-        background: white;
-        transition: max-height 0.3s ease;
-      }
-      .nav-menu.open { max-height: 400px; }
-    }
-  </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
@@ -72,24 +16,89 @@
   <!-- Navbar -->
   <nav class="navbar-1">
     <div class="container">
+      <!-- Logo -->
       <a class="navbar-brand" href="/main.html">
-        <img src="/images/igemlogo.png" alt="Site Logo" class="h-12"/>
+        <img src="images/igemlogo.png" alt="Site Logo"/>
       </a>
 
       <!-- Mobile toggle -->
-      <button class="nav-toggle" id="nav-toggle" aria-expanded="false">
-        <span class="block w-7 h-0.5 bg-gray-800 relative">
-          <span class="absolute w-7 h-0.5 bg-gray-800 -top-2"></span>
-          <span class="absolute w-7 h-0.5 bg-gray-800 top-2"></span>
-        </span>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-icon"></span>
       </button>
 
       <!-- Main Nav -->
       <ul class="nav-menu" id="nav-menu">
-        <li><a href="project.html">Project</a></li>
-        <li><a href="wetlab.html">Wet Lab</a></li>
-        <li><a href="drylab.html">Dry Lab</a></li>
-        <li><a href="hp.html" class="text-purple-600">Human Practices</a></li>
+        <li>
+          <a href="../project.html">Project</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="project/ideation.html">Ideation</a></li>
+                <li><a href="project/overview.html">Overview</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="../wetlab.html">Wet Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="wetlab/design.html">Design</a></li>
+                <li><a href="wetlab/engineering.html">Engineering</a></li>
+                <li><a href="wetlab/experimentation.html">Experimentation</a></li>
+                <li><a href="wetlab/notebook.html">Notebook</a></li>
+                <li><a href="wetlab/parts.html">Parts</a></li>
+                <li><a href="wetlab/delivery.html">Delivery Mechanisms</a></li>
+                <li><a href="wetlab/biosafety.html">Biosafety and Biosecurity</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="../drylab.html">Dry Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="drylab/engineering.html">Engineering</a></li>
+                <li><a href="drylab/ml.html">ML Modelling</a></li>
+                <li><a href="drylab/modelling.html">ODE Modelling</a></li>
+                <li><a href="drylab/juniors.html">Improvised GenBank</a></li>
+                <li><a href="drylab/alphafold.html">Alphafold</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="hp.html">Human Practices</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="hp/ihp.html">Integrated Human Practices</a></li>
+                <li><a href="hp/results.html">Results and Analysis</a></li>
+                <li><a href="hp/sustainable.html">Sustainable Development</a></li>
+                <li><a href="hp/blogs.html">Blogs</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="../team.html">Team</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="team/attributions.html">Atttributions</a></li>
+                <li><a href="team/gallery.html">Gallery</a></li>
+                <li><a href="team/aiim.html">AIIM</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
       </ul>
     </div>
   </nav>

@@ -552,7 +552,7 @@ body {
 .stat-card h3 {
     font-size: 3.5rem;
     font-weight: 800;
-    color: rgb(164, 43, 175);
+    color: rgb(254, 5, 5);
     margin: 0;
 }
 
@@ -617,7 +617,7 @@ body {
     left: 0;
     width: 100%;
     height: 0; /* Starts at 0 height */
-    background-color: rgba(174, 42, 42, 0.208); /* A light, semi-transparent red */
+    background-color: rgba(0, 119, 255, 0.273); /* A light, semi-transparent red */
     z-index: 0; /* Sits behind the content */
     transition: height 1.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth animation */
 }

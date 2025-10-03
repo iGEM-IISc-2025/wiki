@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARGUS-2440 DBTL Cycles</title>
+<link rel="stylesheet" href="../css/styles_main.css"/>
+    <style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mt-2{margin-top:0.5rem}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-green-700{--tw-gradient-from:#15803d var(--tw-gradient-from-position);--tw-gradient-to:rgb(21 128 61 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-purple-700{--tw-gradient-to:#7e22ce var(--tw-gradient-to-position)}.py-8{padding-top:2rem;padding-bottom:2rem}.text-center{text-align:center}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.hover\:text-gray-200:hover{--tw-text-opacity:1;color:rgb(229 231 235 / var(--tw-text-opacity, 1))}</style>
+<style>
+:root {
+    --primary: #7c3aed;
+    --primary-dark: #5b21b6;
+    --bg: #f9fafb;
+    --border: #e5e7eb;
+    --text: #1f2937;
+    --text-light: #4b5563;
+    /* Phase Colors */
+    --phase-design: #3b82f6; /* Blue */
+    --phase-build: #f59e0b;  /* Amber */
+    --phase-test: #22c55e;   /* Green */
+    --phase-learn: #ef4444;  /* Red */
+}
+
+#dbtl-component {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 3rem 0; /* Add padding here instead of the body */
+}
+
+#dbtl-component .cycle-card {
+    display: flex;
+    max-width: 1100px;
+    width: 100%;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+    overflow: hidden;
+    position: relative;
+}
+
+#dbtl-component .cycle-left {
+    background: linear-gradient(160deg, var(--primary), var(--primary-dark));
+    color: white;
+    padding: 2rem 1.5rem;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+#dbtl-component .cycle-left h2 { margin-top:0; font-size:2rem; font-weight:700; }
+
+#dbtl-component .phase-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+#dbtl-component .phase-tab {
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s, transform 0.15s;
+}
+#dbtl-component .phase-tab:hover { background: rgba(255,255,255,0.15); transform: translateX(4px); }
+#dbtl-component .phase-tab.active { background: white; color: var(--primary); }
+
+#dbtl-component .cycle-right {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#dbtl-component .phase-content { display: none; color: var(--text-light); line-height:1.7; }
+#dbtl-component .phase-content.active { display:block; }
+
+#dbtl-component .plasmid {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 80px;
+    height: 80px;
+}
+#dbtl-component .plasmid svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+#dbtl-component .plasmid path, #dbtl-component .plasmid circle {
+    fill: none;
+}
+#dbtl-component .plasmid-bg {
+    stroke: var(--border);
+    stroke-width: 2;
+}
+#dbtl-component .plasmid-segment {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    stroke-linecap: round;
+}
+
+/* Other plasmid styles remain the same... */
+#dbtl-component #segment-1 { stroke: var(--phase-design); stroke-width: 6; }
+#dbtl-component #segment-2 { stroke: var(--phase-build);  stroke-width: 10; }
+#dbtl-component #segment-3 { stroke: var(--phase-test);   stroke-width: 10; }
+#dbtl-component #segment-4 { stroke: var(--phase-learn);  stroke-width: 6; }
+
+#dbtl-component .plasmid.phase-design #segment-1 { opacity: 1; }
+
+#dbtl-component .plasmid.phase-build #segment-1,
+#dbtl-component .plasmid.phase-build #segment-2 { opacity: 1; }
+
+#dbtl-component .plasmid.phase-test #segment-1,
+#dbtl-component .plasmid.phase-test #segment-2,
+#dbtl-component .plasmid.phase-test #segment-3 { opacity: 1; }
+
+#dbtl-component .plasmid.phase-learn #segment-1,
+#dbtl-component .plasmid.phase-learn #segment-2,
+#dbtl-component .plasmid.phase-learn #segment-3,
+#dbtl-component .plasmid.phase-learn #segment-4 { opacity: 1; }
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+#dbtl-component .plasmid.completed-spin svg {
+    animation: spin 1.2s cubic-bezier(0.6, 0, 0.4, 1);
+}
+
+@media (max-width: 768px) {
+    #dbtl-component .cycle-card { flex-direction: column; }
+    #dbtl-component .cycle-left { flex-direction: row; align-items: center; justify-content: space-between; min-width:auto; }
+    #dbtl-component .phase-tabs { flex-direction: row; gap:0.5rem; margin-top:0; }
+    #dbtl-component .phase-tab { flex:1; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+    <div id="progress-bar"></div>
+
+    <!-- Navbar -->
+  <nav class="navbar-1">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand" href="../main.html">
+        <img src="../images/igemlogo.png" alt="Site Logo"/>
+      </a>
+
+      <!-- Mobile toggle -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-icon"></span>
+      </button>
+
+      <!-- Main Nav -->
+      <ul class="nav-menu" id="nav-menu">
+        <li>
+          <a href="../project.html">Project</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="../project/ideation.html">Ideation</a></li>
+                <li><a href="../project/overview.html">Overview</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="../wetlab.html">Wet Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="design.html">Design</a></li>
+                <li><a href="engineering.html">Engineering</a></li>
+                <li><a href="experimentation.html">Experimentation</a></li>
+                <li><a href="notebook.html">Notebook</a></li>
+                <li><a href="parts.html">Parts</a></li>
+                <li><a href="delivery.html">Delivery Mechanisms</a></li>
+                <li><a href="/biosafety.html">Biosafety and Biosecurity</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="../drylab.html">Dry Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="../drylab/engineering.html">Engineering</a></li>
+                <li><a href="../drylab/ml.html">ML Modelling</a></li>
+                <li><a href="../drylab/modelling.html">ODE Modelling</a></li>
+                <li><a href="../drylab/juniors.html">Improvised GenBank</a></li>
+                <li><a href="../drylab/alphafold.html">Alphafold</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="../hp.html">Human Practices</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="../hp/ihp.html">Integrated Human Practices</a></li>
+                <li><a href="../hp/results.html">Results and Analysis</a></li>
+                <li><a href="../hp/sustainable.html">Sustainable Development</a></li>
+                <li><a href="../hp/blogs.html">Blogs</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="../team.html">Team</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="..team/attributions.html">Atttributions</a></li>
+                <li><a href="..team/gallery.html">Gallery</a></li>
+                <li><a href="..team/aiim.html">AIIM</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+<div id="dbtl-component">
+
+<div class="cycle-card">
+    <div class="cycle-left">
+        <div>
+            <h2>Cycle 1</h2>
+            <div class="phase-tabs">
+                <div class="phase-tab active" data-tab="design1">Design</div>
+                <div class="phase-tab" data-tab="build1">Build</div>
+                <div class="phase-tab" data-tab="test1">Test</div>
+                <div class="phase-tab" data-tab="learn1">Learn</div>
+            </div>
+        </div>
+    </div>
+    <div class="cycle-right">
+        <div class="phase-content active" id="design1">Design content for Cycle 1.</div>
+        <div class="phase-content" id="build1">Build content for Cycle 1.</div>
+        <div class="phase-content" id="test1">Test content for Cycle 1.</div>
+        <div class="phase-content" id="learn1">Learn content for Cycle 1.</div>
+    </div>
+
+    <div class="plasmid">
+        <svg viewBox="0 0 100 100">
+            <defs>
+                <marker id="arrowhead" markerWidth="2.5" markerHeight="2.5" refX="1.25" refY="1.25" orient="auto">
+                    <polygon points="0 0, 2.5 1.25, 0 2.5" fill="var(--phase-build)" />
+                </marker>
+            </defs>
+        
+            <circle class="plasmid-bg" cx="50" cy="50" r="40"/>
+
+            <g transform="rotate(-90 50 50)">
+                <path id="segment-1" class="plasmid-segment" d="M 53.49 10.3 A 40 40 0 0 1 89.7 46.51" />
+                <path id="segment-2" class="plasmid-segment" d="M 90 53.49 A 40 40 0 0 1 53.49 89.7" marker-end="url(#arrowhead)" />
+                <path id="segment-3" class="plasmid-segment" d="M 13.62 66.86 A 40 40 0 0 0 33.14 86.38" />
+                <path id="segment-4" class="plasmid-segment" d="M 10 46.51 A 40 40 0 0 1 46.51 10.3" />
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div class="cycle-card">
+    <div class="cycle-left">
+        <div>
+            <h2>Cycle 2</h2>
+            <div class="phase-tabs">
+                <div class="phase-tab active" data-tab="design1">Design</div>
+                <div class="phase-tab" data-tab="build1">Build</div>
+                <div class="phase-tab" data-tab="test1">Test</div>
+                <div class="phase-tab" data-tab="learn1">Learn</div>
+            </div>
+        </div>
+    </div>
+    <div class="cycle-right">
+        <div class="phase-content active" id="design1">Design content for Cycle 1.</div>
+        <div class="phase-content" id="build1">Build content for Cycle 1.</div>
+        <div class="phase-content" id="test1">Test content for Cycle 1.</div>
+        <div class="phase-content" id="learn1">Learn content for Cycle 1.</div>
+    </div>
+
+    <div class="plasmid">
+        <svg viewBox="0 0 100 100">
+            <defs>
+                <marker id="arrowhead" markerWidth="2.5" markerHeight="2.5" refX="1.25" refY="1.25" orient="auto">
+                    <polygon points="0 0, 2.5 1.25, 0 2.5" fill="var(--phase-build)" />
+                </marker>
+            </defs>
+        
+            <circle class="plasmid-bg" cx="50" cy="50" r="40"/>
+
+            <g transform="rotate(-90 50 50)">
+                <path id="segment-1" class="plasmid-segment" d="M 53.49 10.3 A 40 40 0 0 1 89.7 46.51" />
+                <path id="segment-2" class="plasmid-segment" d="M 90 53.49 A 40 40 0 0 1 53.49 89.7" marker-end="url(#arrowhead)" />
+                <path id="segment-3" class="plasmid-segment" d="M 13.62 66.86 A 40 40 0 0 0 33.14 86.38" />
+                <path id="segment-4" class="plasmid-segment" d="M 10 46.51 A 40 40 0 0 1 46.51 10.3" />
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div class="cycle-card">
+    <div class="cycle-left">
+        <div>
+            <h2>Cycle 3</h2>
+            <div class="phase-tabs">
+                <div class="phase-tab active" data-tab="design1">Design</div>
+                <div class="phase-tab" data-tab="build1">Build</div>
+                <div class="phase-tab" data-tab="test1">Test</div>
+                <div class="phase-tab" data-tab="learn1">Learn</div>
+            </div>
+        </div>
+    </div>
+    <div class="cycle-right">
+        <div class="phase-content active" id="design1">Design content for Cycle 1.</div>
+        <div class="phase-content" id="build1">Build content for Cycle 1.</div>
+        <div class="phase-content" id="test1">Test content for Cycle 1.</div>
+        <div class="phase-content" id="learn1">Learn content for Cycle 1.</div>
+    </div>
+
+    <div class="plasmid">
+        <svg viewBox="0 0 100 100">
+            <defs>
+                <marker id="arrowhead" markerWidth="2.5" markerHeight="2.5" refX="1.25" refY="1.25" orient="auto">
+                    <polygon points="0 0, 2.5 1.25, 0 2.5" fill="var(--phase-build)" />
+                </marker>
+            </defs>
+        
+            <circle class="plasmid-bg" cx="50" cy="50" r="40"/>
+
+            <g transform="rotate(-90 50 50)">
+                <path id="segment-1" class="plasmid-segment" d="M 53.49 10.3 A 40 40 0 0 1 89.7 46.51" />
+                <path id="segment-2" class="plasmid-segment" d="M 90 53.49 A 40 40 0 0 1 53.49 89.7" marker-end="url(#arrowhead)" />
+                <path id="segment-3" class="plasmid-segment" d="M 13.62 66.86 A 40 40 0 0 0 33.14 86.38" />
+                <path id="segment-4" class="plasmid-segment" d="M 10 46.51 A 40 40 0 0 1 46.51 10.3" />
+            </g>
+        </svg>
+    </div>
+</div>
+
+<div class="cycle-card">
+    <div class="cycle-left">
+        <div>
+            <h2>Cycle 4</h2>
+            <div class="phase-tabs">
+                <div class="phase-tab active" data-tab="design4">Design</div>
+                <div class="phase-tab" data-tab="build4">Build</div>
+                <div class="phase-tab" data-tab="test4">Test</div>
+                <div class="phase-tab" data-tab="learn4">Learn</div>
+            </div>
+        </div>
+    </div>
+    <div class="cycle-right">
+        <div class="phase-content active" id="design1">Design content for Cycle 1.</div>
+        <div class="phase-content" id="build1">Build content for Cycle 1.</div>
+        <div class="phase-content" id="test1">Test content for Cycle 1.</div>
+        <div class="phase-content" id="learn1">Learn content for Cycle 1.</div>
+    </div>
+
+    <div class="plasmid">
+        <svg viewBox="0 0 100 100">
+            <defs>
+                <marker id="arrowhead" markerWidth="2.5" markerHeight="2.5" refX="1.25" refY="1.25" orient="auto">
+                    <polygon points="0 0, 2.5 1.25, 0 2.5" fill="var(--phase-build)" />
+                </marker>
+            </defs>
+        
+            <circle class="plasmid-bg" cx="50" cy="50" r="40"/>
+
+            <g transform="rotate(-90 50 50)">
+                <path id="segment-1" class="plasmid-segment" d="M 53.49 10.3 A 40 40 0 0 1 89.7 46.51" />
+                <path id="segment-2" class="plasmid-segment" d="M 90 53.49 A 40 40 0 0 1 53.49 89.7" marker-end="url(#arrowhead)" />
+                <path id="segment-3" class="plasmid-segment" d="M 13.62 66.86 A 40 40 0 0 0 33.14 86.38" />
+                <path id="segment-4" class="plasmid-segment" d="M 10 46.51 A 40 40 0 0 1 46.51 10.3" />
+            </g>
+        </svg>
+    </div>
+</div>
+
+</div>
+
+<!-- Footer -->
+  <footer class="bg-gradient-to-r from-green-700 to-purple-700 text-white py-8 text-center">
+    <p>© 2025 iGEM Team ARGUS-2440 | Wet Lab</p>
+    <p class="mt-2 text-sm">
+      Learn more on our <a href="project.html" class="underline hover:text-gray-200">Project page</a> 
+      or contact us at <a href="mailto:team@argus2440.org" class="underline hover:text-gray-200">team@argus2440.org</a>.
+    </p>
+  </footer>
+
+<script>
+document.querySelectorAll('.cycle-card').forEach(card => {
+    const tabs = card.querySelectorAll('.phase-tab');
+    const contents = card.querySelectorAll('.phase-content');
+    const plasmidDiv = card.querySelector('.plasmid');
+
+    const updatePlasmid = (activeTab) => {
+        let phaseClass = '';
+        let isComplete = false;
+
+        if (activeTab.dataset.tab.startsWith('design')) {
+            phaseClass = 'phase-design';
+        } else if (activeTab.dataset.tab.startsWith('build')) {
+            phaseClass = 'phase-build';
+        } else if (activeTab.dataset.tab.startsWith('test')) {
+            phaseClass = 'phase-test';
+        } else if (activeTab.dataset.tab.startsWith('learn')) {
+            phaseClass = 'phase-learn';
+            isComplete = true;
+        }
+
+        // Update phase colors
+        plasmidDiv.classList.remove('phase-design', 'phase-build', 'phase-test', 'phase-learn');
+        plasmidDiv.classList.add(phaseClass);
+
+        if (isComplete) {
+            plasmidDiv.classList.add('completed-spin');
+            
+            setTimeout(() => {
+                plasmidDiv.classList.remove('completed-spin');
+            }, 1200); // 1200ms matches the animation duration
+            
+        } else {
+            plasmidDiv.classList.remove('completed-spin');
+        }
+    };
+    
+    const initialActiveTab = card.querySelector('.phase-tab.active');
+    if (initialActiveTab) {
+        updatePlasmid(initialActiveTab);
+    }
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            tab.classList.add('active');
+            card.querySelector(`#${tab.dataset.tab}`).classList.add('active');
+            
+            updatePlasmid(tab);
+        });
+    });
+});
+
+window.addEventListener("scroll", () => {
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const scrolled = (window.scrollY / docHeight) * 100;
+    document.getElementById("progress-bar").style.width = scrolled + "%";
+});
+</script>
+
+</body>
+</html>
