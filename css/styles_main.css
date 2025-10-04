@@ -480,36 +480,104 @@ body {
 
 /* Problem Section */
 
-.problem-band {
-    padding: 4rem 1.5rem;
-    text-align: center;
-    border-bottom: 1px solid #e2e8f0;
-}
+    .problem-band {
+        position: relative;
+        padding: 4rem 1.5rem;
+        text-align: center;
+        border-bottom: 1px solid #e2e8f0;
+        overflow: hidden;
+    }
 
-.problem-inner {
-    max-width: 800px;
-    margin: 0 auto;
-}
+    .problem-inner {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 10; /* Ensure text is always on top */
+    }
 
-.problem-inner h2 {
-    font-size: 2.25rem; /* 36px */
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 1rem;
-}
+    .problem-inner h2 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 1rem;
+    }
 
-.problem-inner p {
-    font-size: 1.125rem; /* 18px */
-    line-height: 1.8;
-    color: #475569;
-}
+    .problem-inner p {
+        font-size: 1.125rem;
+        line-height: 1.8;
+        color: #475569;
+    }
 
+    /* Water Animation Container */
+    
+    .water-animation {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 80%;
+        z-index: 1; 
+    }
+    
+    .waves {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        z-index: 1; /* Waves are at the bottom of this container */
+    }
+    
+    .wave-path {
+        animation: standing-wave 6s ease-in-out infinite alternate;
+    }
+    
+    #wave-2 {
+        animation-duration: 10s;
+    }
+
+    @keyframes standing-wave {
+        from {
+            d: path("M0,64 C240,110 480,10 720,64 S960,110 1200,64 S1440,10 1440,64 V150 H0 Z");
+        }
+        to {
+            d: path("M0,64 C240,10 480,110 720,64 S960,10 1200,64 S1440,110 1440,64 V150 H0 Z");
+        }
+    }
+
+    .water-animation-svg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 80%;
+        z-index: 4;
+        overflow: visible;
+    }
+
+    .waves-svg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 120%;
+        height: 250px; /* match SVG viewBox height */
+        opacity: 0;
+        z-index: 4;
+    }
+
+    .nitrate-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 10;
+    }
 
 /* Stats Section */
 
 .stats-section {
     max-width: 1100px;
-    margin: 0 auto;
+    margin: 60px auto 0 auto;
     text-align: center;
 }
 
@@ -818,25 +886,4 @@ body {
     margin-top: 1rem;
     font-weight: 600;
     color: #4338ca;
-}
-
-/* Floating CTA Button */
-.floating-cta {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    z-index: 999;
-    background-color: #4338ca;
-    color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 9999px;
-    font-weight: 600;
-    text-decoration: none;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease-in-out;
-}
-
-.floating-cta:hover {
-    transform: translateY(-3px) scale(1.05);
-    background-color: #3730a3;
 }

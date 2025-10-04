@@ -119,6 +119,7 @@
   </header>
 
 
+  <!-- Problem Statement -->
 
   <section class="problem-band" aria-labelledby="problem-heading">
     <div class="problem-inner">
@@ -127,7 +128,37 @@
         Nitrogen fertilizers are essential for modern agriculture, but up to 50% is lost as nitrate, washing away from roots and into our water supplies. This contamination threatens ecosystems and human health while wasting a vital resource for farmers.
       </p>
     </div>
+
+    <!-- Water Waves -->
+    <div class="water-animation">
+
+        <!-- Nitrate Molecules Floating -->
+        <div class="water-animation-svg">
+          <div id="nitrate-container" class="nitrate-container"></div>
+
+          <svg class="waves-svg" id="wave-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 150">
+            <path id="wave-path-svg" fill="rgba(147, 212, 249, 0.5)" 
+                  d="M0,64 
+                    C240,100 480,10 720,64 
+                    S960,100 1200,64 
+                    S1440,10 1440,64 
+                    V100 H0 Z">
+            </path>
+          </svg>
+
+        </div>
+
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 150">
+            <path id="wave-2" class="wave-path" fill="rgba(147, 212, 249, 0.5)" d="M0,64 C240,110 480,10 720,64 S960,110 1200,64 S1440,10 1440,64 V150 H0 Z"></path>
+        </svg>
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 150">
+            <path id="wave-1" class="wave-path" fill="rgba(190, 228, 249, 0.7)" d="M0,64 C240,10 480,110 720,64 S960,10 1200,64 S1440,110 1440,64 V150 H0 Z"></path>
+        </svg>
+    </div>
   </section>
+
+  <!-- Solution Overview -->
+
 
   <!-- Statistics with animated dials -->
 
@@ -138,9 +169,6 @@
           <div class="stat-card fill-85">
               <div class="stat-card-header">
                   <h3><span class="counter" data-target="85">0</span>%</h3>
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v.01h-.001a6 6 0 01-5.84-7.38L8.17 9.87a6 6 0 014.28 0l1.14 4.5zM12 21a9 9 0 110-18 9 9 0 010 18z" />
-                  </svg>
               </div>
               <p>of rural households in India depend on <strong>groundwater</strong> for drinking.</p>
           </div>
@@ -148,9 +176,6 @@
           <div class="stat-card fill-30">
               <div class="stat-card-header">
                   <h3><span class="counter" data-target="30">0</span>%</h3>
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                  </svg>
               </div>
               <p>of India's land suffers from <strong>soil degradation</strong>.</p>
           </div>
@@ -158,9 +183,6 @@
           <div class="stat-card fill-70">
               <div class="stat-card-header">
                   <h3><span class="counter" data-target="70">0</span>%</h3>
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M10.05 4.975c.34-.492.813-1.013 1.41-1.467a9.014 9.014 0 011.62.616l.334.286.329-.283a9.043 9.043 0 011.62-.616c.6.453 1.07 1.025 1.41 1.467a9.013 9.013 0 01-1.62.616l-.334.286-.329-.283a9.043 9.043 0 01-1.62-.616zM5.006 15.93c.34-.492.813-1.013 1.41-1.467a9.014 9.014 0 011.62.616l.334.286.329-.283a9.043 9.043 0 011.62-.616c.6.453 1.07 1.025 1.41 1.467a9.013 9.013 0 01-1.62.616l-.334.286-.329-.283a9.043 9.043 0 01-1.62-.616zM15.094 10.452c.34-.492.813-1.013 1.41-1.467a9.014 9.014 0 011.62.616l.334.286.329-.283a9.043 9.043 0 011.62-.616c.6.453 1.07 1.025 1.41 1.467a9.013 9.013 0 01-1.62.616l-.334.286-.329-.283a9.043 9.043 0 01-1.62-.616zM5.006 6.042c.34-.492.813-1.013 1.41-1.467a9.014 9.014 0 011.62.616l.334.286.329-.283a9.043 9.043 0 011.62-.616c.6.453 1.07 1.025 1.41 1.467a9.013 9.013 0 01-1.62.616l-.334.286-.329-.283a9.043 9.043 0 01-1.62-.616z" />
-                  </svg>
               </div>
               <p>increase in global <strong>ammonia production</strong> expected by 2050.</p>
           </div>
@@ -252,8 +274,6 @@
       </a>
     </div>
   </section>
-
-  <a href="wetlab.html" class="floating-cta" aria-label="Open Wet Lab page">Wet Lab</a>
 
   <!--
   <iframe src="pond.html" 
@@ -486,10 +506,91 @@ counters.forEach(card => {
 
 // Add the event listener to run the function on every scroll
 window.addEventListener('scroll', updateDialsOnScroll);
+</script>
 
-// Run the function once on page load to set the initial state correctly
-document.addEventListener('DOMContentLoaded', updateDialsOnScroll);
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('nitrate-container');
+    const path = document.getElementById('wave-path-svg');
+    const pathLength = path.getTotalLength();
 
+    const dotCount = 6;
+
+    function createDot() {
+        const dot = document.createElement('div');
+        dot.className = 'floating-dot';
+        container.appendChild(dot);
+
+        // Clear any green background
+        dot.style.background = 'transparent';
+        dot.style.width = '30px';
+        dot.style.height = '30px';
+
+        // Create the nitrate SVG inside the div
+        dot.innerHTML = `
+        <svg width="30" height="30" viewBox="0 0 30 30">
+            <!-- Nitrogen incenter -->
+            <circle cx="15" cy="15" r="5" fill="blue"/>
+            <!-- Oxygen atoms at triangle vertices -->
+            <circle cx="15" cy="3" r="5" fill="red"/>
+            <circle cx="3" cy="25" r="5" fill="red"/>
+            <circle cx="27" cy="25" r="5" fill="red"/>
+        </svg>`;
+
+
+        const heightVariation = (Math.random() * 10 - 5)/2;
+        const duration = 7500 + Math.random() * 500; // 7–8 seconds
+        let startTime = performance.now();
+
+        const startPoint = path.getPointAtLength(0);
+        let prevX = startPoint.x;
+
+        function animate(now) {
+            const elapsed = now - startTime;
+            let progress = elapsed / duration;
+
+            if (progress >= 1) {
+                dot.style.opacity = 0; // hide while waiting
+                setTimeout(() => {
+                    startTime = performance.now();
+                    prevX = 0;
+                    requestAnimationFrame(animate);
+                }, 500 + Math.random() * 1000); // 2–3s wait
+                return;
+            }
+
+            const distance = pathLength * progress;
+            const point = path.getPointAtLength(distance);
+            
+            const waveOffset = 25;
+            dot.style.transform = `translate(${point.x - 15}px, ${point.y + waveOffset + heightVariation}px)`;
+
+            const minHeight = 50; // set this to the minimum y you want
+            if (point.y < minHeight) point.y = minHeight;
+
+            // Compute velocity
+            const velocityX = point.x - prevX;
+            prevX = point.x;
+
+            // Visibility logic based on direction and position
+            const leftThreshold = 30;  // start showing after x > 30
+            const rightThreshold = container.offsetWidth - 50; // hide when x > width-30
+            if (velocityX > 0 && point.x > leftThreshold && point.x < rightThreshold) {
+                dot.style.opacity = 1;
+            } else {
+                dot.style.opacity = 0;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    for (let i = 0; i < dotCount; i++) {
+        setTimeout(createDot, i * 500);
+    }
+});
 </script>
 
 </body>
