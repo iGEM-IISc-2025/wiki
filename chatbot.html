@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Static Q&A Chatbot (No External Links)</title>
+<style>
+  :root{
+    --bg:#0f1222;      --panel:#171a2f;   --ink:#e7e9ff;
+    --muted:#9aa0c3;   --accent:#7c9eff;  --accent-2:#11c8a3;
+    --chip:#222641;    --danger:#ff6b6b;  --ok:#2ee6a8;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:linear-gradient(180deg,#0b0e1a, #0f1222 35%, #0e1020);
+    color:var(--ink); font:16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    display:flex; align-items:center; justify-content:center; padding:16px;
+  }
+  .app{
+    width:min(980px, 100%); height:min(760px, 92vh);
+    background:var(--panel); border:1px solid #20244a; border-radius:20px; overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.03) inset;
+    display:grid; grid-template-rows:auto 1fr auto;
+  }
+  header{
+    display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #20244a;
+    background:linear-gradient(180deg, #171a2f, #151937);
+  }
+  .logo{
+    width:34px; height:34px; border-radius:10px; background:
+      conic-gradient(from 220deg, var(--accent), var(--accent-2), var(--accent) 75%);
+    box-shadow:0 0 0 2px #12142a inset;
+  }
+  .title{
+    display:flex; flex-direction:column; gap:2px;
+  }
+  .title h1{font-size:16px; margin:0}
+  .title p{margin:0; color:var(--muted); font-size:12px}
+  .help{
+    margin-left:auto; display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .chip{
+    background:var(--chip); color:#cfd4ff; border:1px solid #2b305a;
+    padding:6px 10px; border-radius:999px; font-size:12px;
+  }
+
+  /* Chat area */
+  .chat{
+    overflow:auto; padding:16px; display:flex; flex-direction:column; gap:12px;
+    scroll-behavior:smooth;
+  }
+  .msg{
+    display:grid; grid-template-columns:auto 1fr; gap:8px 12px; align-items:start;
+    animation:pop .15s ease-out;
+  }
+  @keyframes pop{from{transform:scale(.98); opacity:.0} to{transform:scale(1); opacity:1}}
+  .avatar{
+    width:30px; height:30px; border-radius:50%; background:#20244a; display:grid; place-items:center;
+    font-weight:700; font-size:13px; color:#b9c2ff;
+  }
+  .b{background:linear-gradient(135deg, #1e244a, #3a3f77)}
+  .u{background:linear-gradient(135deg, #0f6, #15c59b)}
+  .bubble{
+    background:#1b1f3b; border:1px solid #2b305a; color:var(--ink);
+    padding:10px 12px; border-radius:14px; max-width:70%;
+  }
+  .bot .bubble{background:#171c36}
+  .user .bubble{background:#172b28; border-color:#224a44}
+
+  .choices{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
+  .choices button{
+    background:#1c2142; border:1px solid #2b305a; color:#cfd4ff;
+    padding:6px 10px; border-radius:10px; font-size:12px; cursor:pointer;
+  }
+  .choices button:hover{filter:brightness(1.1)}
+
+  /* Input bar */
+  .composer{
+    padding:12px; border-top:1px solid #20244a; background:linear-gradient(180deg, #151937, #141733);
+    display:grid; grid-template-columns: 1fr auto; gap:10px; align-items:center;
+  }
+  .composer form{display:contents}
+  .composer input[type="text"]{
+    width:100%; padding:12px 14px; border-radius:12px; background:#12152c; color:var(--ink);
+    border:1px solid #242a56; outline:none;
+  }
+  .composer input::placeholder{color:#7f87b5}
+  .composer button{
+    padding:12px 14px; border-radius:12px; border:1px solid #2b305a; background:var(--chip);
+    color:#e5e8ff; font-weight:600; cursor:pointer;
+  }
+  .composer button:hover{filter:brightness(1.08)}
+  .row{display:flex; gap:8px; align-items:center}
+
+  /* Collapsible FAQ panel (optional, no external links) */
+  details{
+    background:#12152c; border:1px solid #242a56; border-radius:12px; padding:10px 12px; margin-top:8px;
+  }
+  details[open]{background:#10132a}
+  summary{cursor:pointer; color:#cfd4ff; font-weight:600; outline:none}
+  .faq-list{margin:8px 0 0 0; padding:0; list-style:none; display:grid; gap:8px}
+  .faq-list li{background:#0f1226; border:1px solid #20244a; padding:10px 12px; border-radius:10px}
+
+  /* A11y helpers (visible focus) */
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  /* Small screens */
+  @media (max-width:600px){
+    .bubble{max-width:100%}
+    .help{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Static Q and A Chatbot">
+  <header>
+    <div class="logo" aria-hidden="true"></div>
+    <div class="title">
+      <h1>ARGUS Wiki Helper</h1>
+      <p>Ask about our project, how it works and all its components.</p>
+    </div>
+  </header>
+
+  <main id="chat" class="chat" aria-live="polite" aria-label="Chat messages">
+  </main>
+
+  <div class="composer">
+    <form id="form" autocomplete="off">
+      <input id="input" type="text" name="q" placeholder="Type your question…" aria-label="Message input" required />
+      <div class="row">
+        <button id="send" type="submit" aria-label="Send message">Send ⮕</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+
+const QA_PAIRS = [
+    {
+        q: ["what is the project about", "project description", "what is argus", "project goal"],
+        a: "Our project, ARGUS-2440, is engineering **Pseudomonas putida** to combat nitrate leaching in agriculture. It's a novel biological system designed to regulate ammonia production and optimize soil nitrogen balance as a sustainable alternative to chemical fertilizers.",
+        suggest: ["Why is nitrate leaching a problem?", "How does the genetic circuit work?"]
+    },
+    {
+        q: ["why is nitrate leaching a problem", "nitrate pollution", "environmental impact"],
+        a: "Nitrate leaching contaminates groundwater, which is the primary source of drinking water for 90% of rural India. This leads to health issues like **methemoglobinemia** (blue baby syndrome) and harms ecosystems by causing **eutrophication** in water bodies.",
+        suggest: ["What is your solution?", "What did the farmers say?"]
+    },
+    {
+      q: ["How does the plasmid work?", 'plasmid design', 'genetic circuit'],
+      a: "The engineered plasmid integrates nitrogen sensing and regulatory elements. When nitrate levels in the soil are high, the system downregulates ammonia production to prevent further leaching. When nitrate levels are low, it activates ammonia production pathways to replenish nitrogen in the soil, maintaining a healthy balance.",
+      suggest: ["What parts did you make?", "How did you build your plasmids?"]
+    },  
+    {
+        q: ["why pseudomonas putida", "chassis", "biofilm"],
+        a: "We chose **Pseudomonas putida KT2440** because it's a robust soil bacterium that naturally forms beneficial biofilms around plant roots. This makes it an ideal chassis for an agricultural application, as it's already adapted to the target environment.",
+        suggest: ["What's special about biofilms?", "Is it safe?"]
+    },
+    {
+        q: ["what is dnr a", "dnra pathway", "dissimilatory nitrate reduction"],
+        a: "DNRA stands for **Dissimilatory Nitrate Reduction to Ammonium**. It's a two-step microbial pathway that converts nitrate to ammonium, keeping the nitrogen conserved in the soil. We chose it over denitrification because it doesn't produce greenhouse gases like nitrous oxide (N2O).",
+        suggest: ["How does the circuit work?"]
+    },
+    {
+        q: ["what are the project goals", "objectives"],
+        a: "Our main goals are to: 1) **Reduce nitrate pollution** from farms, 2) **Improve soil health** by conserving nitrogen, and 3) Provide farmers with a **sustainable and efficient alternative** to conventional fertilizers.",
+        suggest: ["What were your results?"]
+    },
+    {
+        q: ["human practices", "what is hp", "stakeholder engagement"],
+        a: "For Human Practices, we engaged with **farmers in Behrambadi village** to understand their needs, spoke with agricultural scientists about feasibility, and developed educational materials. Our project design was directly influenced by their feedback.",
+        suggest: ["What did the farmers say?", "Tell me about safety."]
+    },
+    {
+        q: ["engineering success", "dbtl cycle", "design build test learn"],
+        a: "We used the **Design-Build-Test-Learn (DBTL)** cycle to refine our project. For example, in Cycle 1, we tested three different nitrite reductase operons. After testing their efficiency, we learned that the **nrfA operon** was the most effective and used it in our final design.",
+        suggest: ["What were your results?", "What parts did you make?"]
+    },
+    {
+        q: ["what were the results", "did it work", "proof of concept"],
+        a: "Yes, we achieved a successful **proof of concept**. Our results show that our engineered P. putida can sense nitrate levels and regulate ammonia production in a lab setting. We observed a significant reduction in 'leached' nitrate in our soil column experiments.",
+        suggest: ["How would this be used in the real world?"]
+    },
+    {
+        q: ["parts", "biobricks", "registry contribution"],
+        a: "We have submitted several new BioBrick parts to the iGEM Registry, including our improved **nitrate-sensing module (BBa_K123456)** and the complete **nitrogenase production device (BBa_K789012)**. All parts have been characterized on our Parts page.",
+        suggest: ["Who is on the team?", "How does the circuit work?"]
+    },
+    {
+        q: ["safety", "biosafety", "is it safe"],
+        a: "Safety is a top priority. Our project uses a **Risk Group 1 organism** (P. putida KT2440), and all work was conducted in a BSL-1 lab. We have also designed a **kill switch system** to prevent our engineered bacteria from surviving outside the target agricultural environment.",
+        suggest: ["How would this be used in the real world?"]
+    },
+    {
+        q: ["who is on the team", "team members", "pis"],
+        a: "Our team is composed of undergraduate students from **IISc Bengaluru**, with guidance from our Principal Investigators, **Prof. Samay Pande** and **Prof. Dipshika Chakraborty**. You can see everyone's contributions on our Attributions page!",
+        suggest: ["Who helped the team?"]
+    },
+    {
+        q: ["how would this be used", "real world application", "implementation"],
+        a: "In the real world, ARGUS-2440 could be applied as a **liquid soil inoculant**. Farmers would add it to their irrigation systems. The bacteria would then colonize plant roots and manage nitrogen levels directly in the soil.",
+        suggest: ["Is it safe?", "What did the farmers say?"]
+    },
+
+    {
+        q: ["what does argus mean", "project name", "name origin"],
+        a: "The name **ARGUS-2440** is inspired by Argus Panoptes from Greek mythology, a giant with a hundred eyes, symbolizing our project's goal of creating a vigilant, all-seeing guardian for soil health. The '2440' refers to our chassis, *Pseudomonas putida* KT2440.",
+        suggest: ["Why use Pseudomonas putida?", "What is the project about?"]
+    },
+    {
+        q: ["how is your project innovative", "what is novel", "innovation"],
+        a: "Our project is innovative because it focuses on the understudied **DNRA pathway** for nitrogen conservation and combines it with a self-regulating genetic circuit. Instead of just removing nitrate, we convert it back into a useful form (ammonia) directly in the root zone.",
+        suggest: ["What is DNRA?", "How does the circuit work?"]
+    },
+    {
+        q: ["what's special about biofilms", "biofilm function"],
+        a: "Biofilms are communities of microbes that adhere to a surface. In our project, the biofilm formed by *P. putida* on plant roots creates a localized, protected environment where our engineered bacteria can effectively manage nitrogen levels right where the plant needs it.",
+        suggest: ["Why use Pseudomonas putida?"]
+    },
+    {
+        q: ["what did you learn from previous igem projects", "previous projects"],
+        a: "We were inspired by the work of the **Wageningen 2021 team (Cattlelysts)**, who demonstrated the first step of DNRA in *P. putida*. Their success gave us the confidence to focus our efforts on engineering the second, more challenging step of the pathway.",
+        suggest: ["What is DNRA?"]
+    },
+    {
+        q: ["future plans", "what's next", "future directions"],
+        a: "Our future plans include field trials to test the robustness of ARGUS-2440 in real agricultural conditions, optimizing the kill switch for environmental safety, and exploring the circuit's effectiveness with different crop types like wheat and corn.",
+        suggest: ["Tell me about safety.", "How would this be used in the real world?"]
+    },
+
+    {
+        q: ["key experiments", "what experiments did you do"],
+        a: "Our key experiments included: 1) Cloning our designed genetic constructs into *P. putida*, 2) Performing nitrate/nitrite reduction assays to measure the efficiency of our DNRA pathway, and 3) Conducting microscopy to visualize biofilm formation on root analogues.",
+        suggest: ["What were your results?", "What parts did you make?"]
+    },
+    {
+        q: ["how did you measure success", "measurement", "quantify results"],
+        a: "We measured success primarily using **Griess assays** to quantify the reduction of nitrate and nitrite over time. We compared the performance of our engineered strain against a wild-type control to demonstrate the functionality of our circuit.",
+        suggest: ["What were your results?"]
+    },
+    {
+        q: ["what challenges did you face in the lab", "problems", "troubleshooting"],
+        a: "A major challenge was the low efficiency of the second step of the DNRA pathway. We addressed this through several DBTL cycles, testing different operons (`nir` vs. `nrf`) and optimizing codon usage for our chassis, which significantly improved the conversion rate.",
+        suggest: ["What is the DBTL cycle?"]
+    },
+    {
+        q: ["cloning strategy", "how did you build your plasmids"],
+        a: "We used **Gibson Assembly** to construct our plasmids. This method allowed us to flexibly assemble multiple DNA fragments (promoters, genes, terminators) into our pBBR1 backbone in a single reaction.",
+        suggest: ["What parts did you make?"]
+    },
+
+    {
+        q: ["what modeling did you do", "dry lab", "computational work"],
+        a: "Our dry lab team developed an **Ordinary Differential Equation (ODE) model** to simulate the nitrogen dynamics in soil. This model helped us predict how our engineered bacteria would impact nitrate and ammonia concentrations over time under different conditions.",
+        suggest: ["What were the results of the model?", "What software did you use?"]
+    },
+    {
+        q: ["what did the model predict", "model results"],
+        a: "The model predicted that our ARGUS-2440 system could reduce peak nitrate leaching by up to **60%** compared to a control scenario, providing a strong theoretical basis for our wet lab experiments.",
+        suggest: ["What were your wet lab results?"]
+    },
+    {
+        q: ["what software did you use", "tools", "software tools"],
+        a: "For modeling, we used **Python** with libraries like SciPy for solving ODEs and Matplotlib for plotting. Plasmid design and sequence management were done using **Benchling**.",
+        suggest: ["What modeling did you do?"]
+    },
+    {
+        q: ["hardware", "any hardware components"],
+        a: "While our project is primarily biological, we did build a small-scale **soil column bioreactor** to simulate nitrate leaching in the lab. This hardware allowed us to test our engineered bacteria in a controlled, soil-like environment.",
+        suggest: ["What were your key experiments?"]
+    },
+
+    {
+        q: ["what did the farmers say", "farmer feedback"],
+        a: "During our visit to **Behrambadi village**, farmers told us they were aware of nutrient loss and often over-apply fertilizer to compensate. This crucial insight confirmed that a self-regulating system like ours, which conserves nitrogen, directly addresses their practical challenges.",
+        suggest: ["What is Human Practices?", "How would this be used in the real world?"]
+    },
+    {
+        q: ["how did hp influence your project", "integrated human practices", "ihp"],
+        a: "Our conversations with farmers directly influenced our project design. Their need for a simple, 'one-and-done' application led us to focus on using a biofilm-forming chassis (*P. putida*) that could persist in the root zone, rather than a system requiring constant reapplication.",
+        suggest: ["Why use Pseudomonas putida?"]
+    },
+    {
+        q: ["education and outreach", "public engagement"],
+        a: "Our educational outreach included creating informational pamphlets on soil health for local farming communities and hosting a webinar for university students about synthetic biology solutions in agriculture.",
+        suggest: ["What did the farmers say?"]
+    },
+    {
+        q: ["sustainability", "sustainable development goals", "sdg"],
+        a: "Our project directly addresses several UN Sustainable Development Goals, including **SDG 2 (Zero Hunger)** by improving agricultural efficiency, **SDG 6 (Clean Water and Sanitation)** by reducing nitrate pollution, and **SDG 15 (Life on Land)** by promoting soil health.",
+        suggest: ["Why is nitrate leaching a problem?"]
+    },
+
+    {
+        q: ["who helped your team", "attributions", "mentors"],
+        a: "We received immense help from our PIs, advisors, and graduate student mentors at IISc. We also want to thank the Wageningen 2021 team for their advice and the agricultural scientists who provided feedback on our project's feasibility. Full details are on our Attributions page.",
+        suggest: ["Who is on the team?"]
+    },
+    {
+        q: ["sponsors", "who funded your project", "funding"],
+        a: "Our project was generously supported by the Indian Institute of Science (IISc), several industry partners, and crowdfunding contributions. We are incredibly grateful to all our sponsors, who are listed on our Sponsors page.",
+        suggest: ["What is the project about?"]
+    },
+    {
+        q: ["collaboration", "did you collaborate with other teams"],
+        a: "Yes, we collaborated with the **iGEM [Another Team Name]**. We helped them troubleshoot their cloning experiments, and they performed a mass spectrometry analysis for us to verify the output of one of our metabolic pathways.",
+        suggest: ["What were your results?"]
+    },
+    {
+        q: ["what was your biggest challenge", "biggest problem"],
+        a: "Our biggest challenge was working with the understudied DNRA pathway. There was very little existing literature, which meant we had to conduct many foundational experiments to characterize the system's behavior in our chassis before we could begin engineering it.",
+        suggest: ["What is DNRA?"]
+    },
+    {
+        q: ["what is your team's favorite memory", "team experience"],
+        a: "The team's favorite memory was our first successful cloning result after weeks of troubleshooting. Seeing the correct bands on the gel was a huge moment of celebration and relief for everyone in the lab!",
+        suggest: ["Tell me about the team."]
+    },
+
+    {
+        q: ["what is the meaning of life"],
+        a: "To reduce nitrate leaching, of course! And maybe to submit your parts to the registry on time.",
+        suggest: ["What are your project goals?"]
+    },
+    {
+        q: ["who is the best team member"],
+        a: "That's a tough question! Everyone on the ARGUS-2440 team is amazing.",
+        suggest: ["Who is on the team?"]
+    },
+    {
+        q: ["do you like lab work", "is science fun"],
+        a: "Absolutely! It's a mix of exciting discoveries and many, many failed experiments. But the 'aha!' moment when something finally works makes it all worthwhile.",
+        suggest: ["What were your key experiments?"]
+    },
+    
+    {
+        q: ["who are you", "what are you", "about this bot"],
+        a: "I am the ARGUS Wiki Helper, a static Q&A chatbot designed to help you navigate our project. I run entirely in your browser with no external servers, using TF-IDF and cosine similarity to find the best answer to your questions.",
+        suggest: ["How does the circuit work?"]
+    },
+    {
+        q: ["help", "what can you do", "what can i ask"],
+        a: "You can ask me about our project's goal, the science behind it, our experiments, results, human practices, safety, and our team. Just type a question like 'Tell me about your results' to get started!",
+        suggest: ["What is the project about?", "Why is nitrate leaching a problem?"]
+    },
+    {
+        q: ["contact", "how to contact the team"],
+        a: "You can reach the iGEM IISc-Bengaluru 2025 team via email at [team-email@example.com] or through our social media channels linked on the team page.",
+        suggest: ["Who is on the team?"]
+    },
+    {
+        q: ["igem", "what is igem"],
+        a: "The International Genetically Engineered Machine (iGEM) competition is the largest synthetic biology competition in the world, where student teams design, build, and test novel biological systems to solve real-world problems.",
+        suggest: ["What is your project about?"]
+    },
+    {
+        q: ["what is synthetic biology", "synbio"],
+        a: "Synthetic biology is a field of science that involves redesigning organisms for useful purposes by engineering them to have new abilities. We use it to create biological solutions for problems in medicine, agriculture, and the environment.",
+        suggest: ["How is your project innovative?"]
+    }
+
+];
+
+
+
+// Preprocessing and Model Building
+const model = {};
+
+function tokenize(text) {
+    return (text || "").toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
+}
+
+function buildModel() {
+    const documents = QA_PAIRS.map(pair => tokenize(pair.q.join(" ")));
+    const docCount = documents.length;
+    
+    // Inverse Document Frequency
+    const idf = {};
+    const allTokens = new Set(documents.flat());
+    
+    for (const token of allTokens) {
+        let docsWithToken = 0;
+        for (const doc of documents) {
+            if (doc.includes(token)) {
+                docsWithToken++;
+            }
+        }
+        idf[token] = Math.log(docCount / (1 + docsWithToken));
+    }
+    
+    const docVectors = documents.map(doc => {
+        const vector = {};
+        const termCount = doc.length;
+        
+        for (const token of new Set(doc)) {
+            const tf = doc.filter(t => t === token).length / termCount;
+            vector[token] = tf * idf[token];
+        }
+        return vector;
+    });
+    
+    model.idf = idf;
+    model.docVectors = docVectors;
+}
+
+// Similarity Calculation
+function createVector(tokens) {
+    const vector = {};
+    const termCount = tokens.length;
+    for (const token of new Set(tokens)) {
+        const tf = tokens.filter(t => t === token).length / termCount;
+        const idf = model.idf[token] || 0;
+        vector[token] = tf * idf;
+    }
+    return vector;
+}
+
+function dotProduct(vecA, vecB) {
+    let product = 0;
+    for (const key in vecA) {
+        if (key in vecB) {
+            product += vecA[key] * vecB[key];
+        }
+    }
+    return product;
+}
+
+function magnitude(vec) {
+    let sum = 0;
+    for (const key in vec) {
+        sum += vec[key] * vec[key];
+    }
+    return Math.sqrt(sum);
+}
+
+function cosineSimilarity(vecA, vecB) {
+    const dp = dotProduct(vecA, vecB);
+    const magA = magnitude(vecA);
+    const magB = magnitude(vecB);
+    
+    if (magA === 0 || magB === 0) return 0;
+    return dp / (magA * magB);
+}
+
+function bestAnswer(query) {
+    const queryTokens = tokenize(query);
+    const queryVector = createVector(queryTokens);
+    
+    let best = { score: -1, idx: -1 };
+    
+    model.docVectors.forEach((docVector, i) => {
+        const score = cosineSimilarity(queryVector, docVector);
+        if (score > best.score) {
+            best = { score, idx: i };
+        }
+    });
+    
+    return (best.idx >= 0 && best.score > 0.15) ? QA_PAIRS[best.idx] : null;
+}
+
+// Run the model builder on startup
+buildModel();
+
+
+const chat = document.getElementById("chat");
+const form = document.getElementById("form");
+const input = document.getElementById("input");
+
+function el(tag, attrs={}, children=[]){
+    const e = document.createElement(tag);
+    for (const [k,v] of Object.entries(attrs)){
+        if (k === "class") e.className = v;
+        else if (k.startsWith("on") && typeof v === "function") e.addEventListener(k.substring(2), v);
+        else e.setAttribute(k, v);
+    }
+    for (const c of [].concat(children)){
+        if (c instanceof Node) e.appendChild(c);
+        else e.appendChild(document.createTextNode(String(c)));
+    }
+    return e;
+}
+
+function addMessage({who="bot", text="", choices=[]}){
+    const isBot = who === "bot";
+    const wrapper = el("div", {class:`msg ${who}`});
+    const avatar = el("div", {class:`avatar ${isBot?'b':'u'}`}, [isBot?"A":"U"]);
+    const bubble = el("div", {class:"bubble"});
+    
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    bubble.innerHTML = text;
+
+    wrapper.appendChild(avatar);
+    wrapper.appendChild(bubble);
+
+    if (isBot && choices.length){
+        const choiceBar = el("div", {class:"choices"});
+        for (const c of choices){
+            const btn = el("button", {type:"button", onclick: () => ask(c)}, [c]);
+            choiceBar.appendChild(btn);
+        }
+        bubble.appendChild(choiceBar);
+    }
+
+    chat.appendChild(wrapper);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function ask(q){
+    addMessage({who:"user", text:q});
+    setTimeout(() => {
+        const match = bestAnswer(q);
+        if (match){
+            addMessage({who:"bot", text: match.a, choices: match.suggest || []});
+        } else {
+            addMessage({
+                who:"bot",
+                text:"I'm not sure about that. I can answer questions about our project description, goals, the problem of nitrate leaching, our genetic circuit, and our choice of chassis. Try asking 'What is the project about?'",
+                choices: QA_PAIRS.map(p => p.q[0]).slice(0,3)
+            });
+        }
+    }, 400);
+}
+
+addMessage({
+    who:"bot",
+    text:"Hi! I’m the ARGUS-2440 project assistant. Ask me anything about our project!",
+    choices:["What is the project about?", "Why is nitrate leaching a problem?", "How does the plasmid work?"]
+});
+
+form.addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const q = input.value.trim();
+    if(!q) return;
+    ask(q);
+    input.value="";
+    input.focus();
+});
+</script>
+</body>
+</html>

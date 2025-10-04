@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Overview | ARGUS-2440</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.mt-2{margin-top:0.5rem}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-green-700{--tw-gradient-from:#15803d var(--tw-gradient-from-position);--tw-gradient-to:rgb(21 128 61 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-purple-700{--tw-gradient-to:#7e22ce var(--tw-gradient-to-position)}.py-8{padding-top:2rem;padding-bottom:2rem}.text-center{text-align:center}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.underline{-webkit-text-decoration-line:underline;text-decoration-line:underline}.hover\:text-gray-200:hover{--tw-text-opacity:1;color:rgb(229 231 235 / var(--tw-text-opacity, 1))}</style>
+    
+    <style>
+        :root {
+            --primary-color: #7a40d1;
+            --secondary-color: #22c55e;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --border-color: #e2e8f0;
+        }
+        html { scroll-behavior: smooth; }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: var(--bg-light); color: var(--text-dark); line-height: 1.7; overflow-x: hidden; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+
+        .project-title-block {text-align: center; padding: 3rem 1rem 2rem; background: #f9fafb;}
+        .title-container {display: flex; align-items: center; justify-content: center; gap: 1.25rem;}
+        .title-text h1 {font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif, serif; font-size: 4rem; margin: 0; color: #1e293b}
+        .subtitle {font-family: "Inter", sans-serif; font-size: 1.5rem;   color: #475569; margin-top: 0.25rem;}
+        .title-accent {width: 120px; height: 3px; background: linear-gradient(90deg, #9333ea, #22c55e); margin: 1rem auto 0; border-radius: 2px;}
+
+        @media (max-width: 768px) {
+        .title-container {
+            flex-direction: column;
+        }
+        .title-text h1 {
+            font-size: 2rem;
+        }
+        .subtitle {
+            font-size: 1rem;
+        }
+        }
+        
+        .content-section { padding: 1rem 0; border-bottom: 1px solid var(--border-color); }
+        .content-section h2 { font-size: 2.5rem; font-weight: 700; color: var(--primary-color); text-align: center; margin: 0 0 3rem 0; }
+        .content-section h3 { font-size: 1.75rem; margin: 0 0 1rem 0; }
+        .content-section p { font-size: 1.1rem; color: var(--text-light); margin-bottom: 1rem; max-width: 900px; }
+        .center-text p { margin-left: auto; margin-right: auto; }
+        
+        .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+
+        ul.animate-on-scroll {list-style-type: disc; padding-left: 20px;}
+        ul.animate-on-scroll li::marker {color: inherit;}
+        ul.animate-on-scroll.indented-bullets {list-style-type: disc !important; color: var(--text-light); padding-left: 40px !important; margin-left: 0; list-style-position: outside;}
+
+        .two-column-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .two-column-grid img { width: 100%; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 3rem 0; }
+        .stat-card { background-color: var(--bg-white); border-radius: 1rem; padding: 1.5rem; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .stat-card h3 { font-size: 3rem; font-weight: 800; color: var(--primary-color); margin: 0; }
+        .stat-card p { font-size: 1rem; color: var(--text-light); margin-top: 0.5rem; }
+
+        .callout-box { background-color: #eef2ff; border-left: 5px solid var(--primary-color); border-radius: 0.5rem; padding: 1.5rem; margin: 2rem auto; max-width: 900px; }
+        .callout-box p { margin: 0; color: #4338ca; }
+
+        .accordion-item { background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 0.5rem; margin-bottom: 0.5rem; }
+        .accordion-header { width: 100%; text-align: left; background: transparent; border: none; padding: 1rem 1.5rem; font-size: 1.1rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .accordion-content p { padding: 0 1.5rem 1.5rem; margin: 0; color: var(--text-light); }
+        .accordion-item.active .accordion-content { max-height: 200px; }
+
+        .comparison-slider { position: relative; max-width: 700px; margin: 2rem auto; overflow: hidden; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); user-select: none; }
+        .comparison-slider img { display: block; width: 100%; height: auto; pointer-events: none; }
+        .comparison-slider .image-after { position: absolute; top: 0; left: 0; height: 100%; width: 100%; object-fit: cover; clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); }
+        .comparison-slider .slider-handle { position: absolute; top: 0; left: 50%; width: 4px; height: 100%; background: white; cursor: ew-resize; transform: translateX(-50%); }
+
+        .tabs-container { background: var(--bg-white); border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); overflow: hidden; max-width: 700px; margin: 2rem auto; }
+        .tab-buttons { display: flex; background: #eef2ff; }
+        .tab-button { flex: 1; padding: 1rem; border: none; background: transparent; font-size: 1rem; font-weight: 600; cursor: pointer; color: var(--text-light); transition: background-color 0.3s, color 0.3s; }
+        .tab-button.active { background: var(--bg-white); color: var(--primary-color); }
+        .tab-content { display: none; padding: 2rem; }
+        .tab-content.active { display: block; }
+        
+        .hotspot-container { position: relative; max-width: 600px; margin: 2rem auto; }
+        .hotspot-container img { width: 100%; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .hotspot { position: absolute; width: 24px; height: 24px; background: var(--primary-color); border-radius: 50%; cursor: pointer; border: 3px solid white; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); } 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); } }
+        .hotspot-tooltip { position: absolute; background: var(--text-dark); color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; bottom: 120%; left: 50%; transform: translateX(-50%); opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; pointer-events: none; width: 200px; }
+        .hotspot:hover .hotspot-tooltip { opacity: 1; visibility: visible; }
+
+        #to-top-btn { position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background-color: var(--primary-color); color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 100; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+        #to-top-btn.visible { opacity: 1; visibility: visible; }
+
+        @media (max-width: 768px) {
+            .two-column-grid { grid-template-columns: 1fr; }
+            .two-column-grid img { order: -1; margin-bottom: 2rem; }
+        }
+
+        .section-title-small {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .content-section:first-of-type {
+            padding-top: 2rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Project Title Block -->
+    <section class="project-title-block">
+    <div class="title-overlay">
+        <div class="title-container">
+        <div class="title-text">
+            <h1>Root Of Our Problem</h1>
+            <p class="subtitle">And the Path We Took to Solve It</p>
+        </div>
+        </div>
+    </div>
+    <div class="title-accent"></div>
+    </section>
+
+    <section class="content-section">
+        <div class="container center-text">
+            <h2 class="animate-on-scroll section-title-small">Background</h2>
+            <p class="animate-on-scroll">
+                Plants cannot directly take in nitrogen from the air like carbon dioxide and oxygen. Ammonia, a nitrogen-containing compound, has been used as a fertilizer ever since we figured out how to commercially mass produce it. Plants now directly absorb nitrogen from the soil instead, which has single-handedly doubled the number of people one acre of land can feed.
+            </p>
+            <p class="animate-on-scroll">
+                During and after fertilizer application, nitrogen does not remain in the soil in an unaltered state. Due to abundant nitrifying bacteria, nitrate molecules increase and co-exist with ammonium molecules.
+            </p>
+            <div class="two-column-grid animate-on-scroll" style="margin-top: 2rem;">
+                <div class="image-content">
+                    <img src="../images/img-1.jpg" alt="Animation of nitrate leaching from soil">
+                </div>
+                <div class="text-content">
+                    <p>
+                        Since clay is composed of negatively charged particles, negatively-charged nitrate molecules can adhere to them and participate in mass flow during erosion and weathering events. This phenomenon is known as nitrate leaching.
+                    </p>
+                </div>
+            </div>
+            <div class="stats-grid animate-on-scroll">
+                <div class="stat-card"><h3>80%</h3><p>of nitrogen from the Haber–Bosch process is used in fertilizers.</p></div>
+                <div class="stat-card"><h3>100 Tg</h3><p>of nitrogen from the Haber–Bosch process was used in global agriculture in 2005</p></div>
+                <div class="stat-card"><h3>17 Tg</h3><p>of nitrogen was consumed by humans in crop, dairy and meat products.</p></div>
+            </div>
+            
+            <p class="animate-on-scroll">
+            Unregulated fertilizer use in farmlands leads to accumulation of excess nitrate, which in turn causes greater leaching. In fact, several studies have shown that agricultural activities are a significant source of surface and ground water pollution due to long-term and excessive fertilizer use. 
+            </p>
+
+            <section class="content-section">
+                <div class="container center-text-heading">
+                    <canvas id="agriPollutionChart" width="600" height="400"></canvas>
+                </div>
+            </section>
+
+            <br></br>
+
+            <p class="animate-on-scroll">This extensive pollution leads to the following problems:</p>
+            <ul class="animate-on-scroll indented-bullets">
+                <li>Degradation of soil quality due to excessive loss of nutrients.</li>
+                <li>Groundwater pollution, with ions seeping into wells and reservoirs.</li>
+                <li>Eutrophication resulting from algal blooms on the surface of water bodies.</li>
+            </ul>
+
+            <div class="callout-box animate-on-scroll">
+                <p>
+                    <strong>Note:</strong> While we mention ‘unregulated’ fertilizer use here, it was an assumption that farmers use fertilizers excessively solely based off of research that proved a reduction in nitrate leaching upon application of appropriate fertilizer amounts. However, upon speaking with actual [farmers], we learned that they were quite aware of the amounts of fertilizer required for their crops. They were also aware that most of the nitrogen content in the fertilizer would leach away, which in turn provoked higher amounts of fertilizer application. A self-sustaining cycle thus formed.
+                </p>
+            </div>
+
+            <p class="animate-on-scroll">
+            The secondary problems of nitrate leaching prove even worse. Excessive nitrate in drinking water has been proven to cause methemoglobinemia (blue baby syndrome). Ingested nitrate is reduced to nitrite by bacteria in the mouth and in the infant stomach, which is less acidic than adults. Nitrite binds to hemoglobin to form methemoglobin, which interferes with the oxygen carrying capacity of the blood and causes breathing issues. 
+            </p>
+
+            <p class="animate-on-scroll">
+            There are also studies linking high nitrate consumption to thyroid disease, colorectal cancer, and pregnancy complications.
+            </p>
+
+            <p class="animate-on-scroll">
+            In India, 90% of the rural populace uses groundwater as their primary source of drinking water. This is a huge chunk of people directly exposed to a concerning concentration of nitrate in their water. This problem had to be tackled, and tackled quickly. 
+            </p>
+            
+            <div class="callout-box animate-on-scroll">
+            <p>
+            In fact, when we visited the village of Behrambadi on the outskirts of Karnataka to speak with [farmers], we found that a lot of people did not have access to filtered water. This problem is exacerbated in the only school in the village. 64 school-aged children are at risk of not just high nitrate levels, but the plethora of other contaminants that pollute Indian groundwater. Research has shown that Reverse Osmosis is effective at removing nitrates from groundwater at a rate of 85.03%. The ARGUS-2440 team has thus started a fundraiser to install an RO filter at the school, with the vision of ensuring clean drinking water for the students.
+            </p>
+
+            <br></br>
+            
+            <p>
+            While we may not be able to stop nitrate leaching immediately, we are committed to contributing to our immediate community, and sincerely hope that we reach our fundraising goals to support the same. 
+            </p>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container center-text">
+            <h2 class="animate-on-scroll section-title-small">Plan</h2>
+            <p class="animate-on-scroll">
+                To understand how we arrived at the current iteration of our project design, it is important to piece different aspects of the situation together and move forward with the insights. We begin, then, with ammonium.
+            </p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container center-text">
+            <h2 class="animate-on-scroll">We Need To Talk About Ammonium</h2>
+
+            <p class="animate-on-scroll">
+            Agricultural bioremediation presents complex challenges due to intricate anthropogenic and natural factors involved in the field. On that note, we must consider two situations; nitrate leaching during crop cycles, and nitrate leaching in between crop cycles. 
+            </p>
+
+            <p class="animate-on-scroll">
+            In between crop cycles, nitrate and ammonium have nowhere to go because plants aren’t available to take them up. Residual nitrate molecules from past fertilizer application are, therefore, free to leach upon instances of rainfall and soil erosion. Ammonium molecules are retained in the soil due to their cationic state in these conditions. 
+            </p>
+
+            <p class="animate-on-scroll">
+            During crop cycles, nitrate and ammonium are both utilized as nitrogen sources for plant growth and development alongside the simultaneous process of nitrate leaching. However, research has revealed a general higher growth response of terrestrial plants to ammonium-N than nitrate-N addition. 
+            </p>
+
+            <div class="stats-grid animate-on-scroll">
+                <div class="stat-card">
+                    <h3>6.3%</h3>
+                    <p>Growth increase per gram Nitrogen with NH₄⁺</p>
+                </div>
+                <div class="stat-card">
+                    <h3>1%</h3>
+                    <p>Growth increase per gram Nitrogen with NO₃⁻</p>
+                </div>
+            </div>
+            <p class="animate-on-scroll">
+            A separate study also found that leaf chlorophyll content increased upon treatment by ammonium or ammonium-nitrate, but not by nitrate alone. Furthermore, on an energetic level, ammonium uptake and assimilation is less costly to plants when compared to nitrate uptake and assimilation.
+            </p>
+
+            <p class="animate-on-scroll">All these facts point us toward an obvious solution. If we could somehow modify the total nitrogen (TN) content of the soil to comprise of more ammonium-N than nitrate-N, we could accomplish the following outcomes:</p>
+            <ul class="animate-on-scroll indented-bullets">
+                <li>Reduction in nitrate leaching, and subsequently, higher retention of nitrogen in agricultural soil</li>
+                <li>Increase in bioavailable nitrogen as ammonium for plant roots</li>
+            </ul>
+
+            <br></br>
+
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container center-text">
+            <h2 class="animate-on-scroll">The Nitrogen Cycle Family</h2>
+            <p class="animate-on-scroll">
+                To reduce nitrate and increase ammonium, we focused on two pathways: Denitrification (nitrate → N2 gas) and DNRA (nitrate → ammonium). Denitrification loses total nitrogen and emits N2O, a potent greenhouse gas. DNRA conserves nitrogen without harmful intermediates, making it ideal for our goals.
+            </p>
+
+            <h3 class="animate-on-scroll" style="margin-top: 3rem; text-align:center;">Operon Investigation</h3>
+            <div class="tabs-container animate-on-scroll">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="1">The "nir" Operon</button>
+                    <button class="tab-button" data-tab="2">The "nrf" Operon</button>
+                </div>
+                <div class="tab-content active" id="tab-1">
+                    <p>
+                        The nir operon encodes a periplasmic nitrite reductase. We studied its efficiency in converting nitrite to ammonium outside the cytoplasm.
+                    </p>
+                </div>
+                <div class="tab-content" id="tab-2">
+                    <p>
+                        The nrf operon encodes a cytoplasmic nitrate reductase. Two variations exist across species, which we empirically tested for nitrite reduction efficacy.
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="animate-on-scroll" style="margin-top: 3rem; text-align:center;">Comparison with Diagrams</h3>
+            <div class="comparison-slider animate-on-scroll" id="comparison-slider">
+                <img src="../images/img-2.jpg" alt="Denitrification process" class="image-before">
+                <img src="../images/img-3.jpg" alt="DNRA process" class="image-after">
+                <div class="slider-handle"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container center-text">
+            <h2 class="animate-on-scroll">Blessed be the Biofilms</h2>
+            <p class="animate-on-scroll">
+                We selected <em>Pseudomonas putida</em> KT2440 as our chassis. This PGPB forms biofilms around plant roots, offering stress resilience against drought, salinity, and fungal infections. These biofilms also stimulate plant growth and crop yield.
+            </p>
+
+            <div class="hotspot-container animate-on-scroll">
+                <img src="../images/img-4.jpg" alt="Pseudomonas putida biofilm on plant root">
+                <div class="hotspot" style="top: 40%; left: 60%;">
+                    <div class="hotspot-tooltip">Biofilms provide stress resilience against drought, salinity, and infections.</div>
+                </div>
+                <div class="hotspot" style="top: 70%; left: 30%;">
+                    <div class="hotspot-tooltip">As a PGPB, P. putida naturally stimulates plant growth and increases crop yield.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container center-text">
+            <h2 class="animate-on-scroll">Versatility of Application</h2>
+            <p class="animate-on-scroll">
+                Our main application is direct use in farmlands. Environmental deployment requires biosafety layers, including an extensive kill switch.
+            </p>
+            <p class="animate-on-scroll">
+                The system benefits plant root colonization, nitrogen retention, and overall soil health.
+            </p>
+        </div>
+    </section>
+
+    <button id="to-top-btn" title="Go to top">⬆</button>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    scrollObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => scrollObserver.observe(el));
+
+        function initAccordions() {
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                header.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                });
+            });
+        }
+
+        function initComparisonSlider() {
+            const slider = document.getElementById('comparison-slider');
+            if (!slider) return;
+            const handle = slider.querySelector('.slider-handle');
+            const imageAfter = slider.querySelector('.image-after');
+            let isDragging = false;
+            
+            const moveSlider = (x) => {
+                const rect = slider.getBoundingClientRect();
+                let newX = x - rect.left;
+                if (newX < 0) newX = 0;
+                if (newX > rect.width) newX = rect.width;
+                const percentage = (newX / rect.width) * 100;
+                handle.style.left = `${percentage}%`;
+                imageAfter.style.clipPath = `polygon(${percentage}% 0, 100% 0, 100% 100%, ${percentage}% 100%)`;
+            };
+
+            slider.addEventListener('mousedown', (e) => { isDragging = true; e.preventDefault(); });
+            document.addEventListener('mouseup', () => isDragging = false);
+            slider.addEventListener('mousemove', (e) => { if (isDragging) moveSlider(e.clientX); });
+            slider.addEventListener('touchstart', (e) => { isDragging = true; e.preventDefault(); });
+            document.addEventListener('touchend', () => isDragging = false);
+            slider.addEventListener('touchmove', (e) => { if (isDragging) moveSlider(e.touches[0].clientX); });
+        }
+        
+        function initTabs() {
+            const tabContainers = document.querySelectorAll('.tabs-container');
+            tabContainers.forEach(container => {
+                const buttons = container.querySelectorAll('.tab-button');
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        container.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                        container.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                        button.classList.add('active');
+                        container.querySelector(`#tab-${button.dataset.tab}`).classList.add('active');
+                    });
+                });
+            });
+        }
+        
+        function initGoToTopButton() {
+            const btn = document.getElementById('to-top-btn');
+            if (!btn) return;
+            window.addEventListener('scroll', () => {
+                btn.classList.toggle('visible', window.scrollY > 300);
+            });
+            btn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        initAccordions();
+        initComparisonSlider();
+        initTabs();
+        initGoToTopButton();
+    });
+
+    // Scroll progress bar
+    window.addEventListener("scroll", () => {
+        const docHeight = document.body.scrollHeight - window.innerHeight;
+        const scrolled = (window.scrollY / docHeight) * 100;
+        document.getElementById("progress-bar").style.width = scrolled + "%";
+    });
+
+        const ctx = document.getElementById('agriPollutionChart').getContext('2d');
+        const agriPollutionChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['US', 'Netherlands', 'Denmark'],
+                datasets: [{
+                    label: 'Contribution of Agricultural Activities (%)',
+                    data: [75, 60, 94],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 159, 64, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Agricultural Contribution to Non Point Water Pollution by Country',
+                        font: { size: 18 }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + '%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Percentage (%)'
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
