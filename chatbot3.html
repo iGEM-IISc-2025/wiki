@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ARGUS Popup Q&A Chatbot (Offline)</title>
+<style>
+  /* ====== Scoped styles (prefix: igbot) ====== */
+  :root{
+    --igbot-bg:#0f1222; --igbot-panel:#171a2f; --igbot-ink:#e7e9ff;
+    --igbot-muted:#9aa0c3; --igbot-accent:#7c9eff; --igbot-chip:#222641;
+  }
+  #igbot-root{all:initial;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  #igbot-root *, #igbot-root *::before, #igbot-root *::after{box-sizing:border-box}
+  #igbot-launcher{
+    position:fixed; right:16px; bottom:16px; z-index:999999;
+    width:56px; height:56px; border-radius:999px; border:1px solid #2b305a;
+    background: radial-gradient(120% 140% at 20% 30%, var(--igbot-accent), #11c8a3 60%, #3a3f77);
+    color:white; display:grid; place-items:center; cursor:pointer;
+    box-shadow:0 10px 24px rgba(0,0,0,.35);
+  }
+  #igbot-launcher:hover{filter:brightness(1.06)}
+  #igbot-badge{
+    position:absolute; top:-6px; right:-6px; width:18px; height:18px; border-radius:999px;
+    background:#17d4a1; color:#022; font-size:11px; display:grid; place-items:center; font-weight:700;
+    border:2px solid #0d1028;
+  }
+
+  #igbot-panel{
+    position:fixed; right:16px; bottom:80px; z-index:999999;
+    width: min(360px, calc(100vw - 24px)); height:min(520px, calc(100vh - 120px));
+    background:var(--igbot-panel); color:var(--igbot-ink); border:1px solid #20244a; border-radius:16px;
+    display:none; overflow:hidden;
+    box-shadow:0 14px 44px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.04) inset;
+  }
+  #igbot-panel.igbot-open{display:grid; grid-template-rows:auto 1fr auto}
+  #igbot-header{
+    display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid #20244a;
+    background:linear-gradient(180deg, #171a2f, #151937);
+  }
+  #igbot-logo{width:26px; height:26px; border-radius:8px; background:conic-gradient(from 210deg, var(--igbot-accent), #11c8a3, var(--igbot-accent) 75%); box-shadow:0 0 0 2px #12142a inset}
+  #igbot-title{display:flex; flex-direction:column}
+  #igbot-title b{font-size:13px}
+  #igbot-title small{color:var(--igbot-muted); font-size:11px}
+  #igbot-close{
+    margin-left:auto; background:#1c2142; border:1px solid #2b305a; color:#cfd4ff;
+    padding:6px 10px; border-radius:10px; cursor:pointer; font-size:12px;
+  }
+  #igbot-chat{overflow:auto; padding:12px; display:flex; flex-direction:column; gap:10px; background:linear-gradient(180deg,#0b0e1a,#0f1222 35%, #0e1020)}
+  .igbot-msg{display:grid; grid-template-columns:auto 1fr; gap:8px 10px; align-items:start}
+  .igbot-avatar{
+    width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:700; font-size:12px; color:#b9c2ff;
+    background:linear-gradient(135deg,#1e244a,#3a3f77)
+  }
+  .igbot-user .igbot-avatar{background:linear-gradient(135deg,#0f6,#15c59b); color:#062}
+  .igbot-bubble{
+    background:#171c36; border:1px solid #2b305a; padding:8px 10px; border-radius:12px; max-width:85%;
+    font-size:13px; line-height:1.35;
+  }
+  .igbot-user .igbot-bubble{background:#172b28; border-color:#224a44}
+  .igbot-choices{display:flex; gap:6px; flex-wrap:wrap; margin-top:6px}
+  .igbot-choices button{
+    background:#1c2142; border:1px solid #2b305a; color:#cfd4ff; padding:5px 8px; border-radius:10px;
+    font-size:11px; cursor:pointer;
+  }
+  #igbot-composer{
+    display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center;
+    padding:10px; border-top:1px solid #20244a; background:linear-gradient(180deg, #151937, #141733);
+  }
+  #igbot-input{
+    width:100%; padding:10px 12px; border-radius:10px; background:#12152c; color:var(--igbot-ink);
+    border:1px solid #242a56; outline:none; font-size:13px;
+  }
+  #igbot-input::placeholder{color:#7f87b5}
+  #igbot-send{
+    padding:10px 12px; border-radius:10px; border:1px solid #2b305a; background:var(--igbot-chip);
+    color:#e5e8ff; font-weight:600; cursor:pointer; font-size:13px;
+  }
+
+  @media (max-width:420px){
+    #igbot-panel{right:8px; left:8px; width:auto}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    #igbot-panel{transform-origin:bottom right}
+    #igbot-panel.igbot-open{animation:igbot-pop .14s ease-out}
+    @keyframes igbot-pop{from{transform:scale(.98); opacity:.0} to{transform:scale(1); opacity:1}}
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== Popup widget ====== -->
+<div id="igbot-root">
+  <button id="igbot-launcher" aria-label="Open ARGUS Wiki Helper">
+    <!-- Simple chat icon -->
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M8 10h8M8 14h5" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M4 5h16v9a5 5 0 0 1-5 5H9l-5 3V5Z" stroke="white" stroke-width="1.8" fill="none"/>
+    </svg>
+    <span id="igbot-badge">1</span>
+  </button>
+
+  <section id="igbot-panel" role="dialog" aria-modal="true" aria-label="ARGUS Wiki Helper">
+    <header id="igbot-header">
+      <div id="igbot-logo" aria-hidden="true"></div>
+      <div id="igbot-title">
+        <b>ARGUS Wiki Helper</b>
+        <small>Offline. Ask about project, parts, safety.</small>
+      </div>
+      <button id="igbot-close" type="button" aria-label="Close">Close</button>
+    </header>
+
+    <main id="igbot-chat" aria-live="polite" aria-label="Messages"></main>
+
+    <div id="igbot-composer">
+      <form id="igbot-form" autocomplete="off">
+        <input id="igbot-input" type="text" placeholder="Type your question…" aria-label="Message input" required />
+        <button id="igbot-send" type="submit" aria-label="Send">Send ⮕</button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ====== Tiny offline Q&A engine (token overlap + tiny edit distance) ====== */
+const IGBOT_QA = [
+  {
+    q:["required pages","mandatory pages","wiki pages list","nav items","site structure"],
+    a:"Required sections: Home, Project (Description, Engineering, Results), Parts, Safety, Team, Attributions, Sponsors, and Modeling/Dry Lab if applicable. Keep labels short and consistent.",
+    s:["How should the navbar look?","Footer rules"]
+  },
+  { q:["attributions","how to add attributions","credits page","acknowledgements"],
+    a:"Use an Attributions page listing contributions: team roles, advisors, labs, sponsors. If links are disallowed, keep plain text names and internal anchors only.",
+    s:["Sponsor logos?","Do we need dates?"]
+  },
+  { q:["navbar","nav structure","navigation bar","menu"],
+    a:"One navbar for all pages. 6–9 items max, keyboard-navigable, visible focus outlines. Use descriptive labels (no cryptic acronyms).",
+    s:["Footer rules","Accessibility tips"]
+  },
+  { q:["footer","footer rules","copyright"],
+    a:"Include project name, year, team, contact (obfuscate if needed), and internal links (Home, Team, Safety, Attributions). Maintain high contrast; 12–14px text.",
+    s:["What must be on Safety page?"]
+  },
+  { q:["citations","how do i cite","references","bibliography"],
+    a:"Without external links: cite author, title, venue, year, and identifiers (e.g., DOI as text). Use in-text numbers [1], [2] mapped to a References section.",
+    s:["Reference example","How to handle images?"]
+  },
+  { q:["image use","image credits","figures","alt text"],
+    a:"Host images locally, add alt text, and short captions with creator credit as text. Keep images optimized (≤150 KB when possible).",
+    s:["Alt text tips","Compressing images?"]
+  },
+  { q:["safety","biosafety","is it safe"],
+    a:"Summarize risk, containment level, training, waste disposal, approvals, and any kill-switch. Keep it factual; link to internal appendices only.",
+    s:["Approvals list?","Parts page?"]
+  },
+  { q:["parts page","biobricks","registry parts","component list"],
+    a:"Provide a table: Part Name, ID, Function, Status, and an internal section link. Add a short summary of your parts strategy.",
+    s:["Columns to include?","Results?"]
+  },
+  { q:["timeline","freeze date","deadlines"],
+    a:"Set a content-freeze ≥48h before final. Checklist: content lock, accessibility pass, internal link audit, mobile layout review.",
+    s:["What goes in checklist?"]
+  }
+];
+
+// Minimal helpers
+const igRoot = document.getElementById("igbot-root");
+const $ = id => document.getElementById(id);
+const chat = $("igbot-chat"), form = $("igbot-form"), input = $("igbot-input");
+const panel = $("igbot-panel"), launcher = $("igbot-launcher"), closeBtn = $("igbot-close");
+
+// Basic normalization/tokenization
+const norm = s => (s||"").toLowerCase().replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim();
+const toks = s => norm(s).split(" ").filter(Boolean);
+
+// Jaccard similarity + tiny Levenshtein (fast & compact)
+function jaccard(a,b){
+  const A = new Set(toks(a)), B = new Set(toks(b));
+  let inter=0; for (const t of A) if (B.has(t)) inter++;
+  const union = A.size + B.size - inter; return union ? inter/union : 0;
+}
+function lev(a,b){
+  a=norm(a); b=norm(b);
+  const m=a.length, n=b.length; if(!m) return n; if(!n) return m;
+  const dp=new Array(n+1); for(let j=0;j<=n;j++) dp[j]=j;
+  for(let i=1;i<=m;i++){
+    let prev=dp[0], tmp; dp[0]=i;
+    for(let j=1;j<=n;j++){ tmp=dp[j]; dp[j]=(a[i-1]===b[j-1])?prev:1+Math.min(prev, dp[j], dp[j-1]); prev=tmp; }
+  }
+  return dp[n];
+}
+function score(user,cand){ const s1=jaccard(user,cand); const s2=1/(1+lev(user,cand)); return 0.7*s1+0.3*s2; }
+
+function bestQA(q){
+  let best={idx:-1,sc:-1};
+  for(let i=0;i<IGBOT_QA.length;i++){
+    for(const k of IGBOT_QA[i].q){
+      const sc = score(q,k);
+      if(sc>best.sc) best={idx:i,sc};
+    }
+  }
+  return (best.idx>=0 && best.sc>0.22) ? IGBOT_QA[best.idx] : null;
+}
+
+// DOM builders
+function el(tag, attrs={}, kids=[]){
+  const e=document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs)){
+    if(k==="class") e.className=v;
+    else if(k.startsWith("on") && typeof v==="function") e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k,v);
+  }
+  for(const c of [].concat(kids)){
+    if(c instanceof Node) e.appendChild(c); else e.appendChild(document.createTextNode(String(c)));
+  }
+  return e;
+}
+function addMsg({who="bot", html="", choices=[]}){
+  const wrap=el("div",{class:"igbot-msg "+(who==="user"?"igbot-user":"")});
+  const av=el("div",{class:"igbot-avatar"},[who==="user"?"U":"A"]);
+  const bub=el("div",{class:"igbot-bubble"});
+  bub.innerHTML = html;
+  wrap.append(av,bub);
+  if(who==="bot" && choices.length){
+    const bar=el("div",{class:"igbot-choices"});
+    for(const c of choices){ bar.append(el("button",{type:"button", onclick:()=>ask(c)},[c])); }
+    bub.append(bar);
+  }
+  chat.append(wrap);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function ask(q){
+  addMsg({who:"user", html:q});
+  setTimeout(()=>{
+    const m = bestQA(q);
+    if(m){ addMsg({who:"bot", html:m.a, choices:m.s||[]}); }
+    else{
+      addMsg({who:"bot", html:"I can help with: required pages, navbar/footer, citations, images, parts, safety, and timelines. Try “required pages”.",
+              choices:["required pages","navbar","citations"]});
+    }
+  }, 250);
+}
+
+// Boot
+addMsg({who:"bot", html:"Hi! I’m your offline wiki helper. Ask about **required pages**, **navbar/footer**, **citations**, **images**, **parts**, **safety**, **timeline**.",
+        choices:["required pages","navbar","safety"]});
+
+// Open/close
+function openPanel(){ panel.classList.add("igbot-open"); launcher.style.display="none"; input.focus(); }
+function closePanel(){ panel.classList.remove("igbot-open"); launcher.style.display="grid"; }
+launcher.addEventListener("click", openPanel);
+closeBtn.addEventListener("click", closePanel);
+
+// Form submit
+form.addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const q=input.value.trim(); if(!q) return;
+  ask(q); input.value=""; input.focus();
+});
+
+// ESC to close
+panel.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closePanel(); });
+</script>
+</body>
+</html>
