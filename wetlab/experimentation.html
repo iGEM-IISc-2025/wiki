@@ -142,6 +142,24 @@
     #dbtl-component .phase-tabs { flex-direction: row; gap:0.5rem; margin-top:0; }
     #dbtl-component .phase-tab { flex:1; text-align:center; }
 }
+
+#dbtl-component .phase-subtitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    color: #1f1f1f;
+}
+
+#dbtl-component .phase-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    color: #1f1f1f;
+}
+
+#dbtl-component .callout-box { background-color: #eefff6; border-left: 5px solid var(--call-color); border-radius: 0.5rem; padding: 1.5rem; margin: 0rem auto; max-width: 900px; }
+#dbtl-component .callout-box p { margin: 0; color: #2fbf79; }
+
 </style>
 </head>
 <body>
@@ -238,7 +256,7 @@
       </ul>
     </div>
   </nav>
-  
+
 <div id="dbtl-component">
 
 <div class="cycle-card">
@@ -254,10 +272,43 @@
         </div>
     </div>
     <div class="cycle-right">
-        <div class="phase-content active" id="design1">Design content for Cycle 1.</div>
-        <div class="phase-content" id="build1">Build content for Cycle 1.</div>
-        <div class="phase-content" id="test1">Test content for Cycle 1.</div>
-        <div class="phase-content" id="learn1">Learn content for Cycle 1.</div>
+        <div class="phase-content active" id="design1">
+            <div class="phase-title">Design</div>
+            <div class="phase-subtitle">Establishment of metabolic pathway(s) and genes</div>
+            <p>Via an extensive literature review, we identified the Dissimilatory Nitrate Reduction to Ammonium (DNRA) pathway and the denitrification pathways, along with the operons that control them.</p>
+
+            <div class="phase-subtitle">Identification of bacteria</div>
+            <p>We identified <em>Pseudomonas putida Y-9</em>, a bacterial strain that had been isolated from long-term paddy fields in China. At the time, we believed this to be the only bacterial species in the world that could perform DNRA under aerobic conditions. P.putida Y-9 also performed denitrification under aerobic conditions.</p>
+
+            <div class="phase-subtitle">Denitrification knockout</div>
+            <p>The first part of the plan was to delete the nirK/nirS genes responsible for the metabolic conversion of nitrate to nitric oxide. Stopping the expression of this operon would ensure that denitrification does not proceed, and DNRA would hypothetically automatically be preferred by the bacterium.</p>
+
+            <div class="phase-subtitle">DNRA upregulation</div>
+            <p>Simultaneously, we also planned to upregulate the expression of DNRA. This would ensure that nitrate build-up did not increase up to and beyond its toxicity limit for the organism, while ensuring that ammonium was continuously churned out by the cell.</p>
+        </div>
+        <div class="phase-content" id="build1">
+            <div class="phase-title">Build</div>
+            <p>Our first step was to reach out to the researchers who had discovered this novel organism. However, we could not get a response, no matter how desperately we tried to contact them. The genomic data of the organism were also not available online because it had not been fully sequenced yet.</p>
+        </div>
+        <div class="phase-content" id="test1">
+            <div class="phase-title">Test</div>
+            <p>Due to our lack of resources, the testing phase in this cycle was geared toward testing the validity and feasibility of our idea.</p>
+            <br>
+            <div class="callout-box"><p>We therefore spoke to Prof Ramesh Chand, chairperson of NITI Aayog, and Shyam Sundar Agarwal, Director of the Ministry of Chemicals and Fertilizers. Both are major stakeholders in the field of bioremediation and were interested in our problem statement and approach to the solution. They reinforced our hypothesis that nitrate leaching was a real, imminent problem and that researchers across the board were looking for viable solutions.</p></div>
+        </div>
+        <div class="phase-content" id="learn1">
+            <div class="phase-title">Learn</div>
+            <div class="phase-subtitle">Characterization of gene dynamics:</div>
+            <p>DNRA being extremely understudied meant that we did not know which promoter gene was controlling its activity, and therefore did not know how it would respond to various environmental conditions. We learnt how to operate the NIH Genbank to search for other bacteria, at least the genes that were mentioned by name in the papers by the Chinese researchers. We then scoured the ATCC (American Type Culture Collection) and MTCC to locate what new bacteria were available to us.</p>
+            <br>
+            <div class="callout-box"><p>While this was eventually a dead end, the unwieldy nature of the website inspired us to build a better tool with all the information within Genbank, but with a much better and user-friendly graphical user interface. We hope the tool will prove useful to biologists who may be as fed up with Genbank as we were.</p></div>
+            <div class="phase-subtitle">Defining a knockout mechanism:</div>
+            <p>Gene deletion has quite a few standard procedures, like homologous recombination and conditional knockout. Our [professors] advised us to identify the method that would best work for our skill level and laboratory equipment. We quickly learned that knockout might not be a feasible option for us, because it was unstable and might not work as expected when dealing with an entire metabolic pathway. We had to reassess.</p>
+            <br>
+            <div class="callout-box"><div class = "phase-subtitle">Building upon Team Cattlysts:</div>
+            <p>Team Cattlysts from Wageningen University had already demonstrated the first step of the pathway, nitrate reduction to nitrite, in P.putida KT2440 during their own iGEM cycle. This was huge because it meant that we could work on perfecting only the nitrite reduction to ammonium pathway and could use their results to establish our proof of concept.</p>
+            </div>
+        </div>
     </div>
 
     <div class="plasmid">
@@ -280,24 +331,71 @@
     </div>
 </div>
 
+
 <div class="cycle-card">
     <div class="cycle-left">
         <div>
             <h2>Cycle 2</h2>
             <div class="phase-tabs">
-                <div class="phase-tab active" data-tab="design1">Design</div>
-                <div class="phase-tab" data-tab="build1">Build</div>
-                <div class="phase-tab" data-tab="test1">Test</div>
-                <div class="phase-tab" data-tab="learn1">Learn</div>
+                <div class="phase-tab active" data-tab="design2">Design</div>
+                <div class="phase-tab" data-tab="build2">Build</div>
+                <div class="phase-tab" data-tab="test2">Test</div>
+                <div class="phase-tab" data-tab="learn2">Learn</div>
             </div>
         </div>
     </div>
-    <div class="cycle-right">
-        <div class="phase-content active" id="design1">Design content for Cycle 1.</div>
-        <div class="phase-content" id="build1">Build content for Cycle 1.</div>
-        <div class="phase-content" id="test1">Test content for Cycle 1.</div>
-        <div class="phase-content" id="learn1">Learn content for Cycle 1.</div>
-    </div>
+        <div class="cycle-right">
+            <div class="phase-content active" id="design2">
+                <div class="phase-title">Design</div>
+                <div class="phase-subtitle">Isolation of new aerobic DNRA bacteria</div>
+                <p>After further digging, we stumbled upon an extremely recent paper that had isolated three more bacterial species that performed aerobic DNRA. <em>Bacillus salipaludis PS3-36</em>, <em>Neobacillus salipaludis PS2-9</em>, and PS3-12 had been isolated from another set of paddy fields, this time from Iksan city, Korea. These bacteria also performed DNRA under aerobic conditions, and were the first Bacillus species to carry out that pathway.</p>
+
+                <div class="phase-subtitle">Next steps and challenges</div>
+                <p>Our next steps remained the same, wherein we would downregulate denitrification within the bacterium and upregulate DNRA. This meant our issues were also identical, with the largest problem being that downregulation was still a bit of a black box in terms of how we would actually carry it out.</p>
+            </div>
+
+            <div class="phase-content" id="build2">
+                <div class="phase-title">Build</div>
+                <p>Since the genomes of these bacterial species were publicly available data, we rejoiced. After an appropriate amount of rejoicing, we got down to business and began to look into how we could obtain them.</p>
+                <br>
+                <p>We first tried and failed to get in touch with the researchers who had published the paper. Next, we scoured MTCC and ATCC to no avail. One of our secondary PIs, Professor Umesh Varshney, advised us to locate local genetic banks or microbial culture collections to see if they housed the strains.</p>
+                <div class="callout-box">
+                    <p>Thus, we spoke to the curator at the MACS Collection of Microorganisms (MCM) at the Agharkar Research Institute in Maharashtra, India. They could, unfortunately, not help us because they did not house the strains either. They did, however, contain <em>Bacillus subtilis</em>, a common nitrifying bacterium. Prof Varshney expressed that it would be a good idea if we could work with <em>Bacillus subtilis</em> since his laboratory had previously worked with them, and the established protocols would prove extremely helpful to us during experimentation.</p>
+                </div>
+            </div>
+
+            <div class="phase-content" id="test2">
+                <div class="phase-title">Test</div>
+                <p>Since we could not test whether <em>Bacillus subtilis</em> contained DNRA genes in the wet lab just yet, we turned to publicly available data. Our dry lab team assessed GEM models, which are networks of all the metabolites, enzymes, and corresponding genes involved within a bacterial species. Since <em>Bacillus subtilis</em> had a pre-established GEM model, we ran experiments to check whether it could theoretically perform DNRA, and whether it was a good idea at all to even try and procure the strain. We did not obtain conclusive evidence through these trials.</p>
+                <br>
+                <p>Furthermore, we extensively used the BLAST tool from Genbank to compare the genes that carried out this aerobic DNRA pathway in the Bacillus and Neobacillus species with pre-established anaerobic DNRA carried out by other microbes. To our utter surprise, the proteins produced were identical.</p>
+
+            </div>
+
+            <div class="phase-content" id="learn2">
+                <div class="phase-title">Learn</div>
+                <div class="phase-subtitle">Breakthroughs</div>
+                <br>
+                <p><strong>The rise and fall of Bacillus:</strong></p>
+                <p>While we were initially extremely excited about these novel bacteria and the fact that <em>Bacillus subtilis</em> was a regular in our professor’s laboratory, we quickly stumbled upon a major trade-off. Bacillus species are notorious for forming spores. Considering that our eventual plan was environmental deployment, this would present a major biosafety challenge. While dismantling the spore-forming properties of the bacteria via gene editing would be possible, it would create another layer of uncertainty that we were ill-equipped to deal with.</p>
+                <br>
+                <p><strong>The Other Genes:</strong></p>
+                <p>While we had mostly been focused on <em>nirBD</em> as the genes responsible for nitrite reduction to ammonium, the <em>nrf</em> operon emerged during literature review. This operon existed as two variations across bacterial species: <em>nrfABCDEFG</em> and <em>nrfHAIJ</em>. For greater detail, please refer to the Design page. Moving forward, we have considered all three genes in our experimentation and further DBTL cycles.</p>
+                <br>
+                <p><strong>The breakthrough, and our solution to the aerobicity problem:</strong></p>
+                <p>Our biggest hurdle so far has been the difficulty in obtaining these novel and exotic strains, something we describe in detail in our blog post. Researchers were unresponsive, and it seemed that the elusive property of these bacteria to perform DNRA aerobically would elude us forever. However, the tests we ran by BLASTing proteins and nucleotide sequences together gave us the connecting link needed to identify the research gap in this domain.</p>
+                <br><br>
+                <div class="callout-box">
+                    <p>1. We could decouple the operon from its promoter gene and attach it to a constitutive promoter of our choice instead. This would allow non-DNRA performing organisms, or organisms that only perform DNRA in anaerobic environments, to perform DNRA aerobically. We could create our own novel bacterium and tweak it to work under our own conditions. These revelations are largely credited to former iGEM participant and our senior, Aditya Kamath Ammembal, who helped us connect these dots.</p>
+                </div>
+                <div class="callout-box">
+                    <p>2. We could disregard denitrification entirely. If we were to engineer non-DNRA bacteria and introduce this metabolic pathway into an ecosystem that previously did not contain it, along with the assurance that the proteins were stable enough to carry out their function, we would not need to suppress denitrification to reduce nitrogen loss from the soil.</p>
+                </div>
+                <div class="callout-box">
+                    <p>3. In this period, we spoke to Dr. Priyanka Jamwal, researcher at ATREE (Ashoka Trust For Research In Ecology And The Environment). She agreed with the severity of the problem and directed us to groundwater pollution, an avenue we hadn’t considered yet. Her input on soak pits, source pollution, and rural groundwater dependence provided great context within which we grounded our project moving forward.</p>
+                </div>
+            </div>
+        </div>
 
     <div class="plasmid">
         <svg viewBox="0 0 100 100">
@@ -324,18 +422,56 @@
         <div>
             <h2>Cycle 3</h2>
             <div class="phase-tabs">
-                <div class="phase-tab active" data-tab="design1">Design</div>
-                <div class="phase-tab" data-tab="build1">Build</div>
-                <div class="phase-tab" data-tab="test1">Test</div>
-                <div class="phase-tab" data-tab="learn1">Learn</div>
+                <div class="phase-tab active" data-tab="design3">Design</div>
+                <div class="phase-tab" data-tab="build3">Build</div>
+                <div class="phase-tab" data-tab="test3">Test</div>
+                <div class="phase-tab" data-tab="learn3">Learn</div>
             </div>
         </div>
     </div>
     <div class="cycle-right">
-        <div class="phase-content active" id="design1">Design content for Cycle 1.</div>
-        <div class="phase-content" id="build1">Build content for Cycle 1.</div>
-        <div class="phase-content" id="test1">Test content for Cycle 1.</div>
-        <div class="phase-content" id="learn1">Learn content for Cycle 1.</div>
+        <div class="phase-content active" id="design3">
+            <div class="phase-title">Design</div>
+            <p>We decided to introduce the genes into a non-DNRA-performing bacterium via a plasmid. With our breakthrough, we could now bypass the aerobicity problem and also use a much more easily accessible bacterial species. This bacterium of choice turned out to be <em>Pseudomonas putida KT2440</em>, a microbial workhorse and robust soil bacterium.</p>
+
+            <div class="phase-subtitle">Choice of chassis</div>
+            <p>One of the reasons we picked this chassis was because a previous team at our institute had also used <em>P.putida KT2440</em> for their project, and had received it from Prof Prashant Phale at the Indian Institute of Technology, Bombay. We reached out to him, and his lab graciously sent us the agar stab containing the bacterium.</p>
+
+            <div class="phase-subtitle">Plasmid selection</div>
+            <p>We decided to use plasmids from the SEVA repository because they were free and we were working with an extremely tight budget. Furthermore, the SEVA plasmids were well-characterized and easy to work with due to easy online access and sourcing. We also sourced <em>P.putida EM42</em> from SEVA, which is a strain of KT2440 with over 200 inessential genes knocked out. This strain might therefore be more likely to take up external genes due to the lower level of intrinsic metabolic burden.</p>
+        </div>
+
+        <div class="phase-content" id="build3">
+            <div class="phase-title">Build</div>
+            <p>We digitally modified our operons and added restriction enzymes to the ends for blunt-end restriction enzyme digestion. We were to receive the operons in clonal vectors from TWIST Bioscience, then digest them and ligate them into pSEVA expression vectors. We built digital maps of all our plasmids. All of the genes and vectors have been uploaded as BioBricks.</p>
+
+            <div class="callout-box">
+                <strong>Note:</strong> Add plasmids from Aarav's laptop here.
+            </div>
+        </div>
+
+        <div class="phase-content" id="test3">
+            <div class="phase-title">Test</div>
+            <p>When we cross-checked the amino acid sequences of our newly-built plasmids against the original protein sequences on Genbank, we found perfect matches. We were assured that our genes should be perfectly expressed. This enabled us to order the genes from TWIST Bioscience and prepare for the cycles ahead.</p>
+        </div>
+
+        <div class="phase-content" id="learn3">
+            <div class="phase-title">Learn</div>
+            <p>While this was a technical and highly specific issue, our operons were simply too large for TWIST Bioscience to synthesize in their entirety in the same plasmid. Therefore, we needed to split each of our operons so that they could fit within the synthesizable 5kbp limit.</p>
+
+            <div class="phase-subtitle">Proof-of-concept in E.coli</div>
+            <p>Professors in the Microbiology and Cell Biology Department at our institute didn’t really work with <em>P.putida KT2440</em>. Therefore, we were advised to demonstrate our proof-of-concept in <em>Escherichia coli DH5-Alpha</em>, which would be easier to work with in our context.</p>
+            <div class="callout-box">
+                <p>Ramesh Vaidyanathan, a former student of one of our advisors, Prof Mahavir Sing, and current Business Development Manager at TWIST Biosciences, graciously provided input into how we could separately optimize our operons for expression in both bacteria using the Codon Adaptation Index theory.</p>
+            </div>
+            <div class="phase-subtitle">Biofilm considerations & biosafety</div>
+            <p>We soon learned that <em>P.putida KT2440</em> forms biofilms. Although biofilms are generally notorious for causing disease, <em>P.putida KT2440</em> is actually a class of organisms that forms Plant Growth Promoting Biofilms (PGPB). These biofilms confer a multitude of benefits to the plant roots, as detailed in the project overview.</p>
+            <div class="callout-box"><p>While deciding upon pSEVA plasmids, we stumbled upon multiple vectors with inducible promoter systems. At the All-India iGEM Meet, iGEM ambassadors conducted an enlightening workshop on biosafety, which planted the seed in our search for implementing some type of mechanism to ensure biosafety for our engineered organism. The biofilm-forming properties of the organism meant that the bacteria would be adhering to the plant roots, which inspired us to link the expression of the operon to an inducible promoter with a plant root exudate as the inducer.</p></div>
+            <div class="callout-box">
+            <div class="phase-subtitle">SEVA plasmid challenges</div>
+            <p>We tried to import the vector pSEVA 248 (kanamycin-resistant) multiple times from the SEVA repository, but received an unviable bacterium (E.coli) every time. After three attempts, we reached back out to Prof Phale, who had a tie-up with SEVA. His lab had previously worked with them, and they graciously received the bacterium to send to us. Although they too failed in culturing the 248 bacterium, they did send us other SEVA plasmids with the same Origin of Replication and promoter system (XylS/Pm): <em>pSEVA 238, 258, 648</em> (kanamycin-resistant), and the constitutive promoter <em>pSEVA 2313</em> (gentamicin-resistant).</p>
+            </div>
+        </div>
     </div>
 
     <div class="plasmid">
@@ -371,10 +507,38 @@
         </div>
     </div>
     <div class="cycle-right">
-        <div class="phase-content active" id="design1">Design content for Cycle 1.</div>
-        <div class="phase-content" id="build1">Build content for Cycle 1.</div>
-        <div class="phase-content" id="test1">Test content for Cycle 1.</div>
-        <div class="phase-content" id="learn1">Learn content for Cycle 1.</div>
+        <div class="phase-content active" id="design4">
+            <div class="phase-title">Design</div>
+            <p>We now plan to use CAI to design the genes for optimum expression in both <em>E.coli</em> and <em>P.putida</em> separately. The operon would be working under an inducible promoter, and our inducer of choice was 2-methylbenzoate, a plant root exudate that is released in abundance by crops like maize and wheat.</p>
+
+            <div class="phase-subtitle">Water bioremediation & biofilm framework</div>
+            <p>Simultaneously, we ideated a comprehensive system where our engineered microbe could be used in water bioremediation, wherein the final product would be ammonium-rich water that could be used in lieu of fertilizers, thus increasing fertilizer efficiency even further. Furthermore, we built a framework for the possible ways in which we could actually inoculate plant roots with the engineered bacterium for maximum biofilm formation, adhesion, and DNRA efficiency in terms of proximity to both 2-methylbenzoate and nitrate.</p>
+        </div>
+
+        <div class="phase-content" id="build4">
+            <div class="phase-title">Build</div>
+            <p>We built the operons, courtesy of our sponsor Snapgene, and digitally inserted them into pSEVA vectors 238, 258, 648, and 2313. Having cross-checked amino acid sequences, we placed the order and received our operons from TWIST Bioscience.</p>
+            <br>
+            <p>TWIST Bioscience was not able to synthesize one-half of our operons due to manufacturing issues, meaning we now had two operons to work with instead of three. Therefore, we compiled protocols to isolate, digest, and ligate the operons with the pSEVA vectors before transforming <em>E.coli DH5-Alpha</em>.</p>
+            <br>
+            <p>We also built nitrite and ammonium testing assays for confirming DNRA in the transformed bacterium, and biofilm assays for confirming basal level and post-transformation biofilm-forming capabilities of <em>P.putida</em>.</p>
+        </div>
+
+        <div class="phase-content" id="test4">
+            <div class="phase-title">Test</div>
+            <p>We isolated the plasmids from the shipping bacteria and digested them with our designed enzymes, then checked the DNA concentrations via a nanodrop machine. This process contained multiple DBTL cycles within itself, but we managed to obtain working concentrations for all DNA fragments multiple times. Find the details of how we troubleshooted issues during this phase in the Experimentation page.</p>
+            <br>
+            <p>We performed DNA ligation to connect the expression vector to the operons and transformed <em>E.coli</em>. Unfortunately, we did not see growth after our first transformation on Km agar plates. However, our dry lab modelled exceptional results, as detailed in the dry lab engineering webpage.</p>
+            <br>
+            <p>Our base-level tests for DNRA in <em>P.putida</em> started with optimizing the growth medium for <em>P.putida KT2440</em> by testing different broth compositions from multiple sources. We then picked cultures with the highest growth and checked for base-levels of DNRA in <em>P.putida</em>, a test never before carried out with this specific bacterium, even though it does contain the nirBD genes that should cause production of nitrite reductase.</p>
+        </div>
+
+        <div class="phase-content" id="learn4">
+            <div class="phase-title">Learn</div>
+            <p>Plasmid kits can contaminate DNA samples with RNA and salts. To bypass this problem, we conducted manual plasmid isolations and compared the results as seen on the experimentation page.</p>
+            <br>
+            <p>Minimal growth media seemed to be the best for <em>P.putida KT2440</em> growth, which was an interesting revelation considering literature consistently shows that a high C/N ratio is favored for DNRA. We discuss the implications on our experimentation page.</p>
+        </div>
     </div>
 
     <div class="plasmid">
