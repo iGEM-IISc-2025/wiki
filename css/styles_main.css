@@ -1017,3 +1017,12 @@ body {
     font-weight: 600;
     color: #4338ca;
 }
+
+    .lake-image {
+    display: block;       /* centers the image */
+    margin: 2rem auto;    /* vertical spacing + horizontal centering */
+    max-width: 60%;       /* reduces the image size */
+    height: auto;         /* maintain aspect ratio */
+    border-radius: 0.5rem; /* optional: rounded corners */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* optional: shadow */
+}

@@ -30,12 +30,13 @@
   <script>
     const CHAR_DELAY = 30;    // time per character
     const LINE_DELAY = 1000;  // time between lines
-    const END_PAUSE  = 1000;  // time after last line before fade
-    const FADE_TIME  = 1000;  // time fade duration (matches CSS transition)
+    const END_PAUSE  = 500;  // time after last line before fade
+    const FADE_TIME  = 500;  // time fade duration (matches CSS transition)
 
     const lines = [
       "Initializing groundwater analysis...",
-      "Deploying counter-strategy: Engineered Pseudomonas putida..."
+      "Deploying counter-strategy: Engineered Pseudomonas putida",
+      "Colonising roots..."
     ];
 
     const consoleEl = document.getElementById("console");
