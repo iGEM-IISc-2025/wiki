@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Threaded Ideation Timeline | ARGUS-2440</title>
+
+<style>
+:root{
+  --primary:#a42fbc;
+  --bg:#f8fafc;
+  --border:#e5e7eb;
+  --idea1:#3b82f6;
+  --idea2:#f59e0b;
+  --idea3:#37e1ab;
+  --decision:#ef4444;
+  --thread-length:76px; /* vertical distance between center line and card */
+  --card-gap:16px;       /* gap between thread end and card */
+  --track-height:320px;
+  --card-width:240px;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial;
+  background:var(--bg);
+  color:#0f172a;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+header{
+  text-align:center;
+  padding:40px 16px 12px;
+}
+header h1{color:var(--primary);margin:0;font-size:28px}
+header p{margin-top:8px;color:#6b7280}
+
+/* container centers timeline and prevents horizontal scroll */
+.timeline-wrapper{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:12px 0 48px;
+  overflow: hidden;
+  min-height: 600px;
+}
+
+/* track width fits viewport but limited */
+.timeline-track{
+  position:relative;
+  width:90%;
+  max-width:980px;
+  height:var(--track-height);
+  margin:0 auto;
+}
+
+/* gray base line */
+.timeline-line{
+  position:absolute;
+  top:50%;
+  height:8px;
+  background:var(--border);
+  transform:translateY(-50%);
+  border-radius:6px;
+  z-index:2;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* purple progress bar (starts at first event) */
+.progress-bar-timeline{
+  position:absolute;
+  top:50%;
+  height:10px;
+  background:linear-gradient(90deg,#7c3aed,#5b21b6);
+  transform:translateY(-50%);
+  border-radius:6px;
+  z-index:3;
+  transition: width 180ms linear;
+}
+
+/* pointer */
+#time-pointer{
+  position:absolute;
+  top:50%;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:#6a059c;
+  transform:translate(-50%,-50%);
+  z-index:6;
+  cursor:grab;
+  box-shadow:0 6px 18px rgba(0,0,0,0.18);
+  display:flex;align-items:center;justify-content:center;color:white;font-size:11px;
+  outline: none;
+  border: 3px solid #fff;
+}
+#time-pointer:active{cursor:grabbing}
+#time-pointer:focus{box-shadow:0 10px 30px rgba(99,102,241,0.18), 0 0 0 4px rgba(124,58,237,0.12)}
+
+/* event anchors (invisible) */
+.timeline-event{
+  position:absolute; /* left will be set by JS */
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:1px; height:1px;
+  pointer-events:none;
+}
+
+/* thread (vertical rod between line and card) */
+.thread{
+  position:absolute;
+  left:0;
+  width:2px;
+  background:var(--border);
+  transform:translateX(-50%);
+  z-index:1;
+  opacity:0;
+  transition: opacity .35s, background .25s;
+  border-radius:2px;
+}
+
+/* small circular connector at end of thread */
+.thread::after{
+  content:"";
+  display:block;
+  width:10px;height:10px;border-radius:50%;
+  background:white;border:3px solid #fff; /* white cap */
+  box-shadow:0 4px 10px rgba(0,0,0,0.06);
+  position:relative;
+  top:calc(100% - 5px);
+  left:-4px;
+}
+
+/* timeline event cards */
+.event-card{
+  position:absolute;
+  width:var(--card-width);
+  border-radius:12px;
+  background:linear-gradient(180deg,#ffffff,#fbfdff);
+  box-shadow:0 12px 30px rgba(2,6,23,0.06);
+  padding:12px 14px;
+  z-index:4;
+  transition:filter .28s, opacity .35s, transform .3s;
+  transform-origin:center top;
+  cursor:pointer;
+  border-top:4px solid var(--idea3);
+  color:#0f172a;
+}
+
+/* card header layout */
+.event-card .card-head{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.event-card .icon {
+  width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;
+  font-weight:700;font-size:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+.event-card h3{margin:8px 0 6px;font-size:15px}
+.event-card p{margin:0;color:#475569;font-size:13px}
+.event-card .month{font-weight:700;color:#6b7280;margin-bottom:8px;font-size:12px}
+.event-card .badge { font-size:11px; padding:4px 8px; border-radius:999px; color:white; font-weight:700; }
+
+/* color accents */
+#idea-1-card{ border-top-color: var(--idea1); }
+#idea-1-card .icon{ background: linear-gradient(180deg,var(--idea1),#1161f6) }
+#idea-1-card .badge{ background: rgba(59,130,246,0.12); color:var(--idea1) }
+
+#idea-2-card{ border-top-color: var(--idea2); }
+#idea-2-card .icon{ background: linear-gradient(180deg,var(--idea2),#d97706) }
+#idea-2-card .badge{ background: rgba(245,158,11,0.12); color:var(--idea2) }
+
+#idea-3-card{ border-top-color: var(--idea3); }
+#idea-3-card .icon{ background: linear-gradient(180deg,var(--idea3),#1fd9a8) }
+#idea-3-card .badge{ background: rgba(55,225,171,0.12); color:var(--idea3) }
+
+#decision-card{ border-top-color: var(--decision); background:linear-gradient(180deg,#fff6f7,#fff1f2) }
+#decision-card .icon{ background: linear-gradient(180deg,#f97316,#ef4444) }
+#decision-card .badge{ background: rgba(239,68,68,0.12); color:var(--decision) }
+
+/* dropped (grayed) */
+.dropped{filter:grayscale(.7) opacity(.45)}
+
+/* hover lift */
+.event-card:hover {
+  transform: translateX(-50%) translateY(-6px) scale(1.02);
+  box-shadow:0 18px 44px rgba(2,6,23,0.12);
+}
+
+/* small responsive shrink */
+@media (max-width:920px){
+  .timeline-track{width:94%}
+  :root { --card-width: 210px; --thread-length:64px; }
+  .event-card{ width: var(--card-width); }
+}
+@media (max-width:700px){
+  .timeline-track{height:420px}
+  :root { --card-width: 200px; --thread-length:72px; }
+}
+
+/* big idea section cards at bottom */
+.idea-section {
+  max-width: 880px;
+  margin: 28px auto;
+  padding: 22px;
+  background: linear-gradient(180deg,#fff,#fbfdff);
+  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+  border-radius: 12px;
+  scroll-margin-top: 80px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap:12px;
+}
+.idea-section h2 {
+  color: var(--primary);
+  margin:0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:20px;
+}
+.idea-section .meta {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  color:#6b7280;
+  font-weight:600;
+  font-size:13px;
+}
+.idea-section p { color:#475569; margin:0 0 6px 0; line-height:1.6; }
+
+/* subtle fade-in on scroll helper (used earlier) */
+.animate-on-scroll { opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
+.animate-on-scroll.is-visible { opacity:1; transform:none; }
+
+/* Problem Sections */
+.problem-section {
+  position: relative;
+  width: 100%;
+  margin: 3rem auto;
+  max-width: 880px;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 16px;
+}
+
+
+.problem-content {
+  background: none;
+  width: 45%;
+  padding: 1rem 1.5rem;
+}
+
+.problem-title {
+  font-size: 1.7rem; /* slightly bigger */
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+
+.problem-text {
+  font-size: 1rem;
+  color: #334155;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Connector circle */
+.timeline-circle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background: var(--primary);
+  border-radius: 50%;
+  top: 10px;
+  box-shadow: 0 0 0 4px white;
+}
+
+/* Notes */
+.note-yellow {
+  background: var(--note-yellow);
+  border: 1px solid var(--note-yellow-border);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.note-red {
+  background: var(--note-red);
+  border: 1px solid var(--note-red-border);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .problem-content { width: 100%; }
+}
+
+    /* Section Title */
+    .section-title {
+    text-align: center;
+    font-size: 2.2rem; /* slightly bigger */
+    font-weight: 700;
+    margin-bottom: 2rem;
+    }
+
+    /* Note Style (Blue) */
+.callout-note { background-color: #eff6ff; border-color: #3b82f6; }
+.callout-note .callout-header { color: #1e40af; }
+.callout-note p { color: #1c3d8e; }
+
+/* Caution Style (Yellow) */
+.callout-caution { background-color: #fefce8; border-color: #f59e0b; }
+.callout-caution .callout-header { color: #854d0e; }
+.callout-caution p { color: #85560e; }
+
+/* Trivia Style (Green) */
+.callout-trivia { background-color: #f0fdf4; border-color: #22c55e; }
+.callout-trivia .callout-header { color: #15803d; }
+.callout-trivia p { color: #166534; }
+
+/* Main container for all the content below the timeline */
+.main-content-container {
+    max-width: 880px;
+    width: 100%;
+    margin: 28px auto;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Base style for content sections */
+.content-section {
+    background: linear-gradient(180deg,#fff,#fbfdff);
+    box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+/* 1. Improved problem identification text */
+.content-section h2 {
+    font-size: 1.7rem; /* Increased size */
+    font-weight: 700;
+    color: var(--primary); /* Improved color */
+    margin: 0 0 1rem 0;
+}
+.content-section p {
+    color: #334155;
+    margin: 0 0 1rem 0;
+    line-height: 1.6;
+}
+
+/* 3. New general callout box style */
+.callout {
+    padding: 1rem;
+    border-radius: 8px;
+    border-left-width: 4px;
+    margin-top: 1rem;
+}
+.callout strong {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+/* Note Style (Blue) */
+.callout.note {
+    background-color: #eff6ff;
+    border-color: #3b82f6;
+    color: #1c3d8e;
+}
+.callout.note strong { color: #1e40af; }
+
+/* Caution Style (Red) */
+.callout.caution {
+    background-color: #fef2f2;
+    border-color: #ef4444;
+    color: #991b1b;
+}
+.callout.caution strong { color: #b91c1c; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Ideation Timeline</h1>
+  <p>Drag, click or use keyboard ← → to move the pointer through the events. Click cards to scroll to details.</p>
+</header>
+
+<div class="timeline-wrapper">
+  <div class="timeline-track" id="timeline-track">
+    <!-- invisible anchors -->
+    <div class="timeline-event" id="idea-1" data-pos="Dec"></div>
+    <div class="timeline-event" id="idea-2" data-pos="Jan"></div>
+    <div class="timeline-event" id="idea-3" data-pos="Feb"></div>
+    <div class="timeline-event" id="decision-point" data-pos="Apr"></div>
+
+    <!-- timeline elements -->
+    <div class="timeline-line" id="timeline-line"></div>
+    <div class="progress-bar-timeline" id="progress-bar-timeline"></div>
+    <div id="time-pointer" tabindex="0" role="slider" aria-label="Timeline pointer" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">●</div>
+
+    <!-- threads and cards (JS positions them) -->
+    <div class="thread" id="t-idea-1"></div>
+    <div class="event-card" id="idea-1-card" title="Idea 1 details">
+      <div class="card-head">
+        <div class="icon">I1</div>
+        <div style="flex:1">
+          <div class="month">January</div>
+          <h3>Parkinson’s disease</h3>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        </div>
+      </div>
+      <p>Early diagnosis of Parkinson’s disease</p>
+    </div>
+
+    <div class="thread" id="t-idea-2"></div>
+    <div class="event-card" id="idea-2-card" title="Idea 2 details">
+      <div class="card-head">
+        <div class="icon">I2</div>
+        <div style="flex:1">
+          <div class="month">January</div>
+          <h3>Heavy Metal extraction</h3>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;">
+        </div>
+      </div>
+      <p>Extract heavy metals from water using bioluminescent proteins and engineered uptake systems.</p>
+    </div>
+
+    <div class="thread" id="t-idea-3"></div>
+    <div class="event-card" id="idea-3-card" title="Idea 3 details">
+      <div class="card-head">
+        <div class="icon">I3</div>
+        <div style="flex:1">
+          <div class="month">February</div>
+          <h3>Biofilm Disintegration</h3>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;">
+        </div>
+      </div>
+      <p>Approaches to disrupt harmful biofilms safely using engineered enzymes or phage-based systems.</p>
+    </div>
+
+    <div class="thread" id="t-decision"></div>
+    <div class="event-card" id="decision-card" title="Decision point">
+      <div class="card-head">
+        <div style="flex:1">
+          <div class="month">March</div>
+          <h3>Decision Point</h3>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;">
+          <div class="badge">Decision</div>
+        </div>
+      </div>
+      <p>After evaluation, Ideas 1 & 2 were dropped. Focus moved to a modified Idea 3.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="text-content animate-on-scroll" style="max-width:880px;margin:18px auto;padding:0 16px;">
+  <h3>Problem identification</h3>
+  <p>We kickstarted this year’s iGEM cycle in 2024—immediately after our predecessors concluded the Grand Jamboree. We ran several DBTL-style ideation loops: brainstorming, expert feedback, and iteration. The timeline above shows the first four idea events and the decision point where the team focused effort.</p>
+</div>
+
+<div class="main-content-container">
+
+    <div class="content-section animate-on-scroll">
+        <h2>Parkinson's Disease</h2>
+        <p>
+            Parkinson’s Disease is a truly debilitating neurodegenerative disorder, caused by misfolding of a protein known as alpha synuclein in the dopaminergic neurons of the brain. However, an early diagnosis followed by prompt treatment can significantly alleviate the impact of the disease and improve quality of life. After looking for early biomarkers of the disease, we found a study that identified misfolded alpha synuclein in the gut tissue of patients 20 years before the onset of symptoms. 
+        </p>
+        <p>
+            Based on this, we did a thorough literature review about various diagnostic tools that can be deployed in the gut, ranging from stool samples to even quantum dots! Additionally, we studied the biochemistry of alphasynuclein in detail, looking for a reaction pathway that could be harnessed as a diagnostic tool. Crucially, we were trying to develop a non-invasive technique, since all the previous studies used highly invasive biopsy samples to identify misfolded proteins.
+        </p>
+        <p>
+            We decided against this idea, since the research connecting myenteric alphasynuclein misfolds to eventual onset of Parkinson’s is in the nascent stage. Additionally, integrating synthetic biology into our solution would most likely require a genetically modified bacterium to interact with the myenteric plexus. This is a biosafety and biosecurity hazard and not a very realistic approach. Additionally finding a model system to work with would have been challenging, since we are dealing with a very specific mammalian cell type in which the biomarker is localized. 
+        </p>
+        <div class="callout note">
+            <strong>Learning:</strong> Our biggest learning here was that too complex of an idea, no matter how impactful it is, would only get harder as we went along. Rather, a simpler idea that fits into a niche would be easier to work on, in terms of experiment planning, equipment and expertise. 
+        </div>
+    </div>
+
+    <div class="content-section animate-on-scroll">
+        <h2>Heavy Metal Extraction From Water</h2>
+        <p>
+            We realized that release of factory effluents, containing many harmful components and heavy metals was a growing issue. To identify water bodies contaminated with such substances, we proposed the use of bioluminescent proteins from Vibrio fischeri. Brainstorming, discussion and literature review.
+        </p>
+        <div class="callout caution">
+            <strong>Challenge:</strong> Kunal Ranjan
+        </div>
+    </div>
+
+    <div class="content-section animate-on-scroll">
+        <h2>Biofilm Disintegration</h2>
+        <p>
+            Biofilms are ubiquescent. They are present everywhere – in construction sites, under the soil and even inside the body. In the latter case, they can be very difficult to treat, since most drugs have no effect due to the structure of biofilms. An external matrix of exopolysaccharides (EPS), among other cellular secretions, surrounds the core of the biofilm. This gives the persistor cells bound to the surface exceptional resistance to all kinds of redressal mechanisms, even antibiotics. 
+        </p>
+        <p>
+            For humans, biofilms can cause significant problems if they form surgical equipment, implants of other parts of the body. They can only be removed manually sinceand drugs have a very small effect. When the biofilm matures, the bacteria migrates to other locations, forming a new biofilm. 
+        </p>
+        <p>
+            We proposed to use a “bacterial drill” to destroy biofilms and the bacteria forming them. A modified carrier organism would be equipped with enzymes that can lyse the EPS secreted by the persistor cells. Due to thesethis enzymes, a hole would be drilled through which the carrier organism gains access to the persistor cells. On contact with these cells, the carrier would express genes for a cocktail of antibiotics, which would destroy the biofilm at the source by killing the persistor cells.
+        </p>
+        <p>
+            However, finding a chassis microbe that could carry the metabolic burden of carrying so many genes proved to be an issue. We would also have to link the carrier to move towards the center of the biofilm through some sensing mechanism, which we could not identify. Most of all, an eventual issue would be the release of such a GMO in the body, due to the inherent risks. 
+        </p>
+        <div class="callout note">
+            <strong>Learning:</strong> Perhaps the biggest learning from this idea was the extensive literature review we conducted about biofilm formation mechanisms and regulatory pathways. While the original idea took a backseat, this newfound knowledge about biofilms gave us the final tool to formulate the idea we eventually chose. 
+        </div>
+    </div>
+
+    <div class="content-section animate-on-scroll">
+        <h2>Breakthrough</h2>
+        <p>
+            We recognized our problem identification approach to be haphazard. Our [advisors] very kindly reminded us of our motivation to pursue an iGEM project—the desire to bring about tangible good while doing cool science. Therefore, we made the conscious decision to set our eyes homeward even as our ambitions rocketed skywards. 
+        </p>
+        <div class="callout note">
+            <strong>Proof of Idea</strong> A 2015 [technical report] from Dr. T V Ramachandra at the IISc Centre of Ecological Sciences caught our eye. It described how Sankey Tank, an artificial wetland just outside campus premises, was heavily polluted and suffered from excessive algal blooms, particularly of the toxin-producing Microcystis sp. and Planktothrix sp types. The report also provided a broad glimpse into background research conducted in the area, and the statistics were alarming.
+        </div>
+        <p>
+            Eutrophication, as we slowly learned, was an [all-pervasive problem]. Bengaluru was drowning in a [cesspool of its own filth]. 
+        </p>
+        <p>
+            We then turned to the possible causes of the problem.Across water bodies, research groups and researchers, one culprit was common:; [nitrate leaching.]  Tracing the roots of the problem led us to the roots of plants; more specifically, the fertilizers used to help these plants grow. Read more about this issue and how we chose to tackle it in our [project overview].
+        </p>
+</div>
+
+<footer style="background:linear-gradient(90deg,#16a34a,#7c3aed);color:white;padding:28px 18px;text-align:center;margin-top:28px;border-radius:6px;margin: 36px 16px 56px;">
+  <div>© 2025 iGEM Team ARGUS-2440 | Wet Lab</div>
+  <div style="margin-top:8px;font-size:13px;opacity:0.95">Learn more on our <a href="project.html" style="color:rgba(255,255,255,0.95);text-decoration:underline">Project page</a></div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const track = document.getElementById('timeline-track');
+  const anchors = Array.from(track.querySelectorAll('.timeline-event'));
+  const pointer = document.getElementById('time-pointer');
+  const progressBar = document.getElementById('progress-bar-timeline');
+  const timelineLine = document.getElementById('timeline-line');
+
+  const threadLength = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--thread-length')) || 76;
+  const cardGap = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--card-gap')) || 16;
+
+  // mapping (must follow anchors order)
+  const map = [
+    { anchorId: 'idea-1', threadId: 't-idea-1', cardId: 'idea-1-card', side: 'above' },
+    { anchorId: 'idea-2', threadId: 't-idea-2', cardId: 'idea-2-card', side: 'below' },
+    { anchorId: 'idea-3', threadId: 't-idea-3', cardId: 'idea-3-card', side: 'above' },
+    { anchorId: 'decision-point', threadId: 't-decision', cardId: 'decision-card', side: 'below' },
+  ];
+
+  const px = v => `${Math.round(v)}px`;
+
+  function layout(){
+    const trackRect = track.getBoundingClientRect();
+    const trackW = track.clientWidth;
+    const centerY = track.clientHeight / 2;
+
+    // evenly distribute anchors across track with padding (1/(n+1), 2/(n+1), ...)
+    const n = anchors.length;
+    anchors.forEach((a,i) => {
+      const frac = (i + 1) / (n + 1);
+      const x = Math.round(frac * trackW);
+      a.style.left = px(x);
+      a.dataset.cx = x;
+    });
+
+    const firstX = parseFloat(anchors[0].dataset.cx);
+    const lastX = parseFloat(anchors[anchors.length - 1].dataset.cx);
+
+    // position base timeline line from first to last anchor
+    timelineLine.style.left = px(firstX);
+    timelineLine.style.width = px(Math.max(0, lastX - firstX));
+
+    // set progress bar start at first event
+    progressBar.style.left = px(firstX);
+    progressBar.style.width = '0px';
+
+    // position threads & cards
+    map.forEach(cfg => {
+      const anchor = document.getElementById(cfg.anchorId);
+      const tx = parseFloat(anchor.dataset.cx);
+
+      const thread = document.getElementById(cfg.threadId);
+      const card = document.getElementById(cfg.cardId);
+
+      // thread position & size
+      if(cfg.side === 'above'){
+        thread.style.left = px(tx);
+        thread.style.top = px(centerY - threadLength);
+        thread.style.height = px(threadLength);
+      } else {
+        thread.style.left = px(tx);
+        thread.style.top = px(centerY);
+        thread.style.height = px(threadLength);
+      }
+
+      // card position
+      card.style.position = 'absolute';
+      card.style.left = px(tx);
+      card.style.transform = 'translateX(-50%)';
+
+      // measure height and place above or below thread end
+      const cardH = card.offsetHeight;
+      if(cfg.side === 'above'){
+        const cardTop = centerY - threadLength - cardGap - cardH;
+        card.style.top = px(cardTop);
+      } else {
+        const cardTop = centerY + threadLength + cardGap;
+        card.style.top = px(cardTop);
+      }
+    });
+
+    // pointer initial placement at first anchor
+    pointer.style.left = px(firstX);
+    pointer.style.top = '50%';
+
+    // min / max
+    pointer.dataset.minX = firstX;
+    pointer.dataset.maxX = lastX;
+
+    // initial events visibility update
+    updateEvents(firstX);
+  }
+
+  // show / hide events based on pointer x
+  function updateEvents(x) {
+    // compute reveal thresholds per anchor (midpoint to previous)
+    const cxValues = anchors.map(a => parseFloat(a.dataset.cx));
+    // thresholds: for first: firstX - halfGap, others: midpoint with previous
+    const thresholds = cxValues.map((cx, i) => {
+      if(i === 0){
+        const halfGap = (cxValues[i+1] - cxValues[i]) / 2;
+        return cx - halfGap;
+      } else {
+        return (cxValues[i] + cxValues[i-1]) / 2;
+      }
+    });
+
+    anchors.forEach((a,i) => {
+      const cx = cxValues[i];
+      const threshold = thresholds[i];
+      const { cardId, threadId } = map[i];
+      const card = document.getElementById(cardId);
+      const thread = document.getElementById(threadId);
+
+      const visible = x >= threshold - 0.5; // small epsilon
+      card.style.opacity = visible ? '1' : '0';
+      card.style.pointerEvents = visible ? 'auto' : 'none';
+      thread.style.opacity = visible ? '1' : '0';
+    });
+
+    // progress bar
+    const firstX = cxValues[0];
+    const pbLeft = firstX;
+    const pbWidth = Math.max(0, x - pbLeft);
+    progressBar.style.left = px(pbLeft);
+    progressBar.style.width = px(pbWidth);
+
+    // grey out ideas 1 & 2 after decision point is reached
+    const decisionX = cxValues[cxValues.length - 1];
+    const dropped = x >= decisionX - 1;
+    ['idea-1-card', 'idea-2-card'].forEach(id => {
+      const el = document.getElementById(id);
+      if(dropped) el.classList.add('dropped'); else el.classList.remove('dropped');
+    });
+
+    // Update pointer ARIA value roughly 0..100
+    const span = cxValues[cxValues.length - 1] - cxValues[0];
+    let val = span > 0 ? Math.round(((x - cxValues[0]) / span) * 100) : 0;
+    val = Math.max(0, Math.min(100, val));
+    pointer.setAttribute('aria-valuenow', String(val));
+  }
+
+  // clamp helper
+  function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+  // initialize and bind
+  layout();
+
+  // relayout on resize
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(layout, 120);
+  });
+
+  // dragging state
+  let dragging = false;
+
+  function pointerSetTo(x){
+    const minX = parseFloat(pointer.dataset.minX);
+    const maxX = parseFloat(pointer.dataset.maxX);
+    const clamped = clamp(x, minX, maxX);
+    pointer.style.left = px(clamped);
+    updateEvents(clamped);
+  }
+
+  // mouse events
+  pointer.addEventListener('mousedown', (e) => { dragging = true; e.preventDefault(); pointer.focus(); });
+  document.addEventListener('mouseup', () => dragging = false);
+  document.addEventListener('mousemove', (ev) => {
+    if(!dragging) return;
+    const rect = track.getBoundingClientRect();
+    const xRaw = ev.clientX - rect.left;
+    pointerSetTo(xRaw);
+  });
+
+  // touch support
+  pointer.addEventListener('touchstart', (e) => { dragging = true; pointer.focus(); e.preventDefault(); });
+  document.addEventListener('touchend', () => dragging = false);
+  document.addEventListener('touchcancel', () => dragging = false);
+  document.addEventListener('touchmove', (ev) => {
+    if(!dragging) return;
+    const rect = track.getBoundingClientRect();
+    const touch = ev.touches[0];
+    const xRaw = touch.clientX - rect.left;
+    pointerSetTo(xRaw);
+  }, { passive: false });
+
+  // click on track to jump pointer (animated)
+  track.addEventListener('click', (ev) => {
+    // avoid clicks originating from pointer itself
+    if(ev.target === pointer) return;
+    const rect = track.getBoundingClientRect();
+    const xRaw = ev.clientX - rect.left;
+    const minX = parseFloat(pointer.dataset.minX);
+    const maxX = parseFloat(pointer.dataset.maxX);
+    const targetX = clamp(xRaw, minX, maxX);
+
+    // animate pointer smoothly
+    const start = parseFloat(pointer.style.left) || minX;
+    const duration = 300;
+    const startTime = performance.now();
+    function animate(now){
+      const t = Math.min(1, (now - startTime)/duration);
+      const ease = t*(2-t); // ease-out
+      const cur = start + (targetX - start) * ease;
+      pointer.style.left = px(cur);
+      updateEvents(cur);
+      if(t < 1) requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  });
+
+  // keyboard control: left/right arrows move pointer to previous/next anchor
+  pointer.addEventListener('keydown', (ev) => {
+    const cxValues = anchors.map(a => parseFloat(a.dataset.cx));
+    const curX = parseFloat(pointer.style.left);
+    if(ev.key === 'ArrowLeft' || ev.key === 'Left'){
+      // find previous anchor center
+      let prev = cxValues[0];
+      for(let i=0;i<cxValues.length;i++){
+        if(cxValues[i] >= curX - 0.1) { prev = cxValues[Math.max(0,i-1)]; break; }
+      }
+      // if already at first, stay
+      pointerSetTo(prev);
+      ev.preventDefault();
+    } else if(ev.key === 'ArrowRight' || ev.key === 'Right'){
+      // find next anchor center
+      let next = cxValues[cxValues.length - 1];
+      for(let i=0;i<cxValues.length;i++){
+        if(cxValues[i] > curX + 0.1) { next = cxValues[i]; break; }
+      }
+      pointerSetTo(next);
+      ev.preventDefault();
+    }
+  });
+
+  // clicking a card scrolls to its detail section
+  map.forEach(cfg => {
+    const card = document.getElementById(cfg.cardId);
+    const sectionId = `section-${cfg.cardId.replace('-card','')}`;
+    const section = document.getElementById(sectionId);
+    // only set up click if section exists
+    if(section){
+      card.addEventListener('click', () => {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  });
+
+  // show animate-on-scroll elements when in view (small helper)
+  const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if(en.isIntersecting) en.target.classList.add('is-visible');
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.animate-on-scroll').forEach(el => scrollObserver.observe(el));
+
+  // initial small delay to ensure fonts & layout stable, then layout again
+  setTimeout(layout, 60);
+});
+</script>
+</body>
+</html>
