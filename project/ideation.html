@@ -392,6 +392,77 @@ header p{margin-top:8px;color:#6b7280}
 }
 .callout.caution strong { color: #b91c1c; }
 
+.problem-section {
+  max-width: 850px;
+  margin: 0rem auto;
+  padding: 0 1rem;
+  line-height: 1.75;
+  color: #374151;
+}
+
+.problem-heading {
+  font-size: 2.25rem;
+  font-weight: 800;
+  display: inline-block;
+  position: relative;
+  margin-bottom: 1rem;
+  color: #1e293b;
+}
+
+.problem-heading::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: 100%;
+  height: 0.4em;
+  background: #8afdc9; /* soft yellow highlight */
+  z-index: -1;
+  border-radius: 4px;
+}
+
+.problem-section p {
+  margin-top: 1.5rem;
+  margin-left: 1.2rem;
+  font-size: 1.1rem;
+}
+
+.timeline-header {
+  text-align: center;
+  margin: 4rem auto 3rem;
+  max-width: 800px;
+  padding: 0 1rem;
+}
+
+.timeline-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1e293b;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+.timeline-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: 100%;
+  height: 0.35em;
+  background-color: #ebbffe; /* soft blue highlight */
+  z-index: -1;
+  border-radius: 4px;
+}
+
+.timeline-subtitle {
+  font-size: 1.05rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+
+
 </style>
 </head>
 <body>
@@ -488,10 +559,13 @@ header p{margin-top:8px;color:#6b7280}
     </div>
   </nav>
 
-<header>
-  <h1><b>Ideation Timeline</b></h1>
-  <p>Drag, click or use keyboard ← → to move the pointer through the events. Click cards to scroll to details.</p>
+<header class="timeline-header">
+  <h1 class="timeline-title">Ideation Timeline</h1>
+  <p class="timeline-subtitle">
+    Drag or click to move through the events. Click on any section to scroll to its details.
+  </p>
 </header>
+
 
 <div class="timeline-wrapper">
   <div class="timeline-track" id="timeline-track">
@@ -566,10 +640,12 @@ header p{margin-top:8px;color:#6b7280}
   </div>
 </div>
 
-<div class="animate-on-scroll" style="max-width:860px;margin:18px auto;padding:0 16px;">
-  <h2>Problem identification</h2>
-  <p>We kickstarted this year’s iGEM cycle in 2024—immediately after our predecessors concluded the Grand Jamboree. We ran several DBTL-style ideation loops: brainstorming, expert feedback, and iteration. The timeline above shows the first four idea events and the decision point where the team focused effort.</p>
-</div>
+<section class="problem-section">
+  <h2 class="problem-heading">Problem Identification</h2>
+  <p>
+    We kickstarted this year’s iGEM cycle in 2024—immediately after our predecessors concluded the Grand Jamboree. This phase involved broad literature review, brainstorming sessions, and expert feedback.
+  </p>
+</section>
 
 <div class="main-content-container">
 
@@ -618,7 +694,7 @@ header p{margin-top:8px;color:#6b7280}
         </div>
     </div>
 
-    <div class="content-section animate-on-scroll"  id = 'c4'>
+    <div class="content-section animate-on-scroll"  id = 'decision-section'>
         <h2>Breakthrough</h2>
         <p>
             We recognized our problem identification approach to be haphazard. Our [advisors] very kindly reminded us of our motivation to pursue an iGEM project—the desire to bring about tangible good while doing cool science. Therefore, we made the conscious decision to set our eyes homeward even as our ambitions rocketed skywards. 
@@ -644,6 +720,24 @@ header p{margin-top:8px;color:#6b7280}
 
 
 <script>
+
+  const scrollLinks = [
+  { card: 'idea-1-card', target: 'c1' },
+  { card: 'idea-2-card', target: 'c2' },
+  { card: 'idea-3-card', target: 'c3' },
+  { card: 'decision-card', target: 'decision-section' } // example if you add a decision content section
+];
+
+scrollLinks.forEach(link => {
+  const cardEl = document.getElementById(link.card);
+  const targetEl = document.getElementById(link.target);
+  if (cardEl && targetEl) {
+    cardEl.addEventListener('click', () => {
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const track = document.getElementById('timeline-track');
   const anchors = Array.from(track.querySelectorAll('.timeline-event'));
