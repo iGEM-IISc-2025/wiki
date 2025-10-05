@@ -6,6 +6,7 @@
   <title>Project | ARGUS-2440</title>
   <link rel="stylesheet" href="css/styles_main.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
+  <base href="/wiki/">
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans">
 
@@ -24,74 +25,88 @@
         <span class="nav-toggle-icon"></span>
       </button>
 
+      
+  <!-- Navbar -->
+  <nav class="navbar-1">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand" href="/main.html">
+        <img src="images/igemlogo.png" alt="Site Logo"/>
+      </a>
+
+      <!-- Mobile toggle -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-icon"></span>
+      </button>
+
       <!-- Main Nav -->
       <ul class="nav-menu" id="nav-menu">
         <li>
-          <a href="project.html">Project</a>
+          <a href="/project.html">Project</a>
           <nav class="navbar-2">
             <div class="container">
               <ul class="nav-menu_hovered">
-                <li><a href="project/ideation.html">Ideation</a></li>
-                <li><a href="project/overview.html">Overview</a></li>
+                <li><a href="/ideation.html">Ideation</a></li>
+                <li><a href="/overview.html">Overview</a></li>
               </ul>
             </div>
           </nav>
         </li>
 
         <li>
-          <a href="../wetlab.html">Wet Lab</a>
+          <a href="/wetlab.html">Wet Lab</a>
           <nav class="navbar-2">
             <div class="container">
               <ul class="nav-menu_hovered">
-                <li><a href="wetlab/design.html">Design</a></li>
-                <li><a href="wetlab/engineering.html">Engineering</a></li>
-                <li><a href="wetlab/experimentation.html">Experimentation</a></li>
-                <li><a href="wetlab/notebook.html">Notebook</a></li>
-                <li><a href="wetlab/parts.html">Parts</a></li>
-                <li><a href="wetlab/delivery.html">Delivery Mechanisms</a></li>
-                <li><a href="wetlab/biosafety.html">Biosafety and Biosecurity</a></li>
+                <li><a href="/design.html">Design</a></li>
+                <li><a href="/engineering.html">Engineering</a></li>
+                <li><a href="/experimentation.html">Experimentation</a></li>
+                <li><a href="/notebook.html">Notebook</a></li>
+                <li><a href="/parts.html">Parts</a></li>
+                <li><a href="/delivery.html">Delivery Mechanisms</a></li>
+                <li><a href="/biosafety.html">Biosafety and Biosecurity</a></li>
               </ul>
             </div>
           </nav>
         </li>
 
         <li>
-          <a href="../drylab.html">Dry Lab</a>
+          <a href="/drylab.html">Dry Lab</a>
           <nav class="navbar-2">
             <div class="container">
               <ul class="nav-menu_hovered">
-                <li><a href="drylab/engineering.html">Engineering</a></li>
-                <li><a href="drylab/ml.html">ML Modelling</a></li>
-                <li><a href="drylab/modelling.html">ODE Modelling</a></li>
-                <li><a href="drylab/juniors.html">Improvised GenBank</a></li>
-                <li><a href="drylab/alphafold.html">Alphafold</a></li>
+                <li><a href="/engineering.html">Engineering</a></li>
+                <li><a href="/ml.html">ML Modelling</a></li>
+                <li><a href="/modelling.html">ODE Modelling</a></li>
+                <li><a href="/juniors.html">Improvised GenBank</a></li>
+                <li><a href="/alphafold.html">Alphafold</a></li>
               </ul>
             </div>
           </nav>
         </li>
 
         <li>
-          <a href="../hp.html">Human Practices</a>
+          <a href="/hp.html">Human Practices</a>
           <nav class="navbar-2">
             <div class="container">
               <ul class="nav-menu_hovered">
-                <li><a href="hp/ihp.html">Integrated Human Practices</a></li>
-                <li><a href="hp/results.html">Results and Analysis</a></li>
-                <li><a href="hp/sustainable.html">Sustainable Development</a></li>
-                <li><a href="hp/blogs.html">Blogs</a></li>
+                <li><a href="/ihp.html">Integrated Human Practices</a></li>
+                <li><a href="/results.html">Results and Analysis</a></li>
+                <li><a href="/sustainable.html">Sustainable Development</a></li>
+                <li><a href="/blogs.html">Blogs</a></li>
               </ul>
             </div>
           </nav>
         </li>
 
         <li>
-          <a href="../team.html">Team</a>
+          <a href="/team.html">Team</a>
           <nav class="navbar-2">
             <div class="container">
               <ul class="nav-menu_hovered">
-                <li><a href="team/attributions.html">Atttributions</a></li>
-                <li><a href="team/gallery.html">Gallery</a></li>
-                <li><a href="team/aiim.html">AIIM</a></li>
+                <li><a href="/attributions.html">Atttributions</a></li>
+                <li><a href="/gallery.html">Gallery</a></li>
+                <li><a href="/aiim.html">AIIM</a></li>
               </ul>
             </div>
           </nav>
@@ -105,22 +120,15 @@
   <section class="text-center py-16 bg-gradient-to-r from-purple-500 to-green-400 text-white">
     <h1 class="text-5xl font-bold mb-4">ARGUS-2440</h1>
     <p class="text-xl max-w-3xl mx-auto mb-8">
-      To combat nitrate leaching in agriculture, we’re engineering a novel biological system 
+      To combat nitrate leaching in agriculture, we engineering pseudomonas putida
       that regulates ammonia production and optimizes soil nitrogen balance.  
-      A sustainable alternative to harmful chemical fertilizers.
     </p>
-    <a href="pond.html" 
-       class="inline-block bg-white text-purple-600 font-semibold px-6 py-3 rounded-xl shadow-md hover:shadow-xl hover:bg-purple-100 transition">
-       Simulation to Understand Our Project
-    </a>
   </section>
 
   <!-- Main Diagram -->
   <section class="py-12 px-6 flex justify-center">
     <div class="max-w-4xl w-full bg-white shadow-lg rounded-xl p-6">
-      <h2 class="text-2xl font-semibold mb-4 text-center">Our Core Concept</h2>
-      <img src="/static/images/project-diagram.png" alt="Project Diagram" 
-           class="mx-auto rounded-lg border-2 border-purple-300 shadow-md">
+      <h2 class="text-2xl font-semibold mb-4 text-center">Problem Statement</h2>
       <p class="mt-4 text-center text-gray-600">
         This diagram summarizes the challenge, our engineered system, and the sustainable outcome.
       </p>
@@ -133,10 +141,10 @@
     <div class="grid gap-8 max-w-6xl mx-auto sm:grid-cols-2 lg:grid-cols-3">
       
       <!-- Card -->
-      <a href="description.html" class="group block bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl hover:border-purple-400 border-2 border-transparent transition">
-        <img src="https://placehold.co/600x400/EEE/AAA?text=Description" alt="Description" class="w-full h-40 object-cover group-hover:scale-105 transition">
+      <a href="overview.html" class="group block bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl hover:border-purple-400 border-2 border-transparent transition">
+        <img src="https://placehold.co/600x400/EEE/AAA?text=Overview" alt="Overview" class="w-full h-40 object-cover group-hover:scale-105 transition">
         <div class="p-5">
-          <h3 class="text-xl font-semibold mb-2 text-purple-600">Description</h3>
+          <h3 class="text-xl font-semibold mb-2 text-purple-600">Overview</h3>
           <p class="text-gray-600">Understand the background and goals of our project in depth.</p>
         </div>
       </a>
@@ -151,10 +159,10 @@
       </a>
       
       <!-- Card -->
-      <a href="results.html" class="group block bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl hover:border-blue-400 border-2 border-transparent transition">
+      <a href="ihp.html" class="group block bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl hover:border-blue-400 border-2 border-transparent transition">
         <img src="https://placehold.co/600x400/EEE/AAA?text=Results" alt="Results" class="w-full h-40 object-cover group-hover:scale-105 transition">
         <div class="p-5">
-          <h3 class="text-xl font-semibold mb-2 text-blue-600">Results</h3>
+          <h3 class="text-xl font-semibold mb-2 text-blue-600">iHP</h3>
           <p class="text-gray-600">Explore the data and proof of concept experiments validating our work.</p>
         </div>
       </a>
@@ -169,8 +177,8 @@
       </a>
       
       <!-- Card -->
-      <a href="implementation.html" class="group block bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl hover:border-yellow-400 border-2 border-transparent transition">
-        <img src="https://placehold.co/600x400/EEE/AAA?text=Implementation" alt="Implementation" class="w-full h-40 object-cover group-hover:scale-105 transition">
+      <a href="delivery.html" class="group block bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-2xl hover:border-yellow-400 border-2 border-transparent transition">
+        <img src="https://placehold.co/600x400/EEE/AAA?text=Implementation" alt="Delivery" class="w-full h-40 object-cover group-hover:scale-105 transition">
         <div class="p-5">
           <h3 class="text-xl font-semibold mb-2 text-yellow-600">Proposed Implementation</h3>
           <p class="text-gray-600">Learn how ARGUS-2440 could be deployed in the real world.</p>
@@ -188,6 +196,15 @@
       
     </div>
   </section>
+
+   <!-- Footer -->
+    <footer class="bg-gradient-to-r from-green-700 to-purple-700 text-white py-8 text-center">
+        <p>© 2025 iGEM Team ARGUS-2440 | Wet Lab</p>
+        <p class="mt-2 text-sm">
+        Learn more on our <a href="project.html" class="underline hover:text-gray-200">Project page</a> 
+        or contact us at <a href="mailto:team@argus2440.org" class="underline hover:text-gray-200">team@argus2440.org</a>.
+        </p>
+    </footer>
 
   <script>
 // Scroll progress bar
