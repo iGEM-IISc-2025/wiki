@@ -110,38 +110,125 @@
             padding-top: 2rem;
         }
 
-        .bar-chart {
-        display: flex;
-        justify-content: space-around;
-        height: 300px;
-        border-left: 2px solid #333;
-        border-bottom: 2px solid #333;
+        .chart-section-overview {
+        margin-top: 3rem;
         padding: 0 1rem;
         }
 
+        .chart-title-overview {
+        font-size: 1.5rem;       /* Reduced size */
+        font-weight: 500;
+        color: var(--primary-color);
+        text-align: center;
+        margin-bottom: 2rem;
+        }
+
+        /* Wrap the chart and y-axis */
+        .bar-chart-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        max-width: 500px;    /* smaller for better proportion */
+        margin: 0 auto;
+        gap: 0.5rem;
+        }
+
+        /* Y-axis */
+        .bar-chart-y-axis {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 250px;
+        margin-right: 10px;
+        font-size: 0.8rem;
+        color: #475569;
+        }
+
+        /* Main bar chart */
+        .bar-chart {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        height: 250px;
+        border-left: 2px solid #333;
+        border-bottom: 2px solid #333;
+        padding: 0 0.5rem;
+        flex: 1;
+        position: relative;
+        }
+
+        /* Bar items */
         .bar-item {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-end;
         flex: 1;
-        margin: 0 0.5rem;
+        margin: 0 0.25rem;
         }
 
+        /* Actual bar */
         .bar {
-        width: 60px;
+        width: 35px;
+        background-color: #7c3aed;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        position: relative;
+        min-height: 10px;
         }
 
-        .bar-value {
-        margin-bottom: 4px;
-        font-weight: bold;
-        color: #1e293b; /* dark text */
+        .bar::after {
+        content: attr(data-value) "%";
+        position: absolute;
+        top: -20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #1e293b;
         }
 
         .bar-country {
-        margin-top: 0.5rem;
+        margin-top: 0.4rem;
         font-weight: 500;
+        font-size: 0.8rem;
+        text-align: center;
         }
+
+        /* Responsiveness */
+        @media (max-width: 600px) {
+        .bar-chart-wrapper {
+            max-width: 100%;
+        }
+
+        .bar {
+            width: 25px;
+        }
+
+        .bar-country {
+            font-size: 0.7rem;
+        }
+
+        .bar-chart-y-axis {
+            font-size: 0.7rem;
+            height: 200px;
+        }
+
+        .bar-chart {
+            height: 200px;
+        }
+        }
+
+        .section-title.small-title {
+        padding-top: 20px;
+        font-size: 1.8rem;   /* Smaller than your usual h2 */
+        line-height: 1.3;    /* Tighter line spacing */
+        max-width: 90%;      /* Prevent overflow on narrow screens */
+        margin: 1rem auto 2rem; /* Center and add breathing space */
+        text-align: center;
+        word-wrap: break-word;
+        }
+
+
 
     </style>
 </head>
@@ -282,35 +369,41 @@
             Unregulated fertilizer use in farmlands leads to accumulation of excess nitrate, which in turn causes greater leaching. In fact, several studies have shown that agricultural activities are a significant source of surface and ground water pollution due to long-term and excessive fertilizer use. 
             </p>
 
-            <section class="chart-section">
-            <h2 class="chart-title">
-                Agricultural Contribution to Non Point Water Pollution by Country
+            <h2 class="section-title small-title">
+            Agricultural Contribution to Non Point Water Pollution by Country
             </h2>
 
-            <div class="bar-chart">
-                <!-- Bar for US -->
-                <div class="bar-item">
-                <span class="bar-value">75%</span>
-                <div class="bar" style="height: 75%; background-color: #7c3aed;"></div>
-                <p class="bar-country">US</p>
+
+            <div class="bar-chart-wrapper">
+                <div class="bar-chart-y-axis">
+                <div>100%</div>
+                <div>80%</div>
+                <div>60%</div>
+                <div>40%</div>
+                <div>20%</div>
+                <div>0%</div>
                 </div>
 
-                <!-- Bar for Netherlands -->
+                <div class="bar-chart">
+                <!-- US -->
                 <div class="bar-item">
-                <span class="bar-value">60%</span>
-                <div class="bar" style="height: 60%; background-color: #7c3aed;"></div>
-                <p class="bar-country">Netherlands</p>
+                    <div class="bar" style="height: calc(75%); min-height: 120px;" data-value="75"></div>
+                    <p class="bar-country">US</p>
                 </div>
 
-                <!-- Bar for Denmark -->
+                <!-- Netherlands -->
                 <div class="bar-item">
-                <span class="bar-value">94%</span>
-                <div class="bar" style="height: 94%; background-color: #7c3aed;"></div>
-                <p class="bar-country">Denmark</p>
+                    <div class="bar" style="height: calc(60%); min-height: 96px;" data-value="60"></div>
+                    <p class="bar-country">Netherlands</p>
+                </div>
+
+                <!-- Denmark -->
+                <div class="bar-item">
+                    <div class="bar" style="height: calc(94%); min-height: 150.2px;" data-value="94"></div>
+                    <p class="bar-country">Denmark</p>
+                </div>
                 </div>
             </div>
-            </section>
-
 
             <br></br>
 
@@ -409,52 +502,128 @@
         <div class="container center-text">
             <h2 class="animate-on-scroll">The Nitrogen Cycle Family</h2>
             <p class="animate-on-scroll">
-                To reduce nitrate and increase ammonium, we focused on two pathways: Denitrification (nitrate → N2 gas) and DNRA (nitrate → ammonium). Denitrification loses total nitrogen and emits N2O, a potent greenhouse gas. DNRA conserves nitrogen without harmful intermediates, making it ideal for our goals.
+                To identify the natural processes that already deal with nitrogen, we turned to microbial metabolic pathways in the nitrogen cycle. A consolidated list contains the following major pathways:
             </p>
 
             <h3 class="animate-on-scroll" style="margin-top: 3rem; text-align:center;">Operon Investigation</h3>
             <div class="tabs-container animate-on-scroll">
                 <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="1">The "nir" Operon</button>
-                    <button class="tab-button" data-tab="2">The "nrf" Operon</button>
+                    <button class="tab-button active" data-tab="1">Denitrification</button>
+                    <button class="tab-button" data-tab="2">Nitrification</button>
+                    <button class="tab-button" data-tab="3">DNRA</button>
+
                 </div>
                 <div class="tab-content active" id="tab-1">
                     <p>
-                        The nir operon encodes a periplasmic nitrite reductase. We studied its efficiency in converting nitrite to ammonium outside the cytoplasm.
+                        The conversion of nitrate to free nitrogen via nitrous oxide.
                     </p>
                 </div>
                 <div class="tab-content" id="tab-2">
                     <p>
-                        The nrf operon encodes a cytoplasmic nitrate reductase. Two variations exist across species, which we empirically tested for nitrite reduction efficacy.
+                        The conversion of ammonium to nitrate.
+                    </p>
+                </div>
+
+                <div class="tab-content" id="tab-3">
+                    <p>
+                        Dissimilatory Nitrate Reduction to Ammonium is the conversion of nitrate to ammonium via nitrite. 
                     </p>
                 </div>
             </div>
 
-            <h3 class="animate-on-scroll" style="margin-top: 3rem; text-align:center;">Comparison with Diagrams</h3>
-            <div class="comparison-slider animate-on-scroll" id="comparison-slider">
-                <img src="../images/img-2.jpg" alt="Denitrification process" class="image-before">
-                <img src="../images/img-3.jpg" alt="DNRA process" class="image-after">
-                <div class="slider-handle"></div>
+            <p class = "animate-on-scroll">
+                Since our efforts were directed towards reducing nitrate molecules to ammonium, we focused on denitrification and DNRA. 
+            </p>
+
+            <h3 class="animate-on-scroll" style="margin-top: 3rem; text-align:center;">DNRA and Denitrification Process</h3>
+            <img src="../images/DNRA_cycle.png" 
+                alt="Denitrification vs DNRA" 
+                class="animate-on-scroll" 
+                style="display: block; margin: 1rem auto 0; max-width: 600px; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+
+
+            <p class = "animate-on-scroll">
+                Denitrification is the more well-established, well-researched pathway of the two, which initially drew us to the possibility of using it to our advantage. The following points were kept in mind and assessed as we researched the situation.
+            </p>
+
+            <ul class="animate-on-scroll indented-bullets">
+                <li>Denitrification is a four-step pathway.</li>
+                <li>One of the intermediaries is nitrous oxide, which is a greenhouse gas. N2O is approximately 270 times more potent than carbon dioxide in terms of warming the planet, and is currently responsible for approximately 10% of net global warming since the Industrial Revolution.</li>
+                <li>The final product of denitrification is N2 gas, meaning total nitrogen (TN) content is constantly being lost from the soil.</li>
+            </ul>
+
+            <h2 class="section-title small-title">
+            Dissimilatory Nitrate Leaching to Ammonium, the Forgotten Second Cousin
+            </h2>
+
+            <p class = "animate-on-scroll">
+                DNRA, on the other hand, piqued our interest because of the following pros:
+            </p>
+
+            <ul class="animate-on-scroll indented-bullets">
+                <li>DNRA is a two-step pathway.</li>
+                <li>DNRA does not produce any intermediates that could cause environmental harm.</li>
+                <li>Total Nitrogen content remains constant in the soil. In fact, research has shown that DNRA could be a viable biological pathway to conserve terrestrial nitrogen and reduce nitrous oxide emissions.</li>
+            </ul>
+
+            <p class = "animate-on-scroll">
+                This seemed absolutely perfect for our purpose. The catch? DNRA is comparatively highly understudied. It was a difficult decision, reinforced by our PI and advisors, to incorporate DNRA as such an integral part of our project, regardless of the fact that we had very limited information to go on.
+            </p>
+
+            <div class="callout-box animate-on-scroll">
+                <p>
+                    An opportunity presented itself in the work done for Project Cattlelysts by a former team at Wageningen University. We reached out to them to understand their research and gathered that they had perfected the first step of nitrate reduction to ammonium and demonstrated it in Pseudomonas putida KT2440. This was a huge positive because it meant that we could focus our efforts on understanding and perfecting the second step, i.e., reduction of nitrite to ammonium. We then identified the highly conserved operons that carried out this pathway. 
+                </p>
             </div>
+
+            <h3 class="animate-on-scroll" style="margin-top: 3rem; text-align:center;">Identified Operons</h3>
+            <img src="../images/DNRA_identified.png" 
+                alt="Indentified Operons" 
+                class="animate-on-scroll" 
+                style="display: block; margin: 1rem auto 0; max-width: 600px; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+
+            <p class = "animate-on-scroll">
+                The nir and nrf operons perform the same function, but have subtle differences in their operation. The nir operon encodes a periplasmic nitrite reductase, while the nrf operon encodes a cytoplasmic nitrate reductase. Furthermore, there are two variations of the nrf operon that have been discovered across bacterial species. 
+            </p>
+
+            <p class="animate-on-scroll">
+                This presented an exciting opportunity for us to test the efficacy of these operons in a bacterial chassis of our choice. We could therefore empirically understand which protein complex proved best for nitrite reduction as part of our project, which we have described in our experimentation section.
+            </p>
         </div>
+
+
     </section>
 
     <section class="content-section">
         <div class="container center-text">
             <h2 class="animate-on-scroll">Blessed be the Biofilms</h2>
+
             <p class="animate-on-scroll">
-                We selected <em>Pseudomonas putida</em> KT2440 as our chassis. This PGPB forms biofilms around plant roots, offering stress resilience against drought, salinity, and fungal infections. These biofilms also stimulate plant growth and crop yield.
+                Having identified the operons and proteins we required to enact our objective, we moved on to choosing our bacterium. This process involved multiple overhauls based on results and feedback received across multiple DBTL cycles, which we have described in detail on our engineering page.
             </p>
 
-            <div class="hotspot-container animate-on-scroll">
-                <img src="../images/img-4.jpg" alt="Pseudomonas putida biofilm on plant root">
-                <div class="hotspot" style="top: 40%; left: 60%;">
-                    <div class="hotspot-tooltip">Biofilms provide stress resilience against drought, salinity, and infections.</div>
-                </div>
-                <div class="hotspot" style="top: 70%; left: 30%;">
-                    <div class="hotspot-tooltip">As a PGPB, P. putida naturally stimulates plant growth and increases crop yield.</div>
-                </div>
+            <p class ="animate-on-scroll">
+                We finally chose Pseudomonas putida KT2440, a common and robust soil bacterium. In the meantime, on our advisor’s direction, we chose to demonstrate the proof of concept in Escherichia coli DH5-Alpha. Our chosen method of gene insertion is via a plasmid, so we identified plasmids with an origin of replication that would work for both E.coli and P.putida.
+            </p>
+
+            <p class="animate-on-scroll">
+                An exciting discovery was the fact that this bacterium forms biofilms around plant roots, and extensive research has proven that these biofilms promote plant growth and health. In fact, P.putida KT2440 is part of a group of microbes known as plant growth-promoting bacteria (PGPB).
+            </p>
+
+            <p class="animate-on-scroll">
+                These biofilms are evidence of microorganism colonization on plant roots. They have remarkable stress resilience, and they empower crops to thrive and yield even in harsh conditions. These conditions include drought, high salinity, and even fungal infections. Furthermore, they stimulate plant growth, increase yield, as well as reduce biotic or abiotic plant stress without conferring any pathogenicity. 
+            </p>
+
+            <p class="animate-on-scroll">
+                Using P.putida KT2440 as our organism of choice gives us the added benefit of beneficial plant root colonization, and therefore increases the application of our final product in agriculture from just nitrogen retention to also being beneficial for plants
+            </p>
+
+            <div class="callout-box animate-on-scroll">
+                <p>
+                    This setup directly relates to the results received from a survey we conducted for farmers, the demographic who would actually apply this bacterium in their fields. 
+                </p>
             </div>
+
         </div>
     </section>
 
