@@ -145,11 +145,79 @@ main article pre { background-color: #1f2937; color: #d1d5db; padding: 1rem; mar
 .callout-trivia .callout-header { color: #15803d; }
 .callout-trivia p { color: #166534; }
 
+/* Troubleshooting Style (Red) */
+.callout-troubleshooting { background-color: #fef2f2; border-color: #ef4444; }
+.callout-troubleshooting .callout-header { color: #991b1b; }
+.callout-troubleshooting p { color: #b91c1c; }
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
     .docs-sidebar { display: none; }
 }
+
+.image-credit-wrapper {
+    text-align: center; /* centers the image and credit */
+    margin: 1.5rem 0;
+}
+
+.image-credit-wrapper img {
+    max-width: 600px;
+    border-radius: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    display: block;
+    margin: 0 auto; /* centers the image */
+}
+
+.image-credit {
+    font-size: 0.8rem;
+    color: #64748b; /* matches your light text color */
+    margin: 0.5rem auto 0; /* top margin + center horizontally */
+    max-width: 600px; /* reduce width */
+    text-align: center; /* center text inside the box */
+}
+
+.image-credit a {
+    color: #7a40d1; /* primary color for links */
+    text-decoration: underline;
+}
+
+.table-wrapper {
+  overflow-x: auto; /* horizontal scroll on small screens */
+  margin: 2rem 0;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+.custom-table th {
+  background-color: #f3f4f6;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.custom-table td {
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .custom-table th,
+  .custom-table td {
+    padding: 0.5rem;
+  }
+}
+
+
 </style>
 
 <style>
@@ -623,69 +691,309 @@ main article pre {
     <main class="lg:pl-8">
         <article>
             <header id="top">
-                <h1>Wet Lab: System Implementation</h1>
-                <p class="lead">Detailed protocols and characterization data for our engineered organism.</p>
+                <h1>Experimentation</h1>
+                <p class="lead">Detailed experimental procedures and protocols implemented in the Wet Lab.</p>
             </header>
 
-            <section id="project-overview" data-aos="fade-up">
-                <h2>Project Overview</h2>
-                <p>Our work focuses on engineering <i>Pseudomonas putida</i> KT2440 to express a novel enzyme pathway for plastic degradation. This pathway is contained within the pSEVA231 backbone.</p>
-                <div class="callout callout-note">
-                    <div class="callout-header">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" /></svg>
-                        <strong>Theoretical Note</strong>
-                    </div>
-                    <p><i>P. putida</i> was chosen for its robust metabolic capabilities and biosafety profile.</p>
-                </div>
-            </section>
-
-            <section id="gene-design" data-aos="fade-up">
-                <h2>Gene Synthesis & Assembly</h2>
-                <h3 id="gene-assembly-design">Gene Assembly Design</h3>
-                <p>The gene cassette (BBa_KXXXXXXX) was synthesized with flanking BioBrick prefix/suffix sites.</p>
-                <div class="callout callout-trivia">
-                    <div class="callout-header">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" /></svg>
-                        <strong>Did you know?</strong>
-                    </div>
-                    <p>The BioBrick standard was developed to make synthetic biology parts interchangeable and easier to assemble.</p>
-                </div>
-                <h3 id="gene-assembly-protocol">Assembly Protocol</h3>
-                <h4 id="gibson-mix">Gibson Mix Preparation</h4>
-                <pre><code># Prepare Master Mix (20 µL Total Volume)
-Plasmid backbone (50 ng)      : 2 µL
-Insert fragment (100 ng)      : 4 µL
-Gibson Assembly Mix (2X)      : 10 µL
-Nuclease-free water           : 4 µL</code></pre>
-                <h4 id="pcr-verification">PCR Verification</h4>
-                <p>Colony PCR was performed using VF2 and VR primers on selected colonies.</p>
-            </section>
+            <p> Below is a record of all the experimental procedures we performed throughout the duration of our project. The protocols are in a PDF file at the end of the page.</p>
 
             <section id="bacterial-transformation" data-aos="fade-up">
-                <h2>Bacterial Transformation</h2>
-                <h3 id="transform-e-coli">E. coli DH5a (Initial Cloning)</h3>
-                <p>A heat shock protocol was performed on chemically competent cells.</p>
-                <div class="callout callout-caution">
-                     <div class="callout-header">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
-                        <strong>Protocol Caution</strong>
+                <h2>Bacterial transformation</h2>
+                <p>These are the experiments carried out from the instance we received the synthesized operons to when we transformed our bacterium.</p>
+                
+                <h3 id="Stock Preparation">I. Stock preparation</h3>
+                <p>
+                    We received the genes in custom clonal vectors pMPV-alpha (ampicillin-resistant cloning and shuttle vector with puc origin of replication for E. coli)  from TWIST Bioscience. We first plated them in ampicillin-infused agar plates, where they responded favorably and grew quite well.
+                </p>
+                <p>
+                    Then, we prepared primary and secondary glycerol stocks of all the plasmids and bacteria for future use. 
+                </p>
+
+                <h3 id="plasmid-isolation">II. Plasmid isolation</h3>
+
+                <p>
+                    We used the QIAGEN Spin Miniprep kit to perform isolation of the pMPV-alpha-nirBD and pMPV-alpha-nrfHA, pMPV-alpha-nrfABCD, and pMPV-alpha-nrfEFG plasmids.
+                </p>
+
+
+                <div class="callout callout-note">
+                    <div class="callout-header">
+                        <strong>Troubleshooting</strong>
                     </div>
-                    <p>Ensure cells remain on ice until the 42°C heat shock step to maintain cell viability.</p>
+                    <p>We saw lots of RNA and salt contamination in the nanodrop readings of our plasmids that were isolated using the kit. The yield was also suboptimal.</p>
+                    <p>Therefore, we consulted Hassan, our post-doc advisor and mentor, regarding this problem. He directed us to perform manual plasmid isolations, where we would prepare the reagents on our own and perform a lengthier, but less uncertain, experiment. Our samples after that had much better yields.</p>
                 </div>
-                <h3 id="transform-p-putida">P. putida KT2440 (Final Host)</h3>
-                <p>Transformation of <i>P. putida</i> required electroporation due to its rigid cell wall.</p>
+
+                <h3 id="restriction-digestion">III. Restriction enzyme digestion</h3>
+                <p>
+                    We designed the operons and chose plasmids such that separate DNA fragments would recombine after ligation to form the functioning operons once again. 
+                </p>
+
+                <div class="image-credit-wrapper">
+                    <img src="../images/plasmid-biorender.png" 
+                alt="Indentified Operons" 
+                class="animate-on-scroll" 
+                style="display: block; margin: 1rem auto 0; max-width: 600px; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                    <p class="image-credit">Image source: Biorender (Created in <a href="https://BioRender.com" target="_blank">BioRender.com</a>)</p>
+                </div>
+
+                <p class="animate-on-scroll">
+                    Our restriction enzymes of choice are EcorI, BamHI, and HindIII.
+                </p>
+
+                <div class="callout callout-note">
+                    <p>We created a mastermix with EcoRI and BamHI to first digest pSEVA648, nirBD, and nrfABCD. Unfortunately, this approach did not work very well for pSEVA648, as can be seen from the bands below.</p>
+
+                </div>
+
+                <div class="image-credit-wrapper">
+                    <img src="../images/dna_ladder.png" 
+                alt="DNA Ladder" 
+                class="animate-on-scroll" 
+                style="display: block; margin: 1rem auto 0; max-width: 600px; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                    <p class="image-credit">From left to right: 1-10kb standard DNA ladder, undigested plasmid, digested plasmid. No clear bands were obtained after digestion.</p>
+                </div>
+
+                <div class="callout callout-note">
+                    <p>Therefore, we ditched the mastermix and digested it using the enzymes separately to understand the root of the problem. </p>
+                </div>
+
+                <div class="image-credit-wrapper">
+                    <img src="../images/undigested_ladder.png" 
+                alt="Undigested DNA Ladder" 
+                class="animate-on-scroll" 
+                style="display: block; margin: 1rem auto 0; max-width: 600px; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin-bottom: 2rem;">
+                    <p class="image-credit">From left to right—Ladder, Undigested pSEVA648, pSEVA648+EcoRI, pSEVA648 + BamHI, pSEVA648+ HindIII. Only the HindIII digestion seemed to have worked, which prompted us to replace the EcorI and BamHI enzymes we were using.</p>
+                </div>
+                
+                <p class="animate-on-scroll">
+                    Having replaced our stock with fresh enzymes, we performed digestion for all of our samples. 
+                </p>
+
+                <h3 id="elution">IV. Elution</h3>
+
+                <p class="animate-on-scroll">
+                    We eluted the bands from the gel using a gel elution kit, which yielded less than satisfactory DNA concentrations yet again. 
+                </p>
+
+                <p class="animate-on-scroll">
+                    Since we had 50μL of the eluted sample, we used a vacuum heater to evaporate the excess supernatant and proceeded with ligation.
+                </p>
+
+                <h3 id="ligation">V. Ligation and Transformation</h3>
+
+                <p class="animate-on-scroll">
+                    Our next step was to ligate the different fragments together. We picked nrfABCD and pSEVA648 for the first run due to the promising DNA concentrations obtained after drying the elution samples. 
+                </p>
+                <p class="animate-on-scroll">
+                    After setting up ligation and incubating, we transformed E.coli DH5-alpha using heat shock. Unfortunately, we did not observe growth on the Kanamycin agar plate, indicating that something failed either during ligation or transformation. We are currently troubleshooting the problem.
+                </p>
             </section>
 
-            <section id="analysis-methods" data-aos="fade-up">
-                <h2>Analysis & Characterization</h2>
-                <p>Successful transformation was verified via Colony PCR and restriction digest.</p>
+            <section id="optimal-growth" data-aos="fade-up">
+                <h2>Identifying Optimal Growth Media</h2>
+
+                <p class="animate-on-scroll">We prepared rich growth media and minimal growth media having varying compositions based on the questions brainstormed during the design phase of this cycle. The idea was to confirm which culture media P.putida KT2440 responded most favorably to, and then run further tests on nitrate and nitrite metabolism in the short-listed media for convenience. We also cultured E.coli DH5-alpha and P.putida EM42 to act as negative controls for the subsequent experiment. </p>
+                <p class="animate-on-scroll">We first took inventory of the material we had in our lab to prepare the media. </p>
+
+                <h3 id= "media" class="section-title-small">Media & Components</h3>
+                <div class="table-wrapper">
+                <table class="custom-table">
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Rich Media</th>
+                        <th>Minimal Media</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Solvent</td>
+                        <td>MQ water</td>
+                        <td>MQ water</td>
+                    </tr>
+                    <tr>
+                        <td>Carbon source</td>
+                        <td>1. Brain heart infusion broth (calf brain, beef heart, proteose peptone, dextrose, NaCl, Na2HPO4). Even richer than beef extract.
+                            <br><br>2. Peptone, bacteriological grade.
+                            <br><br>3. Nutrient broth (yeast extract, NaCl, two types of peptone, one of which is equivalent to beef extract).</td>
+                        <td>
+                            1. Glycerin  <br><br>
+                            2. Yeast extract <br><br>
+                            3. NaHCO<sub>3</sub> <br><br>
+                            4. NaCO<sub>3</sub> <br><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nitrite source</td>
+                        <td>NaNO₂</td>
+                        <td>NaNO₂</td>
+                    </tr>
+                    <tr>
+                        <td>Extra nutrition</td>
+                        <td>Not required.</td>
+                        <td>Could use Burk’s medium for extra salts and buffers, since Burk’s medium does not contain nitrogen and will not invalidate the readings. Includes phosphates, sulphates, and sucrose.</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <h3 id= "compositions-table" class="section-title-small">Compositions Table</h3>
+                <p class="animate-on-scroll">Contains values for rich media</p>
+                <div class="table-wrapper">
+                <table class="custom-table">
+                    <thead>
+                    <tr>
+                        <th>Sample</th>
+                        <th>Brain-Heart Infusion Broth (g)</th>
+                        <th>Nutrient Broth (g)</th>
+                        <th>Peptone (g)</th>
+                        <th>NaNO<sub>2</sub> (g)</th>
+                        <th>Water (ml)</th>
+                        <th>Agar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Sample #1</td>
+                        <td>0.15</td>
+                        <td>0</td>
+                        <td>0.25</td>
+                        <td>0.05</td>
+                        <td>50</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>Sample #2</td>
+                        <td>0.15</td>
+                        <td>0</td>
+                        <td>0.25</td>
+                        <td>0.05</td>
+                        <td>50</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Sample #3</td>
+                        <td>0.30</td>
+                        <td>0</td>
+                        <td>0.25</td>
+                        <td>0.05</td>
+                        <td>50</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>Sample #4</td>
+                        <td>0.15</td>
+                        <td>0</td>
+                        <td>0.25</td>
+                        <td>0.1</td>
+                        <td>50</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>Sample #5</td>
+                        <td>0</td>
+                        <td>0.15</td>
+                        <td>0.25</td>
+                        <td>0.05</td>
+                        <td>50</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td>Sample #6</td>
+                        <td>0</td>
+                        <td>0.65</td>
+                        <td>0.25</td>
+                        <td>0.05</td>
+                        <td>50</td>
+                        <td>No</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <div class="callout callout-note">
+                    <p>
+                        The ASM protocol specifically cautions against using fermentable carbohydrates due to the fermentative nature of DNRA. The BH infus`ion has dextrose.
+                    </p>
+                    <p>
+                        Our solution was to use Nutrient broth in another medium to cross-check just how much this affects reduction capabilities.
+                    </p>
+                </div>
+
+                <h3 id= "minimal-table" class="section-title-small">Minimal Media Table</h3>
+                <p class="animate-on-scroll">Contains values for minimal media</p>
+                <div class="table-wrapper">
+                <table class="custom-table">
+                    <thead>
+                    <tr>
+                        <th>Sample</th>
+                        <th>Glycerin</th>
+                        <th>Yeast Extract</th>
+                        <th>NaHCO<sub>3</sub></th>
+                        <th>Na<sub>2</sub>CO<sub>3</sub></th>
+                        <th>NaNO<sub>2</sub></th>
+                        <th>Burk's Medium</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Sample #7</td>
+                        <td>0.12</td>
+                        <td>0.06</td>
+                        <td>0.05</td>
+                        <td>0.005</td>
+                        <td>0.95</td>
+                        <td>0.5</td>
+                    </tr>
+                    <tr>
+                        <td>Sample #8</td>
+                        <td>0.12</td>
+                        <td>0.06</td>
+                        <td>0.05</td>
+                        <td>0.005</td>
+                        <td>0.95</td>
+                        <td>0.0</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
             </section>
 
-            <section id="safety-notes" data-aos="fade-up">
-                <h2>Safety & Biosafety Notes</h2>
-                <p>All work was conducted under Biosafety Level 1 (BSL-1) containment.</p>
-                <p>Successful transformation was verified via <a href="#">Colony PCR</a> and restriction digest.</p>
+            <section id="metabolism" data-aos="fade-up">
+                <h2>Nitrate and Nitrite Metabolism in P.putida</h2>
+
+                <p class="animate-on-scroll">To confirm the success of our engineered plasmid, we need to ensure that nitrate/nitrite uptake and extracellular ammonium production of the transformed bacterium are higher than the basal levels already present in our chassis. The first step was thus to calculate the basal level nitrate/nitrite reduction already carried out by the bacteria.</p>
+
+                <h3 id= "nitrite" class="section-title-small">I. Nitrite metabolism </h3>
+                
+                <p class="animate-on-scroll">
+                    We used samples #1, #5, and #6 to culture P.putida KT2440 and measured nitrite values at 12 hours, 24 hours, and 48 hours. We also cultured our negative controls to measure against a standard.
+                </p>
+
+                <h3 id= "nitrate" class="section-title-small">II. Nitrate metabolism </h3>
+                <p class="animate-on-scroll">
+                    We used samples #1, #5, and #6 to culture P.putida KT2440 and measured nitrate and ammonium values at 12 hours, 24 hours, and 48 hours.
+                </p>
+                <br><br>
+                <p class="animate-on-scroll">
+                    We are en route to carrying out the same experiments for our transformed bacteria post successful transformation.
+                </p>
+
             </section>
+
+            <section id="biofilm" data-aos="fade-up">
+                <h2>Biofilm formation in P.putida</h2>
+                <p class="animate-on-scroll">
+                    P.putida natively forms biofilms. Thus, we aimed to confirm that basal biofilm formation was not obstructed post-transformation
+                </p>
+
+            <section id="fatal" data-aos="fade-up">
+                <h2>Determination of the fatal amount of nitrate build-up</h2>
+                <p class="animate-on-scroll">
+                    We prepared nitrate stock solutions of varying concentrations based on dry lab modelling results that predicted the maximum amount of nitrite that would be contained within the bacterial cell at any given point. Then, we cultured P.putida KT2440 in all the concentrations, and took OD readings across time intervals. 
+                </p>
+
         </article>
     </main>
 </div>
@@ -733,20 +1041,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- FEATURE 3: DYNAMIC SIDEBAR & SCROLLSPY ---
     const navStructure = [
-        { id: 'project-overview', title: 'Project Overview' },
-        { id: 'gene-design', title: 'Gene Synthesis & Assembly', children: [
-            { id: 'gene-assembly-design', title: 'Gene Assembly Design' },
-            { id: 'gene-assembly-protocol', title: 'Assembly Protocol', children: [
-                { id: 'gibson-mix', title: 'Gibson Mix' },
-                { id: 'pcr-verification', title: 'PCR Verification' }
-            ]}
-        ]},
         { id: 'bacterial-transformation', title: 'Bacterial Transformation', children: [
-            { id: 'transform-e-coli', title: 'E. coli DH5a' },
-            { id: 'transform-p-putida', title: 'P. putida KT2440' }
+            { id: 'stock-preparation', title: 'Stock Preparation' },
+            { id: 'plasmid-isolation', title: 'Plasmid Isolation' },
+            { id: 'restriction-digestion', title: 'Restriction enzyme digestion' },
+            { id: 'elution', title: 'Elution'},
+            { id: 'ligation', title: 'Ligation and Transformation' }
         ]},
-        { id: 'analysis-methods', title: 'Analysis & Characterization' },
-        { id: 'safety-notes', title: 'Safety & Biosafety Notes' }
+        { id: 'optimal-growth', title: 'Optimal Growth Media', children: [
+            { id: 'media', title: 'Media Components' },
+            { id: 'compositions-table', title: 'Compositions Table' },
+            { id: 'minimal-table', title: 'Minimal Media Table' },
+        ]},
+        { id: 'metabolism', title: 'Metabolism in P.putida', children: [
+            {id: 'nitrite', title: 'Nitrite Metabolism' },
+            {id: 'nitrate', title: 'Nitrate Metabolism' }
+        ]},
+        { id: 'biofilm', title: 'Biofilm Formation in P.putida' },
+        { id: 'fatal', title: 'Fatal amount of nitrate build-up' }
     ];
 
     const navContainer = document.getElementById('docs-nav');
@@ -778,7 +1090,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const mainNavList = createNav(navStructure);
     const title = document.createElement('h2');
     title.className = 'text-lg font-bold text-gray-900';
-    title.textContent = 'Protocol Sections';
+    title.textContent = 'Sections';
     navContainer.appendChild(title);
     navContainer.appendChild(mainNavList);
     
@@ -835,6 +1147,44 @@ document.addEventListener('DOMContentLoaded', function () {
         once: true,
         offset: 50,
     });
+
+    navStructure.forEach(section => {
+    // Main section
+    const mainLink = document.createElement('a');
+    mainLink.textContent = section.title;
+    mainLink.classList.add('sidebar-link');
+    
+    mainLink.addEventListener('click', e => {
+        e.preventDefault(); // prevent default href behavior
+        const target = document.getElementById(section.id);
+        if(target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    sidebar.appendChild(mainLink);
+
+    // Children
+    if(section.children) {
+        const childList = document.createElement('div');
+        childList.classList.add('child-links');
+
+        section.children.forEach(child => {
+        const childLink = document.createElement('a');
+        childLink.textContent = child.title;
+        childLink.classList.add('sidebar-child-link');
+
+        childLink.addEventListener('click', e => {
+            e.preventDefault();
+            const target = document.getElementById(child.id);
+            if(target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        childList.appendChild(childLink);
+        });
+
+        sidebar.appendChild(childList);
+    }
+    });
+
 
 });
 </script>
