@@ -7,6 +7,17 @@
   <link rel="stylesheet" href="css/styles_main.css"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <base href="/">
+  <style>
+    .lake-image {
+    display: block;       /* centers the image */
+    margin: 2rem auto;    /* vertical spacing + horizontal centering */
+    max-width: 60%;       /* reduces the image size */
+    height: auto;         /* maintain aspect ratio */
+    border-radius: 0.5rem; /* optional: rounded corners */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* optional: shadow */
+}
+
+  </style>
 </head>
 
 <body>
@@ -169,23 +180,23 @@
 
           <div class="stat-card fill-85">
               <div class="stat-card-header">
-                  <h3><span class="counter" data-target="85">0</span>%</h3>
+                  <h3><span class="counter" data-target="66">0</span>%</h3>
               </div>
-              <p>of rural households in India depend on <strong>groundwater</strong> for drinking.</p>
+              <p>lakes in Bangalore were sewage fed in 2009</p>
           </div>
 
           <div class="stat-card fill-30">
               <div class="stat-card-header">
-                  <h3><span class="counter" data-target="30">0</span>%</h3>
+                  <h3><span class="counter" data-target="30">0</span></h3>
               </div>
-              <p>of India's land suffers from <strong>soil degradation</strong>.</p>
+              <p></p>
           </div>
 
           <div class="stat-card fill-70">
               <div class="stat-card-header">
-                  <h3><span class="counter" data-target="70">0</span>%</h3>
+                  <h3><span class="counter" data-target="20">0</span>%</h3>
               </div>
-              <p>increase in global <strong>ammonia production</strong> expected by 2050.</p>
+              <p>level of dissolved oxygen compared to recommended value.</p>
           </div>
 
       </div>
@@ -196,6 +207,9 @@
   <p>
     Bangalore, the city where our university is located, has been seeing eutrophication-growth of algal blooms on the surface of water- in its lakes for many years now. A water tank right beside our campus, Sankey Tank, has seen increasing algal growth, leading to poor quality water and mass fish kills. Urban eutrophication of this kind is heavily contributed to by nitrates in sewage and industrial effluents. But what about the rest of India?
   </p>
+
+    <img src="images/Hebbal Lake Eutrophication.png" alt="Hebbal Lake Eutrophication" class="lake-image"/>
+
   </section>
 
   <section class="stats-section">
@@ -205,28 +219,79 @@
   </p>
   </section>
 
+  <section class="stats-section-second">
+      <h2></h2>
+      <div class="stats-grid-second">
+
+          <div class="stat-card-second fill-85">
+              <div class="stat-card-header-second">
+                  <h3><span class="counter-second" data-target="90">0</span>%</h3>
+              </div>
+              <p>of rural india relies on ground-water for drinking</p>
+          </div>
+
+          <div class="stat-card-second fill-30">
+              <div class="stat-card-header-second">
+                  <h3><span class="counter-second" data-target="22">0</span>%</h3>
+              </div>
+              <p>higher risk of methemoglobinemia in water with high nitrate levels</p>
+          </div>
+
+          <div class="stat-card-second fill-70">
+              <div class="stat-card-header-second">
+                  <h3><span class="counter-second" data-target="27">0</span>%</h3>
+              </div>
+              <p>of children population in Indo-Gangatic plain are at risk due to nitrate exposure.</p>
+          </div>
+
+      </div>
+  </section>
+
       
   <section id="visual-expl" class="visual-expl" aria-labelledby="solution-heading">
     <div class="visual-grid">
       <figure class="visual-left">
-        <img src="images/soil-with-roots.jpg" alt="Diagram showing our microbe preventing nitrate from leaching into groundwater." loading="lazy"/>
+        <video 
+            src="images/hook.mp4" 
+            controls 
+            autoplay 
+            loop 
+            muted
+            width="600"
+            height="400"
+        >
+            Your browser does not support the video tag.
+        </video>
+
       </figure>
       <div class="visual-right">
         <h2 id="solution-heading">Comprehensive Solution to Nitrate Leaching</h2>
         <p>We engineered <em>Pseudomonas putida</em> to act as a living buffer, capturing excess nitrate and holding it in the root zone where plants need it most.</p>
         <ul class="benefits-list">
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            <span><strong>Protects Water Quality</strong> by preventing nitrate runoff into groundwater.</span>
+          <li class="flex items-center gap-2">
+            <!-- Water drop / fertilizer efficiency -->
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2C12 2 4 10 12 22c8-12 0-20 0-20z"/>
+            </svg> -->
+            <span>Improve fertilizer efficiency and reduce usage</span>
           </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-            <span><strong>Reduces Fertilizer Waste</strong>, saving resources and money for farmers.</span>
+
+          <li class="flex items-center gap-2">
+            <!-- Shield / biofilm protection -->
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2l8 4v6c0 6-8 10-8 10S4 12 4 8V4l8-2z"/>
+            </svg> -->
+            <span>Form a bacterial biofilm around roots to confer resistance</span>
           </li>
-          <li>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-            <span><strong>Enhances Soil Health</strong> and builds more resilient agricultural systems.</span>
+
+          <li class="flex items-center gap-2">
+            <!-- Recycling / reuse -->
+            <!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9 9 9-9M21 3v6H3V3"/>
+            </svg> -->
+            <span>Treat runoff and reuse for fertilizer production</span>
           </li>
+
         </ul>
       </div>
     </div>
@@ -607,6 +672,44 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(createDot, i * 500);
     }
 });
+
+// JavaScript to animate the numbers when they scroll into view
+const countersSecond = document.querySelectorAll('.stat-card-second');
+
+countersSecond.forEach(card => {
+    const counter = card.querySelector('.counter-second');
+    if (!counter) return;
+
+    const target = +counter.getAttribute('data-target');
+    let hasAnimated = false;
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !hasAnimated) {
+                hasAnimated = true;
+                card.classList.add('is-visible'); // triggers fill animation
+
+                let currentValue = 0;
+                const duration = 1500; // ms
+                const stepTime = 20;
+                const totalSteps = duration / stepTime;
+                const increment = target / totalSteps;
+
+                const interval = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= target) {
+                        currentValue = target;
+                        clearInterval(interval);
+                    }
+                    counter.textContent = Math.round(currentValue);
+                }, stepTime);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    observer.observe(card);
+});
+
 </script>
 
 </body>

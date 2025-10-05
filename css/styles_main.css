@@ -691,15 +691,145 @@ body {
 }
 
 /* When the card is visible, the ::before element gets a height */
-.stat-card.is-visible.fill-85::before { height: 85%; }
+.stat-card.is-visible.fill-85::before { height: 66%; }
 .stat-card.is-visible.fill-30::before { height: 30%; }
-.stat-card.is-visible.fill-70::before { height: 70%; }
+.stat-card.is-visible.fill-70::before { height: 20%; }
 
 /* Ensure the card content sits on top of the fill layer */
 .stat-card-header, .stat-card p {
     position: relative;
     z-index: 1;
 }
+
+/* Stat Section Second */
+
+
+.stats-section-second {
+    max-width: 1100px;
+    margin: 60px auto 0 auto;
+    text-align: center;
+}
+
+.stats-section-second h2 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 3rem;
+}
+
+/* --- Grid for the Cards --- */
+.stats-grid-second {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+/* --- Individual Stat Card Styling --- */
+.stat-card-second {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: left;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.stat-card-second:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card-header-second {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.stat-card-second h3 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: rgb(254, 5, 5);
+    margin: 0;
+}
+
+.stat-card-second .icon {
+    width: 48px;
+    height: 48px;
+    color: #2ecc71; /* A nice green for the icons */
+}
+
+.stat-card-second p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.stat-card-second strong {
+    color: #1e293b;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 900px) {
+    .stats-grid-second {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .stat-inner-second,
+  .stat-inner-second.reverse {
+    flex-direction: column;
+    text-align: center;
+    gap: 2.5rem;
+  }
+  .dial-container-second {
+    width: 120px;
+    height: 120px;
+  }
+  .dial-text-second h2 {
+    font-size: 1.75rem;
+  }
+}
+
+.dial-svg-second {
+    overflow: visible !important;
+}
+
+
+/* --- Add these styles for the fill effect --- */
+
+/* Make the card a positioning container for the fill layer */
+.stat-card-second {
+    position: relative;
+    overflow: hidden; /* Keeps the fill inside the rounded corners */
+}
+
+/* The "water" fill layer */
+.stat-card-second::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0; /* Starts at 0 height */
+    background-color: rgba(0, 119, 255, 0.273); /* A light, semi-transparent red */
+    z-index: 0; /* Sits behind the content */
+    transition: height 1.5s cubic-bezier(0.25, 1, 0.5, 1); /* Smooth animation */
+}
+
+/* When the card is visible, the ::before element gets a height */
+.stat-card-second.is-visible.fill-85::before { height: 90%; }
+.stat-card-second.is-visible.fill-30::before { height: 22%; }
+.stat-card-second.is-visible.fill-70::before { height: 27%; }
+
+/* Ensure the card content sits on top of the fill layer */
+.stat-card-header-second, .stat-card-second p {
+    position: relative;
+    z-index: 1;
+}
+
 
 
 /* Visual Explaination Section */
