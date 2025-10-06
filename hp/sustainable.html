@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wet Lab Protocol | iGEM Wiki</title>
+<link rel="stylesheet" href="../css/styles_main.css"/>
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<base href="/"/>
+
+<style>
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Offset for sticky navbar */
+}
+
+/* === LAYOUT & CONTENT STYLES === */
+body {
+    background-color: #ffffff;
+}
+
+.docs-layout {
+    display: flex;
+    flex-direction: row;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+}
+
+.docs-sidebar {
+    position: sticky;
+    top: 80px; /* Adjusted for navbar height */
+    width: 256px;
+    height: calc(100vh - 120px);
+    flex-shrink: 0;
+    overflow-y: auto;
+    padding-right: 1.5rem;
+}
+
+.docs-sidebar nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #4b5563;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.docs-sidebar nav a:hover {
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+/* This is the class for the main section link highlight */
+.active-section-link {
+    background-color: #eef2ff;
+    color: #4338ca;
+    font-weight: 600;
+}
+
+/* This is for the specific subsection link */
+.active-subsection-link {
+    color: #4338ca;
+    font-weight: 600;
+}
+
+
+.sub-list {
+    padding-left: 12px;
+    margin-left: 8px;
+    border-left: 1px solid #e5e7eb;
+    overflow: hidden;
+    max-height: 1000px; /* Should be large enough to not clip content */
+    transition: max-height 0.4s ease-in-out;
+}
+
+.sub-list.collapsed { max-height: 0; }
+
+.collapse-icon {
+    transition: transform 0.3s ease;
+    width: 1rem;
+    height: 1rem;
+    color: #9ca3af;
+}
+
+a[aria-expanded="false"] .collapse-icon { transform: rotate(-90deg); }
+
+/* Main Content Typography */
+main {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+main article h1 { font-size: 2.25rem; font-weight: 800; color: #111827; }
+main article .lead { font-size: 1.125rem; color: #4b5563; margin-top: 0.5rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; }
+main article h2 { font-size: 1.5rem; font-weight: 700; color: #111827; margin-top: 2.5rem; margin-bottom: 1rem; }
+main article h3 { font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-top: 2rem; margin-bottom: 0.75rem; }
+main article h4 { font-size: 1.1rem; font-weight: 600; color: #374151; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+main article p { font-size: 1rem; line-height: 1.75rem; color: #374151; margin-bottom: 1rem; }
+main article pre { background-color: #1f2937; color: #d1d5db; padding: 1rem; margin: 1.25rem 0 1.5rem; border-radius: 0.5rem; overflow-x: auto; font-size: 0.875rem; }
+
+/* === STANDARDIZED CALLOUT BLOCKS === */
+.callout {
+    padding: 1rem;
+    margin: 1.25rem 0;
+    border-radius: 0.5rem;
+    border-left-width: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.callout-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+.callout-header svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+}
+.callout p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Note Style (Blue) */
+.callout-note { background-color: #eff6ff; border-color: #3b82f6; }
+.callout-note .callout-header { color: #1e40af; }
+.callout-note p { color: #1c3d8e; }
+
+/* Caution Style (Yellow) */
+.callout-caution { background-color: #fefce8; border-color: #f59e0b; }
+.callout-caution .callout-header { color: #854d0e; }
+.callout-caution p { color: #85560e; }
+
+/* Trivia Style (Green) */
+.callout-trivia { background-color: #f0fdf4; border-color: #22c55e; }
+.callout-trivia .callout-header { color: #15803d; }
+.callout-trivia p { color: #166534; }
+
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .docs-sidebar { display: none; }
+}
+</style>
+
+<style>
+
+    #progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(to right, #b859dd, #7a40d1);
+  width: 0%;
+  z-index: 2000;
+}
+
+    /* Underline effect for links in the article */
+/* Background highlight effect for links in the article */
+main article a {
+    color: #b859dd; /* Makes links stand out with the theme color */
+    font-weight: 500;
+    text-decoration: none;
+    background-color: transparent; /* Start with no background */
+    padding: 2px 6px; /* Adds space around the text for the background */
+    margin: -2px -6px; /* Prevents padding from affecting line spacing */
+    border-radius: 6px; /* Gives the background rounded corners */
+    transition: all 0.2s ease-in-out;
+}
+
+main article a:hover,
+main article a:focus {
+    background-color: #eef2ff; /* The same light purple as the active sidebar link */
+    color: #7a40d1; /* A slightly darker purple for better contrast on hover */
+}
+
+    /* Custom Scrollbar for Webkit browsers (Chrome, Safari) */
+.docs-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+.docs-sidebar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+.docs-sidebar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+.docs-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Code Block Styling */
+main article pre {
+    position: relative; /* Needed for the copy button */
+    padding-top: 2.5rem; /* Make space for header */
+}
+
+.code-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #374151; /* A slightly lighter shade */
+    color: #9ca3af;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.copy-button {
+    background-color: transparent;
+    color: #9ca3af;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.copy-button:hover {
+    background-color: #4b5563;
+    color: #e5e7eb;
+}
+</style>
+
+<style>
+    /* Premium Navbar */
+    .navbar-1 {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .navbar-1 .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    }
+
+
+    /* Main Navigation */
+    .nav-menu {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 8px;
+    }
+
+    .nav-menu > li {
+    position: relative;
+    }
+
+    .nav-menu > li > a {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    color: #1c1f28;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+    font-weight: bold;
+    }
+
+    .nav-menu > li > a:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #ca74ec;
+    }
+
+    /* macOS-style Dropdown */
+    .navbar-2 {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: saturate(180%) blur(20px);
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(-8px) scale(0.95);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 180px;
+    padding: 8px;
+    }
+
+    .navbar-2::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 4px solid rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0 -1px 1px rgba(0, 0, 0, 0.1));
+    }
+
+    .nav-menu > li:hover .navbar-2 {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0) scale(1);
+    }
+
+    .navbar-2 .container {
+    padding: 0;
+    height: auto;
+    display: block;
+    }
+
+    .nav-menu_hovered {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    }
+
+    .nav-menu_hovered a {
+    display: block;
+    padding: 8px 12px;
+    color: #1c1f28;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+    position: relative;
+    }
+
+    .nav-menu_hovered a:hover {
+    background: #ca74ec;
+    color: white;
+    transform: translateX(2px);
+    }
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+    .navbar-1 .container {
+        height: 60px;
+        padding: 0 1rem;
+        justify-content: space-between; /* logo left, toggle right */
+    }
+
+    .nav-menu {
+        max-height: 0;                /* hidden by default */
+        overflow: hidden;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: saturate(180%) blur(20px);
+        border: 0.5px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        padding: 0 1rem;
+        flex-direction: column;
+        gap: 0;
+        z-index: 999;
+        transition: max-height 0.4s ease; /* smooth slide */
+    }
+
+    .nav-menu.open {
+        max-height: 600px; /* enough space for all links */
+        padding: 1rem;
+    }
+
+    .nav-menu > li {
+        width: 100%;
+    }
+
+    .nav-menu > li > a {
+        padding: 12px 16px;
+        border-radius: 8px;
+        justify-content: space-between;
+    }
+
+    .navbar-2 {
+        position: static;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        background: rgba(248, 249, 250, 0.8);
+        backdrop-filter: none;
+        border: none;
+        border-radius: 8px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin-top: 8px;
+        padding: 8px;
+    }
+
+    .navbar-2::before {
+        display: none;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-text {
+        padding: 2rem 1.5rem;
+    }
+    }
+
+    /* Default (desktop) — hidden */
+    .nav-toggle {
+    display: none;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    }
+
+    /* Show only on mobile */
+    @media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+    }
+
+    /* Hamburger icon (3 bars) */
+    .nav-toggle-icon {
+    position: relative;
+    width: 28px;
+    height: 3px;
+    background-color: #333;
+    display: block;
+    transition: background-color 0.2s ease-in-out;
+    }
+
+    .nav-toggle-icon::before,
+    .nav-toggle-icon::after {
+    content: '';
+    position: absolute;
+    width: 28px;
+    height: 3px;
+    background-color: #333;
+    transition: transform 0.2s ease-in-out, top 0.2s ease-in-out;
+    }
+
+    .nav-toggle-icon::before {
+    top: -8px;
+    }
+
+    .nav-toggle-icon::after {
+    top: 8px;
+    }
+
+    /* Expanded (turn into X) */
+    .nav-toggle[aria-expanded="true"] .nav-toggle-icon {
+    background-color: transparent;
+    }
+
+    .nav-toggle[aria-expanded="true"] .nav-toggle-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+    }
+
+    .nav-toggle[aria-expanded="true"] .nav-toggle-icon::after {
+    transform: rotate(-45deg);
+    top: 0;
+    }
+
+
+    /* Logo */
+    .navbar-brand {
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    top: 60px;
+    }
+
+    .navbar-brand img {
+    height: 60px;
+    width: auto;
+    transition: transform 0.2s ease;
+    }
+
+    .navbar-brand:hover img {
+    transform: scale(1.05);
+    }
+</style>
+
+</head>
+<body class="bg-white">
+
+<div id="progress-bar"></div>
+
+<!-- Navbar -->
+  <nav class="navbar-1">
+    <div class="container">
+      <!-- Logo -->
+      <a class="navbar-brand" href="/main.html">
+        <img src="images/igemlogo.png" alt="Site Logo"/>
+      </a>
+
+      <!-- Mobile toggle -->
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-icon"></span>
+      </button>
+
+      <!-- Main Nav -->
+      <ul class="nav-menu" id="nav-menu">
+        <li>
+          <a href="../project.html">Project</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="../project/ideation.html">Ideation</a></li>
+                <li><a href="../project/overview.html">Overview</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="/wetlab.html">Wet Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="/wetlab/design.html">Design</a></li>
+                <li><a href="/wetlab/engineering.html">Engineering</a></li>
+                <li><a href="/wetlab/experimentation.html">Experimentation</a></li>
+                <li><a href="/wetlab/notebook.html">Notebook</a></li>
+                <li><a href="/wetlab/parts.html">Parts</a></li>
+                <li><a href="/wetlab/delivery.html">Delivery Mechanisms</a></li>
+                <li><a href="/wetlab/biosafety.html">Biosafety and Biosecurity</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="../drylab.html">Dry Lab</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="../drylab/engineering.html">Engineering</a></li>
+                <li><a href="../drylab/ml.html">ML Modelling</a></li>
+                <li><a href="../drylab/modelling.html">ODE Modelling</a></li>
+                <li><a href="../drylab/juniors.html">Improvised GenBank</a></li>
+                <li><a href="../drylab/alphafold.html">Alphafold</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="../hp.html">Human Practices</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="../hp/ihp.html">Integrated Human Practices</a></li>
+                <li><a href="../hp/results.html">Results and Analysis</a></li>
+                <li><a href="../hp/sustainable.html">Sustainable Development</a></li>
+                <li><a href="../hp/blogs.html">Blogs</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+        <li>
+          <a href="../team.html">Team</a>
+          <nav class="navbar-2">
+            <div class="container">
+              <ul class="nav-menu_hovered">
+                <li><a href="../team/attributions.html">Atttributions</a></li>
+                <li><a href="../team/gallery.html">Gallery</a></li>
+                <li><a href="../team/aiim.html">AIIM</a></li>
+              </ul>
+            </div>
+          </nav>
+        </li>
+
+      </ul>
+    </div>
+  </nav>
+
+<div class="docs-layout">
+    <aside class="docs-sidebar">
+        <nav id="docs-nav" class="w-full"></nav>
+    </aside>
+
+    <main class="lg:pl-8">
+        <article>
+            <header id="top">
+                <h1>Sustainable Development</h1>
+            </header>
+
+            <section id="Sustainable-development" data-aos="fade-up">
+                <h2>Sustainable Development</h2>
+                <p>Directing scientific efforts towards the broader challenges humanity is facing is the need of the hour. However, the steps taken in this regard should be measured to ensure the long-term sustainability of these solutions. The UN Sustainable Development Goals are a set of resolutions and objectives across domains, aiming to better the future of humanity ethically and sustainably. Since their inception in 2017, the 17 SDGs have become the focal point of projects targeting large-scale change for the benefit of humanity. We chose this as one of our special awards because, from the beginning, our project has been rooted in the betterment of society through science. Throughout our journey, we have learnt how interconnected these goals are - highlighting that only a collective effort on all fronts can ensure we secure a promising future. </p>
+                <p>Our project is focused on reducing nitrate leaching from agricultural fields. In this context, it is a fertilizer efficiency issue leading to increased costs and decreased output for farmers. Given that India has 1,53,899 hectares of cultivated land, which accounts for around 46.82% of India’s landmass, the problem is already quite widespread and significant.</p>
+                <p>However, leaching poses problems in multiple other domains. Nitrates, after entering aquatic water, lead to a degradation in water quality. Nitrate-laced water has been linked to diseases like methemoglobinemia, colorectal cancer, and thyroid disease.</p>
+                <p>High levels of nitrate and potassium in water cause eutrophication, which is the growth of algae on the surface. This leads to a reduction in dissolved oxygen levels, less permeability of sunlight, and the release of harmful cyanotoxins by the algae. This leads to phenomena like mass fish kills, loss of aquatic diversity, and damage to underwater plants.</p>
+                <p>The solution we have devised requires the release of a GMO into the soil, which converts nitrites to a more stable form – ammonium[6]. This raises further biosafety, biosafety and ethical concerns which need to be considered. At the same time, one must weigh the advantages of applying an innovative solution that would solve a major problem affecting a diverse set of stakeholders. </p>
+                <p>Lastly, the solution we present is not just limited to agriculture; it can be scaled up to remediate waters polluted with nitrate as well. While this requires designing a bioreactor system to work in that environment, the essence of the solution will remain the same. We also explored this angle while discussing sustainable models to tackle nitrate leaching on all fronts  – first in soil, then i  water – to reduce the impact as much as possible. </p>
+                <p>Based on this background, our project is linked to the following Sustainable Development Goals:</p>
+                </section>
+
+            <section id="goal-2" data-aos="fade-up">
+                <h2>A. Goal 2- Zero Hunger</h2>
+                <p>According to the United Nations SOFI (State of Food Security and Nutrition in the World) 2025 report, 8.2 percent of the world population, or approximately 673 million people, were unable to access enough calories for a healthy life.[7] Our project is tied to agricultural production and directly targets this goal. Better utilization of nitrogen in the soil enhances plant growth and crop production. This also adds an element of stability to food production, as fertilizer can often be expensive for marginalized farmers to purchase. Use of available fertilizer more effectively, through long-term investment in GMO bacteria, provides an additional pillar of support. Additionally, research shows plants uptake ammonium more efficiently than they do nitrate, meaning our solution would also increase crop yield. </p>
+                <h3>Stakeholder 1: Nandula Raghuram, Head of Centre for Sustainable Nitrogen and Nutrient Management, University Centre for Bio Technology. </h3>
+                <p>His expertise lies in the functional biology of nitrogen using various biotechnological approaches. While we could not get a meeting with him, he gave us a brief overview of the problem of nitrate leaching with multiple perspectives to look into.</p>
+                <p>He highlighted the lack of legume-cereal rotation in Indian agriculture as a misrepresentation of the Green Revolution. The practice of crop rotation is extremely important in reducing nitrogen loss, which continues to be followed in western agriculture. However, Indian agriculture’s repeated cultivation of cereal and moving away from legumes has exacerbated nitrate losses over the years. </p>
+                <p>Secondly, he highlighted the negative role that too much ammonium can play on the environment. He mentioned that a major part of ammonia emissions from India is also contributed by agriculture. Clearly, too much of any reactive N compound would harm the soil if present in excess.</p>
+                <p>Lastly, he urged us not to look at GMOs as the only solution to the problem at hand. While genetic engineering is a marvellous tool born out of human ingenuity, it must be used with nuance – not applied indiscriminately to every problem we come across.</p>
+
+                <h3>Stakeholder 2: Shyam Sundar Agarwal, Director, Ministry of Chemicals and Fertilizers, Government of India</h3>
+                <p>According to Shyam Sundar Agarwal, only 35% of the urea in fertilizers is used for beneficial crop growth; the other 65% makes its way into the environment through aquatic means. He explained that nitrate leaching is a problem the government is actively looking at and has taken cognizance of. When we presented our solution, he welcomed it, including the use of GMOs. He stated that government regulations on GMOs are slowly relaxing, so there is good scope for GGMO-based solutions to fit into unexplored niches in the coming days. He also told us about the ministry in disseminating knowledge about quantities of fertilizers to be used, logistics of fertilizer transport, anthe d role in the fertilizer infrastructure.</p>
+
+                <h4>Challenge #1</h4>
+                <p>While nitrate leaching is caused by successive fertilizer use, is it really the root cause? Does our solution really tackle the problem, or only a superficial abstraction of it?</p>
+                <p>We decided that to truly understand the problem, we needed to be thorough with our literature review, to bolster our confidence about the reality of the problem. We also spoke to farmers to understand the ground reality, and received inputs from Shyam Sundar Agarwal.</p>
+                <p>Based on this, we understood that nitrate leaching is a two-edged sword. Awareness about non-biotechnological means of retaining soil nitrogen, such as crop rotation, use of organic manure, and judicious fertilizer use, definitely needs to be spread. However, the low efficiency of fertilizers is also a ground reality. A product such as ours, which can retain nitrogen in the soil, will not only reduce leaching, but it will also increase fertilizer efficiency and reduce costs for farmers.</p>
+                <p>Thus, a dual-pronged approach is essential to tackle the problem in its entirety. Another benefit of our idea is the presence of the bacterium as a biofilm around plant roots. Our chassis, Pseudomonas putida KT2440, has been characterized as a plant plantgrowth-promotingg bacterium, which will provide the plant with additional resistance to drought, heat, disease, and other adverse environmental conditions.</p>
+
+                <h4>Challenge #2</h4>
+                <p>Our solution contributes to increasing crop yield due to higher uptake efficiency of the end product, ammonium. But what about toxicity? Will the end product of ammonium do more harm than good?</p>
+                <p>We had already read about the harmful effects of ammonium toxicity. Since the current iteration of our project used a plasmid to insert genes for the conversion of nitrate to ammonium, modulating the copy number would change the expression levels and thus conversion rates. We planned to conduct supporting experiments in the wet lab to understand the maximum efficiency of the genes, under the condition that no toxicity occurs. An eventual solution, where genomic integration is used instead of vectors for higher stability, could modulate promoters and ribosome binding sites to modulate expression.</p>
+                <p>This would allow us to ensure that nitrate leaching is reduced, but the end product does not cause harm instead.</p>
+
+                <h4>Challenge #3</h4>
+                <p>Are GMOs necessary to solve this problem? Why not use traditional approaches to solve this problem?</p>
+                <p>We realized that traditional methods of regulating agricultural practices will not solve the problem. Similar to challenge #1, this too is a double-edged sword. The sheer scale of agriculture means that leaching will always happen, so a solution beyond spreading awareness and practicing sustainable non-GMO techniques is needed. Our solution is definitely not the only one; in fact, it could be used in tandem with other solutions (both GMO and non-GMO) as discussed here[hyperlink to bioreactor section]. However, given the urgency of the problem, any solutions need to be taken seriously and given a due chance at solving the problem.</p>
+                <p>We would ensure that strong wet lab and dry lab data supporting the effectiveness of our solution are acquired as evidence. At the same time, we would develop systems to ensure biosafety and biosecurity, to make sure that our solution using a GMO does not hamper its translation into the real world.</p>
+
+                <h2>B. Goal 3- Good health and well-being</h2>
+                <p>More than one-third of malnourished children in the world live in India, with 194.4 million people living in poverty; it is also the country with the highest number of undernourished people. In such a situation, the goal of good health and well-being can only be fulfilled by considering the nutritional disabilities certain sections of society face.</p>
+                <p>Our project addresses this issue head-on by improving economic situations and food production. Another often neglected aspect, however, is not the quantity of resources available but also the quality of resources available to the population. This is especially problematic considering the high nitrate levels present in drinking water.</p>
+
+                <h3>Stakeholder 1: Dr. Priyanka Jamwal: Head of the Soil and Water Lab, Ashoka Trust for Research in Ecology and the Environment</h3>
+                <p>We realized that the problem of nitrates in drinking water was more significant than it seemed. We had initially focused on the impact of nitrates on aquatic life. Dr. Jamwal highlighted that drinking such water can be extremely detrimental to human and animal health. This is exacerbated by much of the rural Indian population relying on unfiltered groundwater for drinking. The large amount of waste nitrates from fertilizers, as well as soak pits built under the Swachh Bharat Scheme, contaminate critical drinking water supplies, ranging from groundwater to lakes. By interacting with farmers, we also learnt that all these resources are also used by many rural families, many of which do not possess a water filter, validating the issues mentioned in studies.</p>
+
+                <h4>Challenge #1</h4>
+                <p>Would reducing nitrate leaching solve the problem in its entirety, since even lesser amounts could be harmful?</p>
+                <p>A dual approach targeting both soil and water is necessary to ensure that the problem is tackled successfully. Quite late into our iGEM cycle, we realized that s soil soil-based solution may not be enough. To have a similar impact on water, we thought of building a bioreactor that could convert nitrates in water to ammonium.</p>
+                <p>Our chassis in the soil, Pseudomonas putida KT2440, has been shown to work in microaerophilic environments. After validating our proof of concept in the soil, we decided to apply the same bacterium in a bioreactor to reduce nitrate levels. But what about the excess ammonium produced?</p>
+                <p>This water would not be allowed to move to water bodies; rather, it would be diverted to fertilizer factories, where nitrates and ammonium are raw materials. The water could be treated to have the desired proportion of nitrate and nitrite based on the efficiency of the bacterium, which would have to be studied. We have come up with a theoretical construct for such a device.</p>
+
+                <h2>C. Goal 6- Clean water and sanitation</h2>
+                <p>Approximately 2.1 billion people lack safe drinking water, and 3.4 billion people, an even larger number, lack proper sanitation, as stated by the United Nations. Framed differently, more than one in four people lack access to such basic securities that support life. Improving the quality of water and sanitation has also been one of the primary focuses of our project. Reducing the level of nitrates in water, a hidden parameter that often has dire effects on human health, is a prime example of how our project contributes to clean water. Additionally, by reducing nitrate quantities in water, we also prevent eutrophication of water bodies, which are often used as sources of drinking water for both humans and livestock, as well as for everyday use. Algae that eutrophicate the water produce a variety of toxins that can make humans and livestock who drink from the water or use it otherwise seriously ill. By eliminating the nitrates leached into water, a crucial nutrient for algal blooms, we prevent their growth and ensure better water and sanitation.</p>
+
+                <h3>Stakeholder 1: Suchiradipta Bhattacharjee: Social Scientist, International Water Management Institute</h3>
+                <p>To gain an understanding of current water management systems and how nitrate leaching affects them, we spoke to Dr. Suchiradipta. It was a conversation that really enlightened us, since she works at the interface of water management and agricultural practices. She said that nitrate leaching has also disturbed efforts directed at sustainability, such as groundwater recharging projects. When harvesting tanks are set up to recharge aquifers, the water carries nitrates with it into the underground aquifers. Although the quantity of water is recharged, the quality depletes significantly. </p>
+                <p>She highlighted another domain in which nitrate leaching pollutes the water, making it unsafe to drink. While agriculture definitely contributes a major chunk to leaching, sewage and effluents play a larger role in cities. In Bangalore, for example, sewage leakage into lakes has led to eutrophication for many years. This has led to mass fish kills and the formation of algal blooms on the water's surface. However, we found no data on the exact split between agriculture and other contributors to increasing nitrate levels, which is necessary to plan remedial strategies.</p>
+                <p>Additionally, we also spoke about the use of GMOs as a means to remediate the problem. She told us that while stakeholders on the water management side of the problem would readily accept the problem, agricultural stakeholders would not, due to strict regulatory frameworks.</p>
+
+                <h4>Challenge #1</h4>
+                <p>What contributes to nitrate leaching more: fertilizers, sewage, or effluents? How does this affect our strategy to approach the problem?</p>
+                <p>We asked the experts we spoke to and also looked at the literature to identify if studies show these contributions. Since we didn’t find it anywhere, we had to decide on a strategy to measure these values.  After speaking to policymakers, we learned that the government collects water health data at regular intervals of time from specific sites. At the same time, fertilizer use data is also available. While we did not get a chance to study this data and develop a tool to analyse it, we have spoken to the relevant stakeholders, such as government officials, to understand how to procure it. Further steps will require us to have multiple verticals in our solution, targeting agriculture, sewage, and effluents, with the scale of response varying based on the relative contributions.</p>
+
+                <h4>Challenge #2</h4>
+                <p>The approach to the problem cannot be the same for rural and urban areas due to the vastly different demographics. How does the problem manifest differently in these two sectors?</p>
+                <p>To understand the nuances of the problem in rural areas, we visited a Berambadi village, a site around 180 kilometers from Bangalore. This was a visit with multiple objectives – soil sample collection, water sample collection, and interaction with farmers and residents of the village. We understood that, depending on the size of the villages, the availability of filtered water changes drastically. Other than a few families, who take the effort of getting filtered water from nearby communities, most people in smaller villages drink groundwater from borewells. Larger villages do have water filters; however, they only run for a few hours a day and require the people to pay for this water. This dissuades many people from drinking filtered water, and they resort to tap water despite the associated risks. This can be partly attributed to a lack of awareness about the dangers of high nitrate content, as well as an appeal to tradition – we have been drinking groundwater for generations, and it will not harm us.</p>
+                <p>A school in Berambadi, for example, has 64 students, who are forced to drink unfiltered water since they cannot afford a water filter. A delay in taking action against these problems comes at the cost of the health and future of such communities. After learning about the state of water in school, we have started an effort to raise funds to install a water filter to safeguard the health of the youth. This also aligns with the goals of SDG 2 and presents an interface between two goals where urgent action is needed. </p>
+
+                <h2>D. Goal 9- Innovation and Infrastructure</h2>
+                <p>While GMO use is a topic that could be placed under the aegis of multiple SDGs, considering its implications for innovation and infrastructure is particularly relevant to our project. This is largely because of two reasons. Firstly, we are working in a niche where no holistic solution exists at the moment. At the same time,  rigidity towards the use of GMOs in a bioremediation context makes it difficult to fit our solution into the regulatory framework.</p>
+
+                <h3>Stakeholder 1: Dr Puthra GT, Director, Karnataka State Department of Agriculture</h3>
+                <p>We spoke to Dr Puthra to understand the policy framework with respect to GMO use, as well as the traditional means of distributing, applying, and analysing fertilizer use. He also provided a lot of insight on the GMO landscape, specifically that he did not know of GMOs being used for BIoremediation. He also told us about GEAC, the Genetic Engineering Appraisal Committee, which looks at approving GMOs for commercial use. He urges us to continue this work, since the future looks promising for widespread use, and the problem we have chosen is also pressing and requires innovative thinking to resolve.</p>
+                
+                <h3>Stakeholder 2: Dr. Rahul Jog, Head of Research & Development, Bioprime Agrisolutions</h3>
+                <p>Dr. Jog gave us an overview from a scientific standpoint, as compared to previous administrative ones, about how GMO use is currently being viewed. The major takeaway was that different methods of genetic engineering have different viability when it comes to real-world scaling. These nuances need to be considered on a case-by-case basis, but a general framework is still necessary to have an estimate of how viable a solution is, which current policies currently lack. Another important point is how a product is classified within the existing framework, since this decides how stringent the norms and openness are to allow innovative work. For example, he told us to look into biofertilizers, biopesticides, and biostimulants, where the latter has a lot more flexibility with regard to the products that are allowed. Since his organisation works in soil, he also provided some insight about delivery mechanisms that we could consider to ensure efficient application of the engineered bacterium.</p>
+
+                <h4>Challenge #1 </h4>
+                <p>How does our product fit into the regulatory framework?</p>
+                <p>We studied the categories in which agricultural products can be compartmentalized. Biofertilizers are products of natural origin that provide nutrients to plants to aid their growth. Biopesticides are substances derived from natural substances that are used to control pests. However, there is a third category known as biostimulants, where substances that are neither biofertilizers nor biopesticides, but stimulate growth in the plant, are included. This is a dynamic category where the government is regularly adding new substances to benefit agriculture. If proper documentation is established to prove that our product is safe, it would fit very well into this framework. Just in May 2025, a government circular increased the list of agricultural products classified as Biostimulants. However, active engagement is required between government and academics to ensure that policies reflect the usefulness of GMOs and are supportive of innovative solutions to widespread problems.</p>
+
+                <h4>Challenge #2</h4>
+                <p>How can GMO policy be simplified to ensure valuable solutions are put to use, but safety and testing standards are not compromised?</p>
+                <p>This is a problem we have been contending with since the beginning of our project. Even if our solution is useful, how does one justify the potential harmful impacts of releasing a GMO in the environment? While we have used a plasmid for gene insertion currently, eventually our work will rely on genomic integration, a much safer method that can greatly reduce the risks of transfer of genetic material. We have also incorporated a kill switch that ensures the modified bacterium remains where it is supposed to and does not cause unintended damage.</p>
+                <p>Another major issue is the lack of clarity about what can realistically be allowed for commercial use and what is definitely not possible. There is also a lack of policies about microorganisms as GMOs, since most laws by GEAC speak about plant GMOs. This is something most of the experts we spoke to mentioned – lack of clarity in the regulations is stifling innovation and dissuading researchers from using these tools to their full potential. To remedy this, we have compiled a detailed document compiling the GMO Regulatory Framework in India, and have presented a framework for the assessment of various scenarios where GMOs can be used. We believe this document will give a platform to future iGEM teams as well as academics to look at their work objectively and consider the implications of its use in the real world. Given that the biology remains the same, a similar framework can be adopted in other countries as well, with modifications to the strictness of each category depending on the context.</p>
+
+                <h2>E. Goal 12- Sustainable consumption and production</h2>
+                <p>Improving the sustainability of the primary and secondary sectors of the economy, as well as that of consumption, is a crucial step in ensuring a healthy supply and demand cycle that mitigates harmful effects. Solutions may be useful for a short term, but it is detrimental if their long-term use also has negative effects. These must be considered white building models to translate a solution into the real world.</p>
+
+                <h3>Stakeholder 1: Gaurang Kulkarni, Designated Partner, KULKORP Technologies</h3>
+                <p>Scaling a product to a commercial market, while keeping sustainability in mind, requires as much thought as the academic component does. Gaurang told us about various business models that novel ideas rely on to ensure they stay relevant in the long term. He said that the key is to make sure all the stakeholders are benefited by a model, thereby garnering their support. This is not just essential for sustainability but also a characteristic of a good solution. He also suggested we expand our view of the problem. Similar to other experts who highlighted the role of effluents and sewage in nitrate pollution, he told us to consider a method to tackle the problem on all fronts, a holistic solution. Lastly, he told us that the best way to make sure our solution is used widely, governmental support is essential. Since we learnt that the government had already taken cognizance of the problem and was actively looking for solutions, they would be open to collaborating with innovative ideas. This was something we would have to capitalize on, while making sure all stakeholders – farmers, policymakers, researchers, and fertilizer companies – are satisfied with the outcomes.</p>
+
+                <h3>Stakeholder 2: Farmers and Public Perception</h3>
+                <p>We conducted two surveys, one to understand the view of farmers on fertilizer use and awareness about GMOs. We also spoke to a few farmers before the survey was conducted, and incorporated their viewpoints while building the final picture. The second survey was for the general public to understand their perspectives and knowledge about GMOs and their impacts. We analysed these surveys in detail, which have been presented on the Integrated Human Practices Page for our project.</p>
+                <p>Briefly, the farmers were quite open to using GMOs as long as they provided a financial benefit. They were also cognizant about their role in sustainability and acknowledged that ensuring agricultural practices are sustainable is their responsibility. Meanwhile, public perception of GMOs was divided. While there was largely support for using GMOs to aid agriculture, people were a lot more apprehensive about consuming GMO plants. A lot of them also felt that sustainable agricultural practices are necessary, and a price increase to this end is also justified. Overall, the response towards GMOs was quite positive as long as there is sufficient evidence to show that there will be no harmful effects.</p>
+
+                <h4>Challenge #1</h4>
+                <p>How to upscale to reach a wide audience without compromising sustainability goals?</p>
+                <p>We spoke to Gaurand about this and came up with a business model that would still have farmers as the eventual consumer, but the government would be the customer. Since leaching is something the government wants to solve, they would purchase a product en masse and use the same distribution channels as fertilizers to provide it to farmers. The farmers also benefit since they require less fertilizer and save on crops, and also see an increase in yield due to better ammonium uptake by the crops. Industry can be involved through a second component, which comes after the soil bioremediation. Water from effluents and factories can be treated by the same bacterium, which converts nitrate to ammonium. After efficiency characterisation of the pathway, we can modulate levels of nitrate and ammonium in the output and provide it to fertilizer companies, who use nitrates and ammonium as raw material. This creates a sustainable cycle, wherein minimal nitrogen is lost to the environment and downstream environmental concerns are also reduced, while ensuring the involvement of all stakeholders.</p>
+
+                <h4>Challenge #2</h4>
+                <p>What if the model works correctly, but there is a consensus against GMOs among consumers?</p>
+                <p>This is where awareness campaigns come into the picture. With governmental support, large-scale dissemination of information about the safety and benefits of GMOs needs to take place. Based on our survey, we found that most consumers are open to GMOs as an agricultural aid, and a relatively smaller but still large group agreed that GMOs themselves are a food crop. A significant part of the public would be convinced by GMOs as long as the specifics are made clear to them. Effective science communication is key to addressing public concerns about GMO use and building confidence in the safety of genetic engineering techniques.</p>
+
+                <h2>F. Goal 15- Life below water</h2>
+                <p>Eutrophication has been a threat to aquatic life in recent times, after the dramatic increase in fertilizer usage since the Industrial Revolution. Saturated algal blooms on the surface of water not only prevent light from reaching deeper parts of water bodies but also consume valuable dissolved oxygen and release toxins into the water. This deprives undersea autotrophs of the light they need to produce food, disrupting the food chain, making the water unsuitable for other life, such as fish, due to the high concentration of toxins and low dissolved oxygen. Managing this problem at the source is a viable solution.</p>
+
+                <h3>Stakeholder 1: TV Ramachandra, Scientific Officer, Centre for Ecological Sciences, Indian Institute of Science</h3>
+                <p>In Bangalore, known as the city of lakes, eutrophication due to sewage release has wreaked havoc on aquatic life, with over 60 mass fish kills reported over a period of 6 years in 2024. Professor Ramachandra has studied this phenomenon in detail and has been the author of multiple reports highlighting the issue and suggesting remedial measures. He explained that to address the widespread problem and conserve biodiversity, it is essential for waste disposal and water management policymakers to communicate. This is also a large civic problem, and can be resolved to a great degree through better planning.</p>
+                <p>Professor Ramachandra also highlighted the role of the government and said that greater effort on their part is needed for resolution.</p>
+
+                <h4>Challenge #1</h4>
+                <p>How does converting one nitrogen ion to another solve the issue of high nutrient content in water, which causes eutrophication? What about sewage in urban areas?</p>
+                <p>The basis of our idea is the better retention of ammonium in the soil compared to nitrogen. For a given amount of fertilizer use, less nitrate as well as less total nitrogen loss, would occur with the application of our engineered bacterium.</p>
+                <p>As for eutrophication in urban areas, the first essential step is the redirection of polluted water from water bodies. To treat this water, we are working on a bioreactor system that will perform the same conversion, nitrate to ammonium. However, rather than release this water into water bodies, it will be sent to industries that use nitrate and ammonium as raw materials. Depending on the requirement, the nitrate and ammonium levels can be modulated and supplied. This model will urge policymakers to ensure sewage does not reach water bodies, and also provide an outlet and utility for the redirected sewage.</p>
+
+                <h2>Collaboration: VIT Vellore</h2>
+                <p>We participated in an awareness campaign organised by VIT Vellore, where they shared how various iGEM Teams target the UN Sustainable Development Goals through Instagram posts. We were assigned SDG 15: Life Under Water, and we elaborated on how our project can contribute to significantly reducing the degree of urban and rural eutrophication.</p>
+
+                <h2>Where do we go from here? Remedial measures for the future</h2>
+                <p>Looking at our project from an SDG lens gave us a reality check and regular intervals. We were able to ensure that we are still solving the problem we set out to solve, and tailoring our project to what the problem actually is. Another learning was how interconnected science and civic challenges are. While science can definitely make an impact, if awareness campaigns, surveys, and public health efforts are conducted in tandem, a much larger effect can be achieved.</p>
+                <p>We have spoken to many individuals whose opinions and perspectives would have contributed to understanding our project better in the context of SDGs. In the interest of brevity, we have included only the major challenges and introspections we encountered during our iGEM cycle. Additional information from interviews with the stakeholders mentioned above can be found in the linked Human Practices articles. For a comprehensive overview of all our efforts, we have tried to document all our work as rigorously as possible on the Wiki.</p>
+                <p>To aid future iGEM Teams in their efforts to make an SDG Impact, we have compiled steps that are necessary in the future to fortify this work further, some of which we will work on in the coming days.</p>
+                <ul>
+                    <li>Thoroughly documenting the ammonium toxicity response of various plants and common soil microbes to modulate the efficiency of the expressed pathway according to the use case.</li>
+                    <li>Awareness campaigns, especially targeted to rural areas, to ensure knowledge of crop rotation, the use of organic manure, and other sustainable agricultural practices. </li>
+                    <li>Study pre-existing techniques that might be used intelligently in tandem with, or independently of our engineered bacterium, to expedite bioremediation by avoiding policy restrictions regarding GMOs.</li>
+                    <li>Identifying fertilizer supply chain stakeholders and studying the viability of using them to distribute a GMO.</li>
+                    <li>Detailed surveys on the concentration of nitrate and ammonium in water near factories.</li>
+                    <li>Changes in experiment design are needed to build a bioreactor that adheres to biosafety and biosecurity standards regarding GMOs.</li>
+                    <li>Understand the manufacturing process of fertilizers and how nitrate and ammonium-rich water can be used as a raw material compared to traditional manufacturing methods.</li>
+                    <li>Push for government policies for affordable (ideally free) filtered water facilities for rural communities.</li>
+                    <li>Build on the preliminary framework we have designed to classify GMO-based solutions to make it more comprehensive. Gather feedback from experts and see how the framework would have dealt with preexisting case studies.</li>
+                    <li>Test the kill switch under stringent laboratory conditions to validate its adherence to biosafety and biosecurity standards.</li>
+                    <li>Work with the government to chart out an action plan to tackle nitrate leaching, with awareness campaigns and redressal measures as the two verticals.</li>
+                    <li>Mass public awareness campaigns to build trust in GMOs that have undergone rigorous scientific testing.</li>
+                </ul>
+                
+        </article>
+    </main>
+</div>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // --- FEATURE 1: PROGRESS BAR ---
+    window.addEventListener("scroll", () => {
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrolled = (window.scrollY / docHeight) * 100;
+        const progressBar = document.getElementById("progress-bar");
+        if (progressBar) {
+            progressBar.style.width = scrolled + "%";
+        }
+    });
+
+    // --- FEATURE 2: CODE BLOCK COPY BUTTON ---
+    document.querySelectorAll('main article pre').forEach(block => {
+        const code = block.querySelector('code');
+        if (!code) return; // Skip if no <code> tag found
+        
+        const header = document.createElement('div');
+        header.className = 'code-header';
+        const title = document.createElement('span');
+        title.textContent = 'Protocol';
+        const copyButton = document.createElement('button');
+        copyButton.className = 'copy-button';
+        copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3z"/></svg> <span>Copy</span>`;
+        
+        header.appendChild(title);
+        header.appendChild(copyButton);
+        block.prepend(header);
+
+        copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(code.innerText).then(() => {
+                copyButton.innerHTML = `<span>Copied!</span>`;
+                setTimeout(() => {
+                    copyButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5-.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3z"/></svg> <span>Copy</span>`;
+                }, 2000);
+            });
+        });
+    });
+    // --- FEATURE 3: DYNAMIC SIDEBAR & SCROLLSPY ---
+    const navStructure = [
+        { id: 'sustainable-development-goals', title: 'Sustainable Development Goals' },
+        { id: 'a-goal-2-zero-hunger', title: 'A. Goal 2- Zero Hunger'},
+        { id: 'b-goal-3-good-health-and-well-being', title: 'B. Goal 3- Good health and well-being'},
+        { id: 'c-goal-6-clean-water-and-sanitation', title: 'C. Goal 6- Clean water and sanitation'},
+        { id: 'd-goal-9-innovation-and-infrastructure', title: 'D. Goal 9- Innovation and Infrastructure'}]
+    const navContainer = document.getElementById('docs-nav');
+    function createNav(items, isSubList = false) {
+        const list = document.createElement('ul');
+        list.className = isSubList ? 'sub-list collapsed' : 'space-y-1 mt-4';
+        items.forEach(item => {
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `#${item.id}`;
+            if (item.children) {
+                const subListId = `sublist-${item.id}`;
+                link.setAttribute('data-toggle', 'collapse');
+                link.setAttribute('aria-expanded', 'false');
+                link.setAttribute('aria-controls', subListId);
+                link.innerHTML = `<span>${item.title}</span><svg class="collapse-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>`;
+                listItem.appendChild(link);
+                const subList = createNav(item.children, true);
+                subList.id = subListId;
+                listItem.appendChild(subList);
+            } else {
+                link.textContent = item.title;
+                listItem.appendChild(link);
+            }
+            list.appendChild(listItem);
+        });
+        return list;
+    }
+    const mainNavList = createNav(navStructure);
+    const title = document.createElement('h2');
+    title.className = 'text-lg font-bold text-gray-900';
+    title.textContent = 'Protocol Sections';
+    navContainer.appendChild(title);
+    navContainer.appendChild(mainNavList);
+    
+    document.querySelectorAll('.docs-sidebar nav a[data-toggle]').forEach(toggle => {
+        toggle.addEventListener('click', e => {
+            e.preventDefault();
+            const targetElement = document.getElementById(toggle.getAttribute('aria-controls'));
+            const isCollapsed = targetElement.classList.toggle('collapsed');
+            toggle.setAttribute('aria-expanded', !isCollapsed);
+        });
+    });
+
+    const allLinks = document.querySelectorAll('.docs-sidebar nav a');
+    const sections = document.querySelectorAll("main section, main h3, main h4");
+    const observer = new IntersectionObserver(entries => {
+        let topmostVisibleEntry = null;
+        for (const entry of entries) {
+            if (entry.isIntersecting && (!topmostVisibleEntry || entry.boundingClientRect.top < topmostVisibleEntry.boundingClientRect.top)) {
+                topmostVisibleEntry = entry;
+            }
+        }
+        if (topmostVisibleEntry) {
+            const parentSection = topmostVisibleEntry.target.closest('section');
+            if (parentSection) {
+                const specificLink = document.querySelector(`.docs-sidebar nav a[href="#${topmostVisibleEntry.target.id}"]`);
+                document.querySelectorAll('.sub-list').forEach(sublist => {
+                    if (!sublist.contains(specificLink)) {
+                        sublist.classList.add('collapsed');
+                        const toggle = document.querySelector(`[aria-controls="${sublist.id}"]`);
+                        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                allLinks.forEach(l => l.classList.remove('active-section-link', 'active-subsection-link'));
+                const mainLink = document.querySelector(`.docs-sidebar nav a[href="#${parentSection.id}"]`);
+                if (mainLink) mainLink.classList.add('active-section-link');
+                if (specificLink && specificLink !== mainLink) specificLink.classList.add('active-subsection-link');
+                let parent = specificLink ? specificLink.closest('.sub-list') : null;
+                while (parent) {
+                    if (parent.classList.contains('collapsed')) {
+                        parent.classList.remove('collapsed');
+                        const parentToggle = document.querySelector(`[aria-controls="${parent.id}"]`);
+                        if (parentToggle) parentToggle.setAttribute('aria-expanded', 'true');
+                    }
+                    parent = parent.parentElement.closest('.sub-list');
+                }
+            }
+        }
+    }, { rootMargin: "-40% 0px -59% 0px", threshold: [0, 1] });
+    sections.forEach(section => { if (section.id) observer.observe(section); });
+
+    // --- FEATURE 4: INITIALIZE ANIMATE ON SCROLL ---
+    AOS.init({
+        duration: 600,
+        once: true,
+        offset: 50,
+    });
+
+});
+</script>
+
+</body>
+</html>
