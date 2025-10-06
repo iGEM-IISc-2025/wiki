@@ -630,59 +630,64 @@ main article pre {
             <section id="plasmid-design" data-aos="fade-up">
                 <h2>Plasmid Design</h2>
                 <p>We identified the nitrite reductase proteins <strong>nrfA</strong> and <strong>nirB</strong>, and therefore the three operons that we wanted to work with early in the project.</p>
-
+                <section id="operons">
                 <h3>Operon Breakdown</h3>
-
-                <h4>a. <code>nirBD</code></h4>
-                <p>Produces one cytosolic nitrite reductase enzyme, NirB.</p>
-                <ul>
-                    <li><code>nirB</code> → NirB → Large subunit</li>
-                    <li><code>nirD</code> → NirD → Small subunit</li>
-                </ul>
-                <p><strong>NirB:</strong> Cytosolic nitrite reductase. Catalyzes the following reactions:</p>
-                <pre>
-                NH₄⁺ + 3 NAD⁺ + 2 H₂O → NO₂⁻ + 3 NADH + 5 H⁺  
-                NH₄⁺ + 3 NADP⁺ + 2 H₂O → NO₂⁻ + 3 NADPH + 5 H⁺
-                </pre>
-                <p><a href="https://www.uniprot.org/uniprotkb/D4DYL4/entry" target="_blank">UniProt: NirB (D4DYL4)</a></p>
-
-                <h4>b. <code>nrfHAIJ</code></h4>
-                <p>Produces four proteins, including one periplasmic nitrite reductase enzyme, NrfA, and other relevant enzymes.</p>
-
-                <h4>c. <code>nrfABCDEFG</code></h4>
-                <p>Produces seven proteins, including one periplasmic nitrite reductase NrfA and other structural proteins.</p>
-                <p><strong>NrfA:</strong> Periplasmic nitrite reductase. Catalyzes the following reaction:</p>
-                <pre>
-                6 Fe(III)-cyt c + NH₄⁺ + 2 H₂O → 6 Fe(II)-cyt c + NO₂⁻ + 8 H⁺
-                </pre>
-                <p><a href="https://www.uniprot.org/uniprotkb/P0ABK9/entry" target="_blank">UniProt: NrfA (P0ABK9)</a></p>
-
+                    <section id="nirBD">
+                    <h4>a. <code>nirBD</code></h4>
+                    <p>Produces one cytosolic nitrite reductase enzyme, NirB.</p>
+                    <ul>
+                        <li><code>nirB</code> → NirB → Large subunit</li>
+                        <li><code>nirD</code> → NirD → Small subunit</li>
+                    </ul>
+                    <p><strong>NirB:</strong> Cytosolic nitrite reductase. Catalyzes the following reactions:</p>
+                    <pre>
+                    NH₄⁺ + 3 NAD⁺ + 2 H₂O → NO₂⁻ + 3 NADH + 5 H⁺  
+                    NH₄⁺ + 3 NADP⁺ + 2 H₂O → NO₂⁻ + 3 NADPH + 5 H⁺
+                    </pre>
+                    <p><a href="https://www.uniprot.org/uniprotkb/D4DYL4/entry" target="_blank">UniProt: NirB (D4DYL4)</a></p>
+                    </section>
+                    <section id="nrfHAIJ">
+                    <h4>b. <code>nrfHAIJ</code></h4>
+                    <p>Produces four proteins, including one periplasmic nitrite reductase enzyme, NrfA, and other relevant enzymes.</p>
+                    </section>
+                    <section id="nrfABCDEFG">
+                    <h4>c. <code>nrfABCDEFG</code></h4>
+                    <p>Produces seven proteins, including one periplasmic nitrite reductase NrfA and other structural proteins.</p>
+                    <p><strong>NrfA:</strong> Periplasmic nitrite reductase. Catalyzes the following reaction:</p>
+                    <pre>
+                    6 Fe(III)-cyt c + NH₄⁺ + 2 H₂O → 6 Fe(II)-cyt c + NO₂⁻ + 8 H⁺
+                    </pre>
+                    <p><a href="https://www.uniprot.org/uniprotkb/P0ABK9/entry" target="_blank">UniProt: NrfA (P0ABK9)</a></p>
+                    </section>
+                </section>
+                <sections id="vector-integration">
                 <h3>Vector Integration Strategy</h3>
-                <p>We planned to insert these operons primarily into the <strong>pSEVA vector 648</strong>. Fortunately, all SEVA plasmids have the same order of restriction enzymes in their insertion region, so we added restriction enzymes to the operons accordingly.</p>
+                    <p>We planned to insert these operons primarily into the <strong>pSEVA vector 648</strong>. Fortunately, all SEVA plasmids have the same order of restriction enzymes in their insertion region, so we added restriction enzymes to the operons accordingly.</p>
 
-                <p><strong>Chosen Restriction Enzymes:</strong> EcoRI, BamHI, and HindIII — selected for their availability in our lab.</p>
+                    <p><strong>Chosen Restriction Enzymes:</strong> EcoRI, BamHI, and HindIII — selected for their availability in our lab.</p>
 
-                <p>We used TWIST Bioscience for gene synthesis (max limit: 5000 bp per plasmid). The <code>nirBD</code> operon fits within this limit.</p>
+                    <p>We used TWIST Bioscience for gene synthesis (max limit: 5000 bp per plasmid). The <code>nirBD</code> operon fits within this limit.</p>
 
-                <p><em>[Insert schematic screenshot of pSEVA 648]</em></p>
-                <p><em>[Insert schematic screenshot of pSEVA648 + nirBD]</em></p>
+                    <p><em>[Insert schematic screenshot of pSEVA 648]</em></p>
+                    <p><em>[Insert schematic screenshot of pSEVA648 + nirBD]</em></p>
 
-                <p>However, the <code>nrf</code> operons exceeded this limit. So, we split them into four fragments:</p>
-                <ul>
-                    <li><code>nrfHA</code></li>
-                    <li><code>nrfIJ</code></li>
-                    <li><code>nrfABCD</code></li>
-                    <li><code>nrfEFG</code></li>
-                </ul>
+                    <p>However, the <code>nrf</code> operons exceeded this limit. So, we split them into four fragments:</p>
+                    <ul>
+                        <li><code>nrfHA</code></li>
+                        <li><code>nrfIJ</code></li>
+                        <li><code>nrfABCD</code></li>
+                        <li><code>nrfEFG</code></li>
+                    </ul>
 
-                <p><em>[Insert BioRender schematic of split gene fragments]</em></p>
-                <p><em>[Insert flowchart: Insertion workflow]</em></p>
+                    <p><em>[Insert BioRender schematic of split gene fragments]</em></p>
+                    <p><em>[Insert flowchart: Insertion workflow]</em></p>
+                </sections>
+                <section id="promoter-logic">
+                    <h3>Promoter Logic: The Built-In Kill Switch</h3>
+                    <p>Our chosen promoter, <strong>XylS/Pm</strong>, is inducible by <strong>benzoate</strong> — a known plant root exudate. Thus, expression of nitrite reductase enzymes only occurs in the proximity of plant roots.</p>
 
-                <h3>Promoter Logic: The Built-In Kill Switch</h3>
-                <p>Our chosen promoter, <strong>XylS/Pm</strong>, is inducible by <strong>benzoate</strong> — a known plant root exudate. Thus, expression of nitrite reductase enzymes only occurs in the proximity of plant roots.</p>
-
-                <p>If the bacteria escape the rhizosphere, the operons shut off, and the engineered organism behaves like any typical soil bacterium — forming a pseudo kill-switch for biosafety.</p>
-
+                    <p>If the bacteria escape the rhizosphere, the operons shut off, and the engineered organism behaves like any typical soil bacterium — forming a pseudo kill-switch for biosafety.</p>
+                </section>
             </section>
 
             <section id="gene-editing" data-aos="fade-up">
@@ -792,7 +797,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- FEATURE 3: DYNAMIC SIDEBAR & SCROLLSPY ---
     const navStructure = [
-        { id: 'plasmid-design', title: 'Plasmid Design' },
+        { id: 'plasmid-design', title: 'Plasmid Design' , children: [
+            { id: 'operons', title: 'Operon Breakdown', children: [
+                { id: 'nirBD', title: 'a. nirBD' },
+                { id: 'nrfHAIJ', title: 'b. nrfHAIJ' },
+                { id: 'nrfABCDEFG', title: 'c. nrfABCDEFG' }
+            ]
+            },
+            { id: 'vector-integration', title: 'Vector Integration Strategy' },
+            { id: 'promoter-logic', title: 'Promoter Logic: The Built-In Kill Switch' }
+        ]},
         { id: 'gene-editing', title: 'Gene Editing' },
         { id: 'assay-designs', title: 'Assay Designs', children: [
             { id: 'biofilm-assays', title: 'Biofilm Assays' },
