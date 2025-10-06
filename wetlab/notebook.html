@@ -142,6 +142,17 @@
         max-width: 100%; border-radius: 0.5rem; margin-top: 1rem;
     }
 
+    .nb-week-content-inner ul {
+    list-style-type: disc; /* Makes normal bullets appear */
+    padding-left: 20px;    /* Indent for bullets */
+    margin: 0 0 10px 0;    /* Optional spacing */
+}
+
+.nb-week-content-inner ul li {
+    margin-bottom: 5px;    /* Optional spacing between list items */
+}
+
+
     </style>
 </head>
 <body>
@@ -247,7 +258,35 @@
 </header>
 
 <div class="nb-container nb-notebook-container">
-    
+
+    <!-- April 2025 -->
+    <div class="nb-month-item">
+        <button class="nb-month-header">
+            <span>April 2025</span>
+            <div class="nb-accordion-icon"></div>
+        </button>
+        <div class="nb-month-content">
+            <div class="nb-week-container">
+                <div class="nb-week-item">
+                    <button class="nb-week-header">
+                        <div><span>Week 1 & 2:</span> 17 April - 30 April</div>
+                        <div class="nb-accordion-icon"></div>
+                    </button>
+                    <div class="nb-week-content">
+                        <div class="nb-week-content-inner">
+                            <ul>
+                                <li>We familiarised ourselves with the SnapGene software since we would use it to optimize and understand the translation of these genes.</li>
+                                <li>We studied the components of the plasmids we planned to use and considered the restriction sites we could use, choices of operons, and inducer promoter options.</li>
+                                <li>We also planned soil experiments to test soil samples for nitrate, nitrite, and ammonium levels in a lab.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- May 2025 -->
     <div class="nb-month-item">
         <button class="nb-month-header">
             <span>May 2025</span>
@@ -255,20 +294,18 @@
         </button>
         <div class="nb-month-content">
             <div class="nb-week-container">
-                
                 <div class="nb-week-item">
                     <button class="nb-week-header">
-                        <div><span>Week 1:</span> Project Ideation & Setup</div>
+                        <div><span>Week 3 & 4:</span> 1 May - 14 May</div>
                         <div class="nb-accordion-icon"></div>
                     </button>
                     <div class="nb-week-content">
                         <div class="nb-week-content-inner">
-                            <p>This week, the team convened to finalize our project idea. After several brainstorming sessions, we decided to focus on nitrate leaching in agriculture. Initial literature review was assigned to the entire team.</p>
-                            <h4>Key Activities:</h4>
                             <ul>
-                                <li>Finalized project direction: ARGUS-2440.</li>
-                                <li>Set up lab safety protocols.</li>
-                                <li>Ordered initial primers and reagents.</li>
+                                <li>We finalized the restriction sites to be used on the pSEVA248 with input from dry lab data, and planned the workflow for Wetlab.</li>
+                                <li>We received a stab of pSEVA248 in E. coli from the SEVA Repository; however, streaking did not result in any growth.</li>
+                                <li>We worked on ordering the pSEVA248 plasmid from the SEVA Repository using a different channel to ensure that it could be cultured.</li>
+                                <li>Started modifying our chosen operons to fit the restriction sites on the pSEVA248, using SnapGene.</li>
                             </ul>
                         </div>
                     </div>
@@ -276,13 +313,51 @@
 
                 <div class="nb-week-item">
                     <button class="nb-week-header">
-                        <div><span>Week 2:</span> Plasmid Design</div>
+                        <div><span>Week 4 & 5:</span> 15 May - 28 May</div>
                         <div class="nb-accordion-icon"></div>
                     </button>
                     <div class="nb-week-content">
-                         <div class="nb-week-content-inner">
-                            <p>The dry lab team began designing the genetic circuit using Benchling. The wet lab team prepared competent cells and started growing cultures of our chassis, *P. putida*.</p>
-                            <img src="https://static.igem.wiki/teams/4642/wiki/home/wet-lab.jpg" alt="Team members working in the lab">
+                        <div class="nb-week-content-inner">
+                            <ul>
+                                <li>We underwent thorough training on basic laboratory safety, as well as common techniques and the use of lab equipment.</li>
+                                <li>Prepared stocks of broths, agar plates, and antibiotics.</li>
+                                <li>We decided the E. coli strains we would use as a chassis, along with P. putida, based on availability in our PI's lab.</li>
+                                <li>We contacted Phale Lab in IITB to obtain the P. putida KT2440 strain.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nb-week-item">
+                    <button class="nb-week-header">
+                        <div><span>Week 5 & 6:</span> 29 May - 11 June</div>
+                        <div class="nb-accordion-icon"></div>
+                    </button>
+                    <div class="nb-week-content">
+                        <div class="nb-week-content-inner">
+                            <ul>
+                                <li>We received P. putida EM42 along with pSEVA 248 in E. coli from the SEVA Repository. Despite repeated attempts to culture the E. coli, we were unsuccessful.</li>
+                                <li>We also received the Putida KT2440 from Phale lab as an agar stab. Both P. putida KT2440 and P. putida EM42 stabs were placed in cold storage until we received approval for our check-in form.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nb-week-item">
+                    <button class="nb-week-header">
+                        <div><span>Week 7 & 8:</span> 12 June - 25 June</div>
+                        <div class="nb-accordion-icon"></div>
+                    </button>
+                    <div class="nb-week-content">
+                        <div class="nb-week-content-inner">
+                            <ul>
+                                <li>Based on a preliminary comment on the safety form, we used the BSL-2 Facility in our lab to plate both strains.</li>
+                                <li>Both cultures grew successfully, and primary and secondary glycerol stocks for the same were prepared.</li>
+                                <li>Since there was an issue with our agar, the plates did not solidify properly, and we had to remake them.</li>
+                                <li>Worked on Codon Optimisation for nitrite reductase genes to be ordered from TWIST Bioscience. Placed order for nrfHAIJ, nrfABCDEFG and nirBD operons. The former two were split into two parts to fit the 5kb synthesis limit.</li>
+                                <li>Since we had failed to culture pSEVA248 from stabs, we considered getting the plasmid synthesized, as the inserts were tailored to the MCS of the SEVA backbone.</li>
+                                <li>We found two colonies on the plate we made for the pSEVA248. We suspected it to be a contamination due to colony morphology and colour. We performed a Gram stain with extra precautions for a preliminary test. The colonies were in tetrads and were Gram-negative, indicating it was a contamination.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -291,6 +366,7 @@
         </div>
     </div>
 
+    <!-- June 2025 -->
     <div class="nb-month-item">
         <button class="nb-month-header">
             <span>June 2025</span>
@@ -298,23 +374,231 @@
         </button>
         <div class="nb-month-content">
             <div class="nb-week-container">
+
                 <div class="nb-week-item">
                     <button class="nb-week-header">
-                        <div><span>Week 1:</span> Cloning & Transformation</div>
+                        <div><span>Week 9 & 10:</span> 26 June - 9 July</div>
                         <div class="nb-accordion-icon"></div>
                     </button>
                     <div class="nb-week-content">
                         <div class="nb-week-content-inner">
-                            <p>Successfully performed Gibson assembly to construct our main plasmid. Transformed the construct into *E. coli* DH5-alpha for initial verification and amplification.</p>
+                            <ul>
+                                <li>Our clonal genes were delayed at customs, but arrived in the second week of June. However, the second part of the nrfHAIJ operon could not be synthesised due to its complexity.</li>
+                                <li>We received nirBD, nrfABCD, nrfEFG, and nrfHA as dried clonal DNA.</li>
+                                <li>We still did not have a plasmid and were considering options on Addgene, since plasmid synthesis would be too time-consuming and a drain on limited financial resources.</li>
+                                <li>Meanwhile, the SEVA team attempted to send the pSEVA248 plasmid to Phale Lab at IIT Bombay, where they would culture it and share it with us.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
+
+                <div class="nb-week-item">
+                    <button class="nb-week-header">
+                        <div><span>Week 11 & 12:</span> 10 July - 23 July</div>
+                        <div class="nb-accordion-icon"></div>
+                    </button>
+                    <div class="nb-week-content">
+                        <div class="nb-week-content-inner">
+                            <ul>
+                                <li>While SEVA shipped the plasmids, we attempted to save any remaining plasmid from the agar stabs based on a suggestion from our PI. We eluted the agar and added lysis reagents, followed by a plasmid isolation protocol.</li>
+                                <li>We attempted to transform this into E. coli. This failed, and we had to wait until Phale Lab sent us the plasmid.</li>
+                                <li>We resuspended the dried clonal genes and transformed them into competent E. coli DH5-alpha successfully, for the nrfABCD, nrfEFG and nirBD operons. We did not transform nrfHA since the second part of the operon had not been synthesized.</li>
+                                <li>Phale lab could not culture pSEVA248. However, they sent us other SEVA variants with different ORIs and resistances in E. coli. We received pSEVA238, pSEVA258, pSEVA268 and pSEVA2313.</li>
+                                <li>We visited Berambadi Village and collected soil and water samples.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nb-week-item">
+                    <button class="nb-week-header">
+                        <div><span>Week 13:</span> 24 July - 30 July</div>
+                        <div class="nb-accordion-icon"></div>
+                    </button>
+                    <div class="nb-week-content">
+                        <div class="nb-week-content-inner">
+                            <ul>
+                                <li>Our wet lab team was travelling, hence no lab work was possible.</li>
+                                <li>After travelling to Mumbai for the All India iGEM Meet, we travelled to Pune and collected soil and water samples from Talegaon Village.</li>
+                                <li>Samples were collected in Eppendorf while wearing masks and gloves.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nb-week-item">
+                    <button class="nb-week-header">
+                        <div><span>Week 13:</span> 31 July - 6 August</div>
+                        <div class="nb-accordion-icon"></div>
+                    </button>
+                    <div class="nb-week-content">
+                        <div class="nb-week-content-inner">
+                            <ul>
+                                <li>We replated the Putida strains, the E. coli containing clonal genes and the E. coli containing plasmids.</li>
+                                <li>Prepared glycerol stocks for all these.</li>
+                                <li>Inoculated the plasmid containing E. coli in LB + Ampicillin overnight.</li>
+                                <li>Isolated plasmid samples using the QIA Spin Miniprep Kit and quantified with a nanodrop.</li>
+                                <li>The quality of the isolate and yield was low, so we did not move ahead with digestion.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
+    <!-- August 2025 -->
+<div class="nb-month-item">
+    <button class="nb-month-header">
+        <span>August 2025</span>
+        <div class="nb-accordion-icon"></div>
+    </button>
+    <div class="nb-month-content">
+        <div class="nb-week-container">
+
+            <div class="nb-week-item">
+                <button class="nb-week-header">
+                    <div><span>Week 14:</span> 7 August - 14 August</div>
+                    <div class="nb-accordion-icon"></div>
+                </button>
+                <div class="nb-week-content">
+                    <div class="nb-week-content-inner">
+                        <ul>
+                            <li>Performed the second set of inoculations. Attempted to grow culture in 50 mL Falcon tubes to increase yield.</li>
+                            <li>Attempted manual digestion instead of the kit at the suggestion of our mentor, since it would give a better yield.</li>
+                            <li>Digested pSEVA648 with EcoRI and BamHI. While isolation worked, the digestion did not.</li>
+                            <li>[Image: Ladder, undigested plasmid, digested plasmid]</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nb-week-item">
+                <button class="nb-week-header">
+                    <div><span>Week 15:</span> 15 August - 21 August</div>
+                    <div class="nb-accordion-icon"></div>
+                </button>
+                <div class="nb-week-content">
+                    <div class="nb-week-content-inner">
+                        <ul>
+                            <li>Since we faced issues with dual digestion, we tried to digest with only one restriction enzyme at a time. EcoRI did not work, BamHI was inconclusive, and HindIII seemed to have worked.</li>
+                            <li>[Image: Marker, Undigested pSEVA648, pSEVA648+EcoRI, pSEVA648 + BamHI, pSEVA648+ HindIII]</li>
+                            <li>Replated the cultures since 2 weeks had passed.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nb-week-item">
+                <button class="nb-week-header">
+                    <div><span>Week 16:</span> 22 August - 28 August</div>
+                    <div class="nb-accordion-icon"></div>
+                </button>
+                <div class="nb-week-content">
+                    <div class="nb-week-content-inner">
+                        <ul>
+                            <li>We tried another set of inoculations and digestions, this time with the pSEVA258 plasmid.</li>
+                            <li>The digestion had some impurities, but indicated that the MCS on the plasmid did not have an issue.</li>
+                            <li>[Image: Marker, EcoRI-BamHI x2, BamHI-HindIII, EcoRI-HindIII, undigested plasmid]</li>
+                            <li>The extended band was likely due to a longer incubation time, and we decided to reduce it in the next iteration.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nb-week-item">
+                <button class="nb-week-header">
+                    <div><span>Week 17:</span> 29 August - 4 September</div>
+                    <div class="nb-accordion-icon"></div>
+                </button>
+                <div class="nb-week-content">
+                    <div class="nb-week-content-inner">
+                        <ul>
+                            <li>Ask Dahal for updates in the 1st week of September.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
+<!-- September 2025 -->
+<div class="nb-month-item">
+    <button class="nb-month-header">
+        <span>September 2025</span>
+        <div class="nb-accordion-icon"></div>
+    </button>
+    <div class="nb-month-content">
+        <div class="nb-week-container">
+
+            <div class="nb-week-item">
+                <button class="nb-week-header">
+                    <div><span>Week 18:</span> 5 September - 11 September</div>
+                    <div class="nb-accordion-icon"></div>
+                </button>
+                <div class="nb-week-content">
+                    <div class="nb-week-content-inner">
+                        <ul>
+                            <li>Got a good yield from isolation and gel, but elution failed and did not show any DNA.</li>
+                            <li>Performed one more set of isolations and digestions. Elution was successful this time.</li>
+                            <li>Attempted ligation - failed.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nb-week-item">
+                <button class="nb-week-header">
+                    <div><span>Week 19:</span> 12 September - 18 September</div>
+                    <div class="nb-accordion-icon"></div>
+                </button>
+                <div class="nb-week-content">
+                    <div class="nb-week-content-inner">
+                        <ul>
+                            <li>No lab work this week due to mid-semester exams.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nb-week-item">
+                <button class="nb-week-header">
+                    <div><span>Week 19 & 20:</span> Mid-September</div>
+                    <div class="nb-accordion-icon"></div>
+                </button>
+                <div class="nb-week-content">
+                    <div class="nb-week-content-inner">
+                        <ul>
+                            <li>Due to mid-semester exams, we were not able to work in the lab during this time.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nb-week-item">
+                <button class="nb-week-header">
+                    <div><span>Week 21:</span> Late September</div>
+                    <div class="nb-accordion-icon"></div>
+                </button>
+                <div class="nb-week-content">
+                    <div class="nb-week-content-inner">
+                        <ul>
+                            <li>Tested for basal expression levels of nitrite reductase genes for P. putida KT2440 and P. putida EM42 in nitrate and nitrite medium.</li>
+                            <li>Made a set of isolates, but they had low yield and were highly contaminated.</li>
+                            <li>A second set of inoculants showed moderate yield, but elution failed and showed erroneous values on the nanodrop.</li>
+                            <li>Began testing soil samples in the Bagchi Lab for nitrate, nitrite, and ammonium levels.</li>
+                            <li>Performed basal biofilm formation assay for P. putida KT2440 and P. putida EM42.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 </div>
 
 
